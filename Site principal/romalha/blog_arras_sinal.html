@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arras ou Sinal de Negócio: Guia Estratégico para Segurança em Transações | Legalizzare</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-dark: #0f1115;
+            --bg-light: #f5f2ee;
+            --primary: #c62828;
+            --primary-light: #e53935;
+            --primary-dark: #b71c1c;
+            --text-light: #ffffff;
+            --text-dark: #1f2937;
+            --text-muted: #9ca3af;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .site-header {
+            background: var(--bg-dark);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+        }
+
+        .site-header .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo img { height: 40px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
+
+        .btn-whatsapp {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            padding: 10px 22px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(198,40,40,0.3);
+        }
+
+        .btn-whatsapp::before {
+            content: '\f232';
+            font-family: 'Font Awesome 6 Brands';
+            font-size: 15px;
+        }
+
+        .btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(198,40,40,0.5); }
+
+        .breadcrumb { width: 90%; max-width: 780px; margin: 32px auto 0; }
+
+        .breadcrumb a {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb a:hover { color: var(--primary-dark); }
+
+        .article-wrapper {
+            width: 90%;
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 40px 0 80px;
+        }
+
+        .article-author-row { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+
+        .article-author-img {
+            width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid #e0dbd4;
+        }
+
+        .article-author-info { display: flex; flex-direction: column; }
+        .author-name { font-size: 15px; font-weight: 600; color: var(--text-dark); }
+        .article-meta { font-size: 13px; color: #888; }
+
+        .article-title {
+            font-size: clamp(28px, 4vw, 42px);
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--text-dark);
+            margin-bottom: 32px;
+        }
+
+        .article-tag {
+            display: inline-block;
+            background: #848c80;
+            color: #fff;
+            padding: 6px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 32px;
+        }
+
+        .article-featured-img {
+            width: 100%; border-radius: 12px; margin-bottom: 12px; display: block;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+        }
+
+        .article-img-caption { text-align: center; font-size: 13px; color: #999; margin-bottom: 40px; }
+
+        .article-body { font-size: 17px; line-height: 1.85; color: #333; }
+        .article-body p { margin-bottom: 24px; }
+
+        .article-body h2 {
+            font-size: 26px; font-weight: 700; color: var(--text-dark);
+            margin: 44px 0 18px; padding-bottom: 10px; border-bottom: 2px solid #e8e3dc;
+        }
+
+        .article-body h3 { font-size: 20px; font-weight: 700; color: var(--primary-dark); margin: 32px 0 12px; }
+        .article-body ul, .article-body ol { padding-left: 24px; margin-bottom: 24px; }
+        .article-body li { margin-bottom: 10px; }
+        .article-body strong { color: var(--text-dark); }
+
+        .article-body blockquote {
+            border-left: 4px solid var(--primary);
+            padding: 16px 24px;
+            background: #fff;
+            border-radius: 0 10px 10px 0;
+            margin: 32px 0;
+            font-style: italic;
+            color: #555;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+        }
+
+        .article-cta {
+            background: var(--bg-dark); border-radius: 16px; padding: 40px;
+            text-align: center; margin-top: 60px;
+        }
+
+        .article-cta h3 { color: #fff; font-size: 22px; margin-bottom: 12px; }
+        .article-cta p { color: #d1d5db; font-size: 15px; margin-bottom: 28px; }
+
+        .btn-cta {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            padding: 14px 32px; border-radius: 50px; text-decoration: none; color: #fff;
+            font-size: 15px; font-weight: 700; transition: all 0.3s ease;
+            display: inline-flex; align-items: center; gap: 8px;
+            box-shadow: 0 4px 15px rgba(198,40,40,0.4);
+        }
+
+        .btn-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(198,40,40,0.6); }
+
+        .article-divider { border: none; border-top: 2px solid #e8e3dc; margin: 48px 0; }
+
+        .back-to-blog {
+            display: inline-flex; align-items: center; gap: 8px; color: var(--primary);
+            text-decoration: none; font-weight: 600; font-size: 15px; margin-top: 48px; transition: gap 0.2s;
+        }
+
+        .back-to-blog:hover { gap: 12px; }
+
+        .site-footer {
+            background: var(--bg-dark); color: #888; text-align: center; padding: 30px 0; font-size: 13px;
+        }
+
+        @media (max-width: 768px) {
+            .article-wrapper { padding: 30px 0 60px; }
+            .article-cta { padding: 30px 20px; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="container">
+            <div class="logo">
+                <a href="index_romalha.html" style="display:inline-block;">
+                    <img src="logo_legalizzare.png" alt="Legalizzare"
+                        onerror="this.outerHTML='<span style=\'font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif; font-size: 22px; font-weight: 700; color: #fff;\'>Legalizzare</span>'">
+                </a>
+            </div>
+            <a href="https://wa.me/5524988648105" target="_blank" class="btn-whatsapp">WhatsApp</a>
+        </div>
+    </header>
+
+    <nav class="breadcrumb">
+        <a href="index_romalha.html#blog">
+            <i class="fa-solid fa-arrow-left"></i> Voltar ao Blog
+        </a>
+    </nav>
+
+    <article class="article-wrapper">
+
+        <div class="article-author-row">
+            <img src="romalha.png" alt="Romalha Pereira" class="article-author-img"
+                onerror="this.outerHTML='<div style=\'width:44px;height:44px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:18px;\'>R</div>'">
+            <div class="article-author-info">
+                <span class="author-name">Romalha Pereira</span>
+                <span class="article-meta">5 min de leitura &nbsp;·&nbsp; Abr 2025</span>
+            </div>
+        </div>
+
+        <span class="article-tag">Compra e Venda de Imóveis</span>
+
+        <h1 class="article-title">Arras ou Sinal de Negócio: O Guia Estratégico para Segurança em Transações Imobiliárias</h1>
+
+        <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1200&q=80"
+            alt="Contrato sendo assinado" class="article-featured-img">
+        <p class="article-img-caption">Arras ou Sinal de Negócio: entenda como esse instrumento protege compradores e vendedores.</p>
+
+        <div class="article-body">
+
+            <p>Quando as partes chegam a um acordo sobre a compra e venda de um imóvel, uma das primeiras perguntas que surgem é: <strong>como garantir que o negócio não será desfeito unilateralmente?</strong> É nesse momento que entra em cena um instituto clássico do direito civil brasileiro: as arras, popularmente conhecidas como "sinal".</p>
+
+            <p>Mais do que um simples pagamento inicial, as arras têm função jurídica específica e representam uma ferramenta poderosa de proteção para ambas as partes em uma transação imobiliária.</p>
+
+            <h2>O que são Arras?</h2>
+
+            <p>As arras são uma quantia em dinheiro — ou outro bem fungível — entregue por uma das partes à outra no momento da celebração do contrato preliminar (como o compromisso de compra e venda), com a finalidade de confirmar o acordo e assegurar o cumprimento do contrato.</p>
+
+            <p>No Brasil, as arras são reguladas pelos artigos 417 a 420 do Código Civil, que estabelecem dois tipos principais:</p>
+
+            <h3>1. Arras Confirmatórias</h3>
+
+            <p>São as mais comuns. Têm a função de <strong>confirmar</strong> a seriedade do negócio. Se o contrato for cumprido normalmente, o valor pago como arras é deduzido do preço final. Se uma das partes descumprir o contrato:</p>
+
+            <ul>
+                <li>Quem deu as arras as <strong>perde em favor</strong> de quem as recebeu.</li>
+                <li>Quem recebeu as arras deve <strong>devolvê-las em dobro</strong> ao que as pagou.</li>
+            </ul>
+
+            <h3>2. Arras Penitenciais</h3>
+
+            <p>Permitem o <strong>arrependimento</strong> de qualquer das partes. Quem se arrepende perde o valor pago (se foi o comprador) ou devolve em dobro (se foi o vendedor). Nesse caso, não cabe indenização por perdas e danos além das arras.</p>
+
+            <blockquote>
+                "As arras penitenciais funcionam como o 'custo do arrependimento' — é o preço da liberdade de desistir do negócio sem litígio."
+            </blockquote>
+
+            <h2>Qual o valor ideal para as Arras?</h2>
+
+            <p>A lei não estipula um percentual fixo. No mercado imobiliário, é comum negociar entre <strong>5% e 10%</strong> do valor do imóvel. Um valor muito baixo pode não ser suficiente para desestimular o descumprimento; um valor muito alto pode inviabilizar a negociação para o comprador.</p>
+
+            <h2>Cuidados Essenciais</h2>
+
+            <ul>
+                <li>Sempre formalize as arras em contrato escrito, especificando claramente se são confirmatórias ou penitenciais.</li>
+                <li>Registre o contrato em cartório para maior segurança jurídica.</li>
+                <li>Estipule prazo para conclusão do negócio.</li>
+                <li>Inclua cláusulas sobre situações específicas como reprovação de crédito, pendências no imóvel ou na documentação das partes.</li>
+            </ul>
+
+            <hr class="article-divider">
+
+            <p>Uma assessoria jurídica especializada na elaboração e revisão de contratos imobiliários pode prevenir discussões judiciais custosas e garantir que seus interesses estejam plenamente protegidos desde o início da negociação.</p>
+
+        </div>
+
+        <div class="article-cta">
+            <h3>Vai comprar ou vender um imóvel?</h3>
+            <p>Conte com nossos especialistas para elaborar e revisar contratos com total segurança jurídica.</p>
+            <a href="https://wa.me/5524988648105" target="_blank" class="btn-cta">
+                <i class="fa-brands fa-whatsapp"></i>
+                Falar com um especialista
+            </a>
+        </div>
+
+        <a href="index_romalha.html#blog" class="back-to-blog">
+            <i class="fa-solid fa-arrow-left"></i> Ver mais artigos
+        </a>
+
+    </article>
+
+    <footer class="site-footer">
+        <p>&copy; 2025 Legalizzare. Todos os direitos reservados.</p>
+    </footer>
+
+</body>
+
+</html>

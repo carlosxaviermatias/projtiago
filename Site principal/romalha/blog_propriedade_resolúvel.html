@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propriedade resolúvel e propriedade fiduciária: O que é? | Legalizzare</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-dark: #0f1115;
+            --bg-light: #f5f2ee;
+            --primary: #c62828;
+            --primary-light: #e53935;
+            --primary-dark: #b71c1c;
+            --text-light: #ffffff;
+            --text-dark: #1f2937;
+            --text-muted: #9ca3af;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* HEADER */
+        .site-header {
+            background: var(--bg-dark);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+        }
+
+        .site-header .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .btn-whatsapp {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            padding: 10px 22px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(198,40,40,0.3);
+        }
+
+        .btn-whatsapp::before {
+            content: '\f232';
+            font-family: 'Font Awesome 6 Brands';
+            font-size: 15px;
+        }
+
+        .btn-whatsapp:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(198,40,40,0.5);
+        }
+
+        /* BREADCRUMB */
+        .breadcrumb {
+            width: 90%;
+            max-width: 780px;
+            margin: 32px auto 0;
+        }
+
+        .breadcrumb a {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--primary-dark);
+        }
+
+        /* ARTICLE */
+        .article-wrapper {
+            width: 90%;
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 40px 0 80px;
+        }
+
+        /* Author row */
+        .article-author-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .article-author-img {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #e0dbd4;
+        }
+
+        .article-author-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .author-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .article-meta {
+            font-size: 13px;
+            color: #888;
+        }
+
+        /* Title */
+        .article-title {
+            font-size: clamp(28px, 4vw, 42px);
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--text-dark);
+            margin-bottom: 32px;
+        }
+
+        /* Tag */
+        .article-tag {
+            display: inline-block;
+            background: #848c80;
+            color: #fff;
+            padding: 6px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 32px;
+            letter-spacing: 0.3px;
+        }
+
+        /* Featured image */
+        .article-featured-img {
+            width: 100%;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            display: block;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+        }
+
+        .article-img-caption {
+            text-align: center;
+            font-size: 13px;
+            color: #999;
+            margin-bottom: 40px;
+        }
+
+        /* Body */
+        .article-body {
+            font-size: 17px;
+            line-height: 1.85;
+            color: #333;
+        }
+
+        .article-body p {
+            margin-bottom: 24px;
+        }
+
+        .article-body h2 {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 44px 0 18px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8e3dc;
+        }
+
+        .article-body h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin: 32px 0 12px;
+        }
+
+        .article-body ul, .article-body ol {
+            padding-left: 24px;
+            margin-bottom: 24px;
+        }
+
+        .article-body li {
+            margin-bottom: 10px;
+        }
+
+        .article-body strong {
+            color: var(--text-dark);
+        }
+
+        .article-body blockquote {
+            border-left: 4px solid var(--primary);
+            padding: 16px 24px;
+            background: #fff;
+            border-radius: 0 10px 10px 0;
+            margin: 32px 0;
+            font-style: italic;
+            color: #555;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+        }
+
+        /* CTA */
+        .article-cta {
+            background: var(--bg-dark);
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .article-cta h3 {
+            color: #fff;
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        .article-cta p {
+            color: #d1d5db;
+            font-size: 15px;
+            margin-bottom: 28px;
+        }
+
+        .btn-cta {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            padding: 14px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(198,40,40,0.4);
+        }
+
+        .btn-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(198,40,40,0.6);
+        }
+
+        /* Divider */
+        .article-divider {
+            border: none;
+            border-top: 2px solid #e8e3dc;
+            margin: 48px 0;
+        }
+
+        /* Back link */
+        .back-to-blog {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            margin-top: 48px;
+            transition: gap 0.2s;
+        }
+
+        .back-to-blog:hover {
+            gap: 12px;
+        }
+
+        /* FOOTER */
+        .site-footer {
+            background: var(--bg-dark);
+            color: #888;
+            text-align: center;
+            padding: 30px 0;
+            font-size: 13px;
+        }
+
+        @media (max-width: 768px) {
+            .article-wrapper {
+                padding: 30px 0 60px;
+            }
+
+            .article-cta {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="site-header">
+        <div class="container">
+            <div class="logo">
+                <a href="index_romalha.html" style="display:inline-block;">
+                    <img src="logo_legalizzare.png" alt="Legalizzare"
+                        onerror="this.outerHTML='<span style=\'font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif; font-size: 22px; font-weight: 700; color: #fff;\'>Legalizzare</span>'">
+                </a>
+            </div>
+            <a href="https://wa.me/5524988648105" target="_blank" class="btn-whatsapp">WhatsApp</a>
+        </div>
+    </header>
+
+    <!-- BREADCRUMB -->
+    <nav class="breadcrumb">
+        <a href="index_romalha.html#blog">
+            <i class="fa-solid fa-arrow-left"></i> Voltar ao Blog
+        </a>
+    </nav>
+
+    <!-- ARTICLE -->
+    <article class="article-wrapper">
+
+        <!-- Author -->
+        <div class="article-author-row">
+            <img src="romalha.png" alt="Romalha Pereira" class="article-author-img"
+                onerror="this.outerHTML='<div style=\'width:44px;height:44px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:18px;\'>R</div>'">
+            <div class="article-author-info">
+                <span class="author-name">Romalha Pereira</span>
+                <span class="article-meta">6 min de leitura &nbsp;·&nbsp; Abr 2025</span>
+            </div>
+        </div>
+
+        <!-- Tag -->
+        <span class="article-tag">Garantias Imobiliárias</span>
+
+        <!-- Title -->
+        <h1 class="article-title">Propriedade resolúvel e propriedade fiduciária: O que é?</h1>
+
+        <!-- Featured image -->
+        <img src="https://images.unsplash.com/photo-1560518883-ce09059eeefa?auto=format&fit=crop&w=1200&q=80"
+            alt="Vista aérea de condomínio de alto padrão" class="article-featured-img">
+        <p class="article-img-caption">Propriedade resolúvel e propriedade fiduciária: O que é?</p>
+
+        <!-- Body -->
+        <div class="article-body">
+
+            <p>Para investidores de alto padrão, grandes proprietários de imóveis e empresários, a segurança jurídica
+                não é apenas um detalhe — é o alicerce de qualquer operação estruturada. Compreender as nuances entre
+                os modelos de aquisição e garantia é o que separa um investimento sólido de um risco patrimonial
+                desnecessário.</p>
+
+            <p>Dois institutos jurídicos que frequentemente geram dúvidas no mercado imobiliário são a
+                <strong>propriedade resolúvel</strong> e a <strong>propriedade fiduciária</strong>. Ambos envolvem a
+                transferência de titularidade, mas com finalidades e efeitos completamente distintos.</p>
+
+            <h2>O que é Propriedade Resolúvel?</h2>
+
+            <p>A propriedade resolúvel é aquela que, desde a sua constituição, traz em si uma condição ou um termo que
+                pode pôr fim à titularidade do adquirente. Em outras palavras, o comprador se torna proprietário, mas
+                essa propriedade pode "resolver-se" — ou seja, extinguir-se — caso se verifique determinado evento
+                previsto no contrato ou na lei.</p>
+
+            <blockquote>
+                "A propriedade resolúvel é como uma propriedade com prazo de validade: existe plenamente, mas pode
+                desaparecer se a condição prevista se cumprir."
+            </blockquote>
+
+            <h3>Exemplo prático</h3>
+
+            <p>O caso mais comum no mercado imobiliário é o <strong>compromisso de compra e venda</strong>. O
+                promitente comprador possui uma propriedade resolúvel sobre o bem até que todas as parcelas sejam
+                quitadas e a escritura definitiva seja lavrada. Caso haja inadimplemento, o vendedor pode reaver o
+                imóvel.</p>
+
+            <p>Outro exemplo clássico é a <strong>doação com cláusula de reversão</strong>, em que o doador estabelece
+                que o bem voltará ao seu patrimônio caso o donatário faleça antes dele.</p>
+
+            <h2>O que é Propriedade Fiduciária?</h2>
+
+            <p>A propriedade fiduciária, por sua vez, é um instrumento de <strong>garantia</strong>. Nela, o devedor
+                (fiduciante) transfere a propriedade resolúvel de um bem ao credor (fiduciário) como forma de garantir
+                o pagamento de uma dívida. O devedor permanece na posse direta do imóvel, mas a propriedade
+                pertence ao credor até que a dívida seja integralmente quitada.</p>
+
+            <h3>Como funciona na prática?</h3>
+
+            <ul>
+                <li>O comprador contrai um financiamento imobiliário e transfere a propriedade do imóvel ao banco como
+                    garantia.</li>
+                <li>Durante o pagamento das parcelas, o comprador mora no imóvel normalmente.</li>
+                <li>Ao quitar o financiamento, a propriedade é transferida definitivamente ao comprador.</li>
+                <li>Em caso de inadimplência, o banco pode consolidar a propriedade e leiloar o imóvel de forma
+                    extrajudicial, sem necessidade de ação judicial.</li>
+            </ul>
+
+            <p>Esse mecanismo é regulado pela <strong>Lei nº 9.514/1997</strong>, que institui o Sistema de
+                Financiamento Imobiliário (SFI), e confere ao mercado uma ferramenta ágil e segura tanto para
+                credores quanto para devedores.</p>
+
+            <h2>Principais Diferenças</h2>
+
+            <p>Embora ambas as modalidades envolvam propriedade com restrições, suas finalidades são distintas:</p>
+
+            <ul>
+                <li><strong>Propriedade Resolúvel:</strong> vinculada a uma condição ou termo — existe como
+                    titularidade plena, mas pode ser extinta.</li>
+                <li><strong>Propriedade Fiduciária:</strong> instrumento de garantia — a propriedade é transferida
+                    temporariamente ao credor até a quitação da dívida.</li>
+                <li><strong>Execução:</strong> na fiduciária, a execução da garantia é extrajudicial e muito mais
+                    rápida; na resolúvel, pode demandar ação judicial.</li>
+                <li><strong>Registro:</strong> ambas devem ser registradas no Cartório de Registro de Imóveis para
+                    produzir efeitos contra terceiros.</li>
+            </ul>
+
+            <h2>Por que isso importa para você?</h2>
+
+            <p>Se você está adquirindo um imóvel financiado, vendendo com parcelamento direto, estruturando uma
+                doação ou constituindo garantias para operações empresariais, é fundamental entender qual instituto
+                jurídico se aplica ao seu caso — e quais são os riscos e vantagens de cada um.</p>
+
+            <p>Uma análise adequada por um profissional especializado pode evitar surpresas desagradáveis, como a
+                perda do imóvel por inadimplemento ou a nulidade de cláusulas contratuais por vícios formais.</p>
+
+            <hr class="article-divider">
+
+            <p><strong>A Legalizzare</strong> atua com expertise em direito imobiliário, assessorando clientes na
+                estruturação de contratos, análise de garantias e regularização de imóveis em todas as etapas.
+                Nosso compromisso é garantir que o seu patrimônio esteja protegido sob os mais sólidos fundamentos
+                jurídicos.</p>
+
+        </div>
+
+        <!-- CTA -->
+        <div class="article-cta">
+            <h3>Precisa de assessoria jurídica imobiliária?</h3>
+            <p>Nossos especialistas estão prontos para analisar o seu caso e garantir a segurança do seu patrimônio.</p>
+            <a href="https://wa.me/5524988648105" target="_blank" class="btn-cta">
+                <i class="fa-brands fa-whatsapp"></i>
+                Falar com um especialista
+            </a>
+        </div>
+
+        <a href="index_romalha.html#blog" class="back-to-blog">
+            <i class="fa-solid fa-arrow-left"></i> Ver mais artigos
+        </a>
+
+    </article>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <p>&copy; 2025 Legalizzare. Todos os direitos reservados.</p>
+    </footer>
+
+</body>
+
+</html>

@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carrossel — Tiago Tavares Advogado</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    :root {
+      --azul:       #1a2a3a;
+      --azul2:      #243447;
+      --dourado:    #b8965a;
+      --branco:     #ffffff;
+      --cinza1:     #f4f4f2;
+      --cinza2:     #e0ddd8;
+      --cinza3:     #9a9a9a;
+      --consumidor: #2d6fa8;
+      --familia:    #b03030;
+      --tributario: #2e7d4f;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #f0ede8; color: var(--azul); min-height: 100vh; }
+
+    header {
+      background: var(--azul); padding: 14px 28px;
+      display: flex; align-items: center; gap: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.35);
+    }
+    header img { height: 44px; }
+    header h1 { font-family: 'Playfair Display', serif; color: var(--branco); font-size: 1.15rem; font-weight: 400; letter-spacing: .04em; }
+    header span { color: var(--dourado); }
+
+    main { display: grid; grid-template-columns: 400px 1fr; gap: 24px; padding: 24px; max-width: 1300px; margin: 0 auto; }
+
+    .editor { display: flex; flex-direction: column; gap: 16px; }
+
+    .card { background: var(--branco); border-radius: 10px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,.1); }
+    .card h2 { font-family: 'Playfair Display', serif; font-size: .95rem; color: var(--azul); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid var(--dourado); }
+
+    label { display: block; font-size: .72rem; font-weight: 600; color: var(--cinza3); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 5px; }
+    label small { font-weight: 400; text-transform: none; }
+
+    select, input[type="text"], textarea {
+      width: 100%; padding: 9px 12px;
+      border: 1.5px solid var(--cinza2); border-radius: 6px;
+      font-family: 'Inter', sans-serif; font-size: .875rem;
+      color: var(--azul); background: var(--cinza1);
+      transition: border-color .2s; margin-bottom: 14px;
+    }
+    select:focus, input:focus, textarea:focus { outline: none; border-color: var(--dourado); background: var(--branco); }
+    textarea { resize: vertical; min-height: 140px; font-size: .82rem; line-height: 1.5; }
+
+    /* slider de tamanho de fonte */
+    .font-size-row {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+    }
+    .font-size-row input[type="range"] {
+      flex: 1; margin: 0; padding: 0; accent-color: var(--dourado);
+      border: none; background: transparent;
+    }
+    .font-size-row span {
+      font-size: .75rem; font-weight: 700; color: var(--azul);
+      min-width: 32px; text-align: right;
+    }
+
+    .dica { font-size: .68rem; color: var(--cinza3); background: var(--cinza1); border-radius: 6px; padding: 8px 10px; margin-bottom: 14px; line-height: 1.6; }
+    .dica strong { color: var(--azul); }
+
+    /* upload de imagem */
+    .img-upload-area {
+      border: 2px dashed var(--cinza2); border-radius: 8px;
+      padding: 16px; text-align: center; cursor: pointer;
+      transition: border-color .2s, background .2s;
+      margin-bottom: 14px; position: relative;
+    }
+    .img-upload-area:hover { border-color: var(--dourado); background: #fdf8f2; }
+    .img-upload-area input { display: none; }
+    .img-upload-area p { font-size: .75rem; color: var(--cinza3); pointer-events: none; }
+    .img-upload-area p strong { color: var(--dourado); }
+    .img-thumb { width: 100%; max-height: 100px; object-fit: cover; border-radius: 6px; display: none; margin-bottom: 6px; }
+    .img-remove { font-size: .7rem; color: #c0392b; cursor: pointer; text-decoration: underline; display: none; }
+
+    /* posição da imagem */
+    .img-pos-group { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+    .img-pos-btn {
+      flex: 1; padding: 6px 4px; border-radius: 6px; border: 1.5px solid var(--cinza2);
+      font-size: .65rem; font-weight: 600; cursor: pointer; background: var(--cinza1);
+      color: var(--cinza3); text-align: center; transition: all .15s;
+    }
+    .img-pos-btn.active { border-color: var(--dourado); background: #fdf8f2; color: var(--azul); }
+
+    .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+    button { cursor: pointer; border: none; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: .8rem; font-weight: 600; padding: 9px 16px; transition: opacity .2s, transform .1s; }
+    button:hover { opacity: .85; }
+    button:active { transform: scale(.97); }
+    .btn-primary   { background: var(--dourado); color: var(--branco); }
+    .btn-secondary { background: var(--azul);    color: var(--branco); }
+    .btn-danger    { background: #c0392b;         color: var(--branco); }
+    .btn-outline   { background: transparent; border: 1.5px solid var(--azul); color: var(--azul); }
+    .btn-png       { background: #2e7d4f; color: var(--branco); }
+    .btn-png-all   { background: #1a5c38; color: var(--branco); }
+
+    .slide-list { display: flex; flex-direction: column; gap: 8px; }
+    .slide-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; border: 1.5px solid var(--cinza2); background: var(--cinza1); cursor: pointer; transition: border-color .2s, background .2s; }
+    .slide-item:hover, .slide-item.active { border-color: var(--dourado); background: #fdf8f2; }
+    .slide-num { width: 26px; height: 26px; border-radius: 50%; background: var(--azul); color: var(--branco); font-size: .7rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .slide-title { font-size: .8rem; flex: 1; color: var(--azul); }
+    .slide-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+    /* preview — sticky enquanto o editor rola */
+    .preview-area { display: flex; flex-direction: column; gap: 16px; position: sticky; top: 24px; align-self: flex-start; }
+    .preview-controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .preview-controls span { font-size: .8rem; color: var(--cinza3); font-weight: 500; }
+    .slide-frame-wrap { display: flex; justify-content: center; }
+
+    /* ── FRAME DO SLIDE 1:1 — tema escuro (padrão) ── */
+    .slide-frame {
+      width: 500px; height: 500px; position: relative;
+      border-radius: 4px; overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,.25);
+      background: var(--azul); flex-shrink: 0;
+    }
+    .slide-bg { position: absolute; inset: 0; background: var(--azul); }
+    .slide-bg::after {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 80% 20%, rgba(184,150,90,.12) 0%, transparent 60%),
+                  radial-gradient(ellipse at 10% 90%, rgba(184,150,90,.08) 0%, transparent 50%);
+    }
+
+    /* ── tema claro ── */
+    .slide-frame.tema-claro { background: #f5f0e8; }
+    .slide-frame.tema-claro .slide-bg { background: #f5f0e8; }
+    .slide-frame.tema-claro .slide-bg::after {
+      background: radial-gradient(ellipse at 80% 20%, rgba(184,150,90,.10) 0%, transparent 60%),
+                  radial-gradient(ellipse at 10% 90%, rgba(184,150,90,.07) 0%, transparent 50%);
+    }
+    .slide-frame.tema-claro .slide-border { border-color: rgba(184,150,90,.5); }
+    .slide-frame.tema-claro .slide-corner { border-color: var(--dourado); }
+    .slide-frame.tema-claro .slide-logo img { filter: none; opacity: 1; }
+    .slide-frame.tema-claro .slide-footer { color: rgba(26,42,58,.45); }
+    .slide-frame.tema-claro .slide-page   { color: rgba(26,42,58,.35); }
+    .slide-frame.tema-claro .slide-line   { background: rgba(184,150,90,.35); }
+    .slide-frame.tema-claro .slide-content { color: var(--azul); }
+    .slide-frame.tema-claro .slide-content h1 { color: var(--azul); }
+    .slide-frame.tema-claro .slide-content p  { color: rgba(26,42,58,.85); }
+    .slide-frame.tema-claro .slide-content ul li { color: rgba(26,42,58,.85); }
+
+    .slide-border { position: absolute; inset: 16px; border: 1px solid rgba(184,150,90,.35); border-radius: 2px; pointer-events: none; z-index: 2; }
+    .slide-corner { position: absolute; width: 20px; height: 20px; border-color: var(--dourado); border-style: solid; z-index: 3; }
+    .slide-corner.tl { top: 10px; left: 10px;     border-width: 2px 0 0 2px; }
+    .slide-corner.tr { top: 10px; right: 10px;    border-width: 2px 2px 0 0; }
+    .slide-corner.bl { bottom: 10px; left: 10px;  border-width: 0 0 2px 2px; }
+    .slide-corner.br { bottom: 10px; right: 10px; border-width: 0 2px 2px 0; }
+
+    .slide-logo { position: absolute; top: 26px; left: 50%; transform: translateX(-50%); z-index: 4; }
+    .slide-logo img { height: 28px; filter: brightness(0) invert(1); opacity: .9; }
+    .slide-logo-txt { font-family: 'Segoe UI', sans-serif; color: #b8965a; font-size: .75rem; letter-spacing: .1em; white-space: nowrap; }
+
+    .slide-cat {
+      position: absolute; top: 64px; left: 50%; transform: translateX(-50%); z-index: 4;
+      font-family: 'Segoe UI', sans-serif; font-size: .55rem; font-weight: 700;
+      letter-spacing: .14em; text-transform: uppercase;
+      padding: 3px 12px; border-radius: 20px; white-space: nowrap;
+    }
+    .slide-cat.consumidor { background: var(--consumidor); color: #fff; }
+    .slide-cat.familia    { background: var(--familia);    color: #fff; }
+    .slide-cat.tributario { background: var(--tributario); color: #fff; }
+    .slide-cat.nenhuma    { display: none; }
+
+    .slide-chamada {
+      position: absolute; top: 92px; left: 0; right: 0; z-index: 4;
+      text-align: center; padding: 0 32px;
+      font-family: 'Segoe UI', sans-serif; font-size: 1.1rem; font-weight: 700;
+      color: var(--dourado); line-height: 1.3;
+    }
+
+    /* imagem de fundo do slide */
+    .slide-img-bg {
+      position: absolute; inset: 0; z-index: 1;
+      background-size: cover; background-position: center;
+      background-repeat: no-repeat;
+    }
+    .slide-img-bg.com-overlay::after {
+      content: ''; position: absolute; inset: 0;
+      background: rgba(26,42,58,.72);
+    }
+    /* imagem flutuante dentro do conteúdo */
+    .slide-img-flutuante {
+      display: block; overflow: hidden; border-radius: 6px; flex-shrink: 0;
+    }
+    .slide-img-flutuante img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    /* centro: bloco centralizado, texto embaixo */
+    .slide-img-flutuante.aln-centro { margin-left: auto; margin-right: auto; }
+    /* esquerda/direita: float — texto flui ao lado */
+    .slide-img-flutuante.aln-esquerda { float: left;  margin-right: 10px; margin-bottom: 6px; }
+    .slide-img-flutuante.aln-direita  { float: right; margin-left:  10px; margin-bottom: 6px; }
+    /* clearfix para o container quando há float */
+    .slide-content.tem-float::after { content: ''; display: table; clear: both; }
+
+    .slide-content {
+      position: absolute; top: 148px; bottom: 70px;
+      left: 32px; right: 32px; z-index: 5;
+      display: block; /* block para suportar float */
+      color: var(--branco); font-family: 'Segoe UI', sans-serif; overflow: hidden;
+    }
+
+    .slide-content { font-size: .72rem; } /* base escalável pelo slider */
+    .slide-content h1 { font-family: 'Segoe UI', sans-serif; font-size: 1.95em; font-weight: 700; line-height: 1.2; color: var(--branco); margin-bottom: 10px; }
+    .slide-content h2 { font-family: 'Segoe UI', sans-serif; font-size: 1.32em; font-weight: 400; font-style: italic; color: var(--dourado); margin-bottom: 8px; }
+    .slide-content p  { font-size: 1em; line-height: 1.6; color: rgba(255,255,255,.88); margin-bottom: 8px; }
+    .slide-content ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 5px; }
+    .slide-content ul li { font-size: .94em; line-height: 1.5; color: rgba(255,255,255,.88); padding-left: 14px; position: relative; }
+    .slide-content ul li::before { content: ''; position: absolute; left: 0; top: 7px; width: 5px; height: 5px; border-radius: 50%; background: var(--dourado); }
+    .slide-content strong { color: var(--dourado); font-weight: 600; }
+    .slide-content table { width: 100%; border-collapse: collapse; font-size: .88em; }
+    .slide-content table th { background: rgba(184,150,90,.25); color: var(--dourado); padding: 4px 6px; text-align: left; font-weight: 600; font-size: .83em; letter-spacing: .04em; text-transform: uppercase; }
+    .slide-content table td { padding: 4px 6px; color: rgba(255,255,255,.88); border-bottom: 1px solid rgba(255,255,255,.08); }
+    .slide-content table tr:nth-child(even) td { background: rgba(255,255,255,.04); }
+    .slide-content table tr.tr-bruto   td { background: rgba(45,111,168,.3); color: #fff; font-weight: 600; }
+    .slide-content table tr.tr-liquido td { background: rgba(184,150,90,.3); color: var(--dourado); font-weight: 600; }
+
+    .slide-line   { position: absolute; bottom: 40px; left: 32px; right: 32px; height: 1px; background: rgba(184,150,90,.25); z-index: 4; }
+    .slide-footer { position: absolute; bottom: 22px; left: 0; right: 0; z-index: 6; text-align: center; font-family: 'Segoe UI', sans-serif; font-size: .52rem; letter-spacing: .1em; color: rgba(255,255,255,.45); text-transform: uppercase; }
+    .slide-page   { position: absolute; bottom: 22px; right: 32px; z-index: 6; font-size: .55rem; color: rgba(255,255,255,.35); font-family: 'Segoe UI', sans-serif; }
+
+    /* nav */
+    .nav-slides { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 8px; }
+    .nav-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--azul); color: var(--branco); font-size: 1rem; display: flex; align-items: center; justify-content: center; border: none; cursor: pointer; transition: background .2s; }
+    .nav-btn:hover { background: var(--dourado); }
+    .nav-dots { display: flex; gap: 6px; }
+    .nav-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--cinza2); cursor: pointer; transition: background .2s; border: none; }
+    .nav-dot.active { background: var(--dourado); }
+
+    #export-status { font-size: .75rem; color: var(--cinza3); display: none; align-items: center; gap: 6px; margin-top: 10px; }
+    #export-status.show { display: flex; }
+  </style>
+</head>
+<body>
+
+<header>
+  <img src="Logotiago.png" alt="Tiago Tavares" onerror="this.style.display='none'" />
+  <h1>Carrossel <span>Instagram</span></h1>
+</header>
+
+<main>
+
+  <!-- ════ EDITOR ════ -->
+  <aside class="editor">
+
+    <div class="card">
+      <h2>Conteúdo do Slide</h2>
+
+      <label>Tema do slide</label>
+      <div class="img-pos-group" style="margin-bottom:14px">
+        <div class="img-pos-btn active" data-tema="escuro" onclick="selecionarTema(this)">🌙 Escuro</div>
+        <div class="img-pos-btn"        data-tema="claro"  onclick="selecionarTema(this)">☀️ Claro</div>
+      </div>
+
+      <label>Categoria</label>
+      <select id="sel-categoria">
+        <option value="nenhuma">Sem categoria</option>
+        <option value="consumidor">Consumidor (Azul)</option>
+        <option value="familia">Família (Vermelho)</option>
+        <option value="tributario">Tributário (Verde)</option>
+      </select>
+
+      <label>Chamada principal <small>(Enter para quebrar linha)</small></label>
+      <textarea id="inp-chamada" rows="3" style="min-height:70px"
+             placeholder="Ex.: Seu chefe te mandou embora sem motivo?"></textarea>
+
+      <label>Tamanho da chamada</label>
+      <div class="font-size-row">
+        <input type="range" id="inp-chamada-size" min="50" max="250" value="100" step="5"
+               oninput="document.getElementById('lbl-chamada-size').textContent=this.value+'%'; atualizarPreviewAoVivo()" />
+        <span id="lbl-chamada-size">100%</span>
+      </div>
+
+      <label>Texto <small>(escreva normalmente)</small></label>
+      <textarea id="inp-texto"
+        placeholder="# Título principal&#10;## Subtítulo&#10;&#10;Parágrafo de texto aqui.&#10;&#10;- *item em destaque*&#10;- Item normal"></textarea>
+
+      <label>Tamanho da fonte do texto</label>
+      <div class="font-size-row">
+        <input type="range" id="inp-fontsize" min="60" max="250" value="100" step="5"
+               oninput="document.getElementById('lbl-fontsize').textContent=this.value+'%'; atualizarPreviewAoVivo()" />
+        <span id="lbl-fontsize">100%</span>
+      </div>
+
+      <label>Alinhamento do texto</label>
+      <div class="img-pos-group" style="margin-bottom:14px">
+        <div class="img-pos-btn active" data-align="left"   onclick="selecionarAlign(this)">◀ Esquerda</div>
+        <div class="img-pos-btn"        data-align="center" onclick="selecionarAlign(this)">▬ Centro</div>
+        <div class="img-pos-btn"        data-align="right"  onclick="selecionarAlign(this)">▶ Direita</div>
+      </div>
+
+      <div class="dica">
+        <strong># Título</strong> &nbsp;|&nbsp;
+        <strong>## Subtítulo</strong> &nbsp;|&nbsp;
+        <strong>*negrito*</strong> &nbsp;|&nbsp;
+        <strong>- item</strong> para lista<br/>
+        Linha em branco = novo parágrafo
+      </div>
+
+      <!-- Imagem -->
+      <label>Foto / Imagem <small>(opcional)</small></label>
+      <div class="img-upload-area" id="img-drop" onclick="abrirSeletorImagem(event)">
+        <img class="img-thumb" id="img-thumb" src="" alt="" />
+        <p id="img-hint"><strong>Clique ou arraste</strong> uma foto aqui</p>
+        <span class="img-remove" id="img-remove" onclick="removerImagem(event)">✕ Remover imagem</span>
+        <input type="file" id="inp-img" accept="image/*" onchange="carregarImagem(event)" style="display:none" />
+      </div>
+
+      <div id="img-pos-wrap" style="display:none">
+        <label>Posição da imagem</label>
+        <div class="img-pos-group">
+          <div class="img-pos-btn active" data-pos="fundo"  onclick="selecionarPos(this)">🖼 Fundo</div>
+          <div class="img-pos-btn"        data-pos="acima"  onclick="selecionarPos(this)">▲ Acima</div>
+          <div class="img-pos-btn"        data-pos="abaixo" onclick="selecionarPos(this)">▼ Abaixo</div>
+        </div>
+
+        <!-- controles extras: só aparecem fora do modo fundo -->
+        <div id="img-extra-wrap" style="display:none">
+          <label>Largura da imagem</label>
+          <div class="font-size-row">
+            <input type="range" id="inp-img-size" min="20" max="100" value="100" step="5"
+                   oninput="document.getElementById('lbl-img-size').textContent=this.value+'%'; atualizarPreviewAoVivo()" />
+            <span id="lbl-img-size">100%</span>
+          </div>
+
+          <label>Altura da imagem</label>
+          <div class="font-size-row">
+            <input type="range" id="inp-img-height" min="60" max="300" value="150" step="10"
+                   oninput="document.getElementById('lbl-img-height').textContent=this.value+'px'; atualizarPreviewAoVivo()" />
+            <span id="lbl-img-height">150px</span>
+          </div>
+
+          <label>Alinhamento da imagem</label>
+          <div class="img-pos-group">
+            <div class="img-pos-btn"        data-img-align="esquerda" onclick="selecionarImgAlign(this)">◀ Esquerda</div>
+            <div class="img-pos-btn active" data-img-align="centro"   onclick="selecionarImgAlign(this)">▬ Centro</div>
+            <div class="img-pos-btn"        data-img-align="direita"  onclick="selecionarImgAlign(this)">▶ Direita</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn-primary"   onclick="adicionarSlide()">+ Adicionar</button>
+        <button class="btn-secondary" onclick="atualizarSlide()">Salvar alteração</button>
+      </div>
+    </div>
+
+    <!-- Lista -->
+    <div class="card">
+      <h2>Slides <span id="contador" style="color:var(--cinza3);font-size:.8rem;font-family:Inter"></span></h2>
+      <div class="slide-list" id="slide-list"></div>
+      <div class="btn-group" style="margin-top:14px">
+        <button class="btn-outline" onclick="moverSlide(-1)">↑ Subir</button>
+        <button class="btn-outline" onclick="moverSlide(1)">↓ Descer</button>
+        <button class="btn-danger"  onclick="removerSlide()">Remover</button>
+      </div>
+    </div>
+
+    <!-- Exportar -->
+    <div class="card">
+      <h2>Exportar PNG</h2>
+      <div class="btn-group">
+        <button class="btn-png"     onclick="exportarPNG()">⬇ Este slide</button>
+        <button class="btn-png-all" onclick="exportarTodosPNG()">⬇ Todos os slides</button>
+      </div>
+      <div id="export-status"><span>⏳</span><span id="export-msg">Gerando…</span></div>
+      <div class="btn-group" style="margin-top:12px">
+        <button class="btn-secondary" onclick="exportarJSON()">⬇ Salvar JSON</button>
+        <button class="btn-outline"   onclick="importarJSON()">⬆ Abrir JSON</button>
+      </div>
+      <input type="file" id="file-import" accept=".json" style="display:none" onchange="lerJSON(event)" />
+    </div>
+
+  </aside>
+
+  <!-- ════ PREVIEW ════ -->
+  <section class="preview-area">
+
+    <div class="preview-controls">
+      <span>Preview — <strong id="lbl-slide">Slide 0 / 0</strong></span>
+      <button class="btn-primary" onclick="adicionarSlideModelo()">+ Slide modelo</button>
+    </div>
+
+    <div class="slide-frame-wrap">
+      <div class="slide-frame" id="slide-frame">
+        <div class="slide-corner tl"></div>
+        <div class="slide-corner tr"></div>
+        <div class="slide-corner bl"></div>
+        <div class="slide-corner br"></div>
+
+        <!-- imagem de fundo (z-index 1) -->
+        <div class="slide-img-bg" id="prev-img-bg"></div>
+        <div class="slide-bg"></div>
+        <div class="slide-border"></div>
+
+        <!-- imagem lateral/inferior (z-index 3) -->
+        <div id="prev-img-side" style="display:none"></div>
+
+        <div class="slide-logo">
+          <img src="Logotiago.png" alt="TT"
+               onerror="this.outerHTML='<span class=\'slide-logo-txt\'>TIAGO TAVARES</span>'" />
+        </div>
+
+        <div class="slide-cat nenhuma" id="prev-cat"></div>
+        <div class="slide-chamada"     id="prev-chamada"></div>
+        <div class="slide-content"     id="prev-content">
+          <p style="text-align:center;opacity:.4;font-size:.8rem">Adicione o primeiro slide →</p>
+        </div>
+
+        <div class="slide-line"></div>
+        <div class="slide-footer">@tiagotavaresadv</div>
+        <div class="slide-page" id="prev-page"></div>
+      </div>
+    </div>
+
+    <div class="nav-slides">
+      <button class="nav-btn" onclick="navSlide(-1)">&#8592;</button>
+      <div class="nav-dots" id="nav-dots"></div>
+      <button class="nav-btn" onclick="navSlide(1)">&#8594;</button>
+    </div>
+
+  </section>
+
+</main>
+
+<script>
+  /* ════ Estado ════ */
+  let slides  = [];
+  let atual   = 0;
+  let imgAtual       = null;
+  let imgPosAtual    = 'fundo';
+  let imgSize        = 50;
+  let imgAlign       = 'centro';
+  let textAlign      = 'left';
+  let temaSelecionado = 'escuro';
+
+  const catLabel = {
+    consumidor: 'Direito do Consumidor',
+    familia:    'Direito de Família',
+    tributario: 'Direito Tributário',
+    nenhuma:    '',
+  };
+
+  /* ════ Converter texto → HTML ════ */
+  function textoParaHTML(txt) {
+    if (!txt) return '';
+    const blocos = txt.split(/\n{2,}/);
+    const partes = [];
+    for (const bloco of blocos) {
+      const linhas = bloco.split('\n').map(l => l.trim()).filter(Boolean);
+      if (!linhas.length) continue;
+      if (linhas.every(l => l.startsWith('- '))) {
+        const itens = linhas.map(l => `<li>${apInline(l.slice(2))}</li>`).join('');
+        partes.push(`<ul>${itens}</ul>`);
+        continue;
+      }
+      for (const linha of linhas) {
+        if      (linha.startsWith('## ')) partes.push(`<h2>${apInline(linha.slice(3))}</h2>`);
+        else if (linha.startsWith('# '))  partes.push(`<h1>${apInline(linha.slice(2))}</h1>`);
+        else if (linha.startsWith('- '))  partes.push(`<ul><li>${apInline(linha.slice(2))}</li></ul>`);
+        else                              partes.push(`<p>${apInline(linha)}</p>`);
+      }
+    }
+    return partes.join('').replace(/<\/ul><ul>/g, '');
+  }
+  function apInline(t) { return t.replace(/\*([^*]+)\*/g, '<strong>$1</strong>'); }
+
+  /* ════ Imagem no editor ════ */
+  function abrirSeletorImagem(e) {
+    if (e.target.id === 'img-remove') return;
+    document.getElementById('inp-img').click();
+  }
+
+  function carregarImagem(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      imgAtual = ev.target.result;
+      mostrarThumb(imgAtual);
+      document.getElementById('img-pos-wrap').style.display = 'block';
+      atualizarPreviewAoVivo();
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function mostrarThumb(src) {
+    const thumb = document.getElementById('img-thumb');
+    const hint  = document.getElementById('img-hint');
+    const rem   = document.getElementById('img-remove');
+    thumb.src   = src;
+    thumb.style.display  = 'block';
+    hint.style.display   = 'none';
+    rem.style.display    = 'inline';
+  }
+
+  function removerImagem(e) {
+    e.stopPropagation();
+    imgAtual = null;
+    document.getElementById('img-thumb').style.display  = 'none';
+    document.getElementById('img-hint').style.display   = 'block';
+    document.getElementById('img-remove').style.display = 'none';
+    document.getElementById('img-pos-wrap').style.display = 'none';
+    document.getElementById('inp-img').value = '';
+    atualizarPreviewAoVivo();
+  }
+
+  function selecionarPos(el) {
+    el.closest('.img-pos-group').querySelectorAll('.img-pos-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    imgPosAtual = el.dataset.pos;
+    document.getElementById('img-extra-wrap').style.display = imgPosAtual === 'fundo' ? 'none' : 'block';
+    atualizarPreviewAoVivo();
+  }
+
+  function selecionarImgAlign(el) {
+    el.closest('.img-pos-group').querySelectorAll('.img-pos-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    imgAlign = el.dataset.imgAlign;
+    atualizarPreviewAoVivo();
+  }
+
+  function selecionarAlign(el) {
+    el.closest('.img-pos-group').querySelectorAll('.img-pos-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    textAlign = el.dataset.align;
+    atualizarPreviewAoVivo();
+  }
+
+  function selecionarTema(el) {
+    el.closest('.img-pos-group').querySelectorAll('.img-pos-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    temaSelecionado = el.dataset.tema;
+    atualizarPreviewAoVivo();
+  }
+
+  /* ════ Preview ao vivo ════ */
+  function atualizarPreviewAoVivo() {
+    const s = {
+      categoria:   document.getElementById('sel-categoria').value,
+      chamada:     document.getElementById('inp-chamada').value.replace(/^\n+|\n+$/g, ''),
+      chamadaSize: parseInt(document.getElementById('inp-chamada-size').value),
+      texto:       document.getElementById('inp-texto').value,
+      img:         imgAtual,
+      imgPos:      imgPosAtual,
+      imgSize:     parseInt(document.getElementById('inp-img-size').value),
+      imgHeight:   parseInt(document.getElementById('inp-img-height').value),
+      imgAlign:    imgAlign,
+      fontSize:    parseInt(document.getElementById('inp-fontsize').value),
+      textAlign:   textAlign,
+      tema:        temaSelecionado,
+    };
+    aplicarSlideNoFrame(s, atual, slides.length || 1);
+  }
+
+  /* ════ Aplica dados ao frame visual ════ */
+  function aplicarSlideNoFrame(s, idx, total) {
+    const frame    = document.getElementById('slide-frame');
+    const catEl    = document.getElementById('prev-cat');
+    const chamadaEl= document.getElementById('prev-chamada');
+    const contentEl= document.getElementById('prev-content');
+    const pageEl   = document.getElementById('prev-page');
+    const bgEl     = document.getElementById('prev-img-bg');
+    const sideEl   = document.getElementById('prev-img-side');
+
+    /* tema claro/escuro */
+    frame.classList.toggle('tema-claro', (s.tema || 'escuro') === 'claro');
+
+    /* categoria */
+    catEl.className   = `slide-cat ${s.categoria}`;
+    catEl.textContent = catLabel[s.categoria] || '';
+
+    /* chamada — aplicar tamanho antes de medir */
+    chamadaEl.style.fontSize = `${1.1 * (s.chamadaSize || 100) / 100}rem`;
+    chamadaEl.innerHTML = s.chamada
+      ? s.chamada.split('\n').map(l => `<span>${l}</span>`).join('<br>')
+      : '';
+
+    /* posição do conteúdo: calculada após a chamada ser renderizada */
+    requestAnimationFrame(() => {
+      const chamadaBottom = chamadaEl.getBoundingClientRect().bottom
+                          - frame.getBoundingClientRect().top;
+      const semCabecalho = !s.chamada && s.categoria === 'nenhuma';
+      contentEl.style.top = semCabecalho ? '80px' : `${chamadaBottom + 10}px`;
+    });
+
+    /* tamanho de fonte — escala relativa ao padrão (base .72rem no CSS) */
+    const pct = (s.fontSize || 100) / 100;
+    contentEl.style.fontSize = `${0.72 * pct}rem`;
+
+    /* alinhamento do texto */
+    contentEl.style.textAlign = s.textAlign || 'left';
+
+    /* reset estado */
+    bgEl.style.backgroundImage = '';
+    bgEl.className = 'slide-img-bg';
+    sideEl.style.display = 'none';
+    contentEl.style.left   = '32px';
+    contentEl.style.right  = '32px';
+    contentEl.style.bottom = '70px';
+
+    /* monta o conteúdo: imagem flutuante + texto */
+    const textoHTML = textoParaHTML(s.texto);
+
+    if (s.img && s.imgPos !== 'fundo') {
+      const sz   = s.imgSize   || 100;
+      const h    = s.imgHeight || 150;
+      const aln  = s.imgAlign  || 'centro';
+      const temFloat = aln === 'esquerda' || aln === 'direita';
+      const alnClass = `aln-${aln}`;
+      const objPos = aln === 'esquerda' ? 'left' : aln === 'direita' ? 'right' : 'center';
+      const imgBlock = `<div class="slide-img-flutuante ${alnClass}" style="width:${sz}%;height:${h}px"><img src="${s.img}" alt="" style="object-position:${objPos} center" /></div>`;
+
+      contentEl.className = temFloat ? 'slide-content tem-float' : 'slide-content';
+
+      if (s.imgPos === 'acima') {
+        contentEl.innerHTML = imgBlock + textoHTML;
+      } else {
+        /* abaixo com float: imagem vai no final mas fica à lateral */
+        contentEl.innerHTML = temFloat ? imgBlock + textoHTML : textoHTML + imgBlock;
+      }
+    } else {
+      contentEl.className = 'slide-content';
+      contentEl.innerHTML = textoHTML;
+      if (s.img && s.imgPos === 'fundo') {
+        bgEl.style.backgroundImage = `url('${s.img}')`;
+        bgEl.classList.add('com-overlay');
+      }
+    }
+
+    /* página */
+    pageEl.textContent = total ? `${idx + 1} / ${total}` : '';
+  }
+
+  /* ════ Renderiza lista e preview do slide salvo ════ */
+  function renderLista() {
+    const list = document.getElementById('slide-list');
+    document.getElementById('contador').textContent = `(${slides.length})`;
+    list.innerHTML = '';
+    slides.forEach((s, i) => {
+      const el = document.createElement('div');
+      el.className = 'slide-item' + (i === atual ? ' active' : '');
+      el.innerHTML = `
+        <div class="slide-num">${i + 1}</div>
+        <div class="slide-title">${s.chamada || '(sem chamada)'}</div>
+        <div class="slide-dot" style="background:${corDot(s.categoria)}"></div>
+      `;
+      el.onclick = () => selecionarSlide(i);
+      list.appendChild(el);
+    });
+    renderDots();
+    if (slides.length) {
+      aplicarSlideNoFrame(slides[atual], atual, slides.length);
+      renderEditor(slides[atual]);
+    } else {
+      aplicarSlideNoFrame({ categoria:'nenhuma', chamada:'', texto:'', img:null, fontSize:100 }, 0, 0);
+    }
+  }
+
+  function corDot(cat) {
+    return { consumidor:'#2d6fa8', familia:'#b03030', tributario:'#2e7d4f', nenhuma:'#ccc' }[cat] || '#ccc';
+  }
+
+  function renderDots() {
+    const wrap = document.getElementById('nav-dots');
+    wrap.innerHTML = '';
+    slides.forEach((_, i) => {
+      const b = document.createElement('button');
+      b.className = 'nav-dot' + (i === atual ? ' active' : '');
+      b.onclick = () => selecionarSlide(i);
+      wrap.appendChild(b);
+    });
+    document.getElementById('lbl-slide').textContent = slides.length
+      ? `Slide ${atual + 1} / ${slides.length}` : 'Slide 0 / 0';
+  }
+
+  function renderEditor(s) {
+    document.getElementById('sel-categoria').value = s.categoria || 'nenhuma';
+    document.getElementById('inp-chamada').value   = s.chamada   || '';
+    document.getElementById('inp-texto').value     = s.texto     || '';
+    const cs = s.chamadaSize || 100;
+    document.getElementById('inp-chamada-size').value = cs;
+    document.getElementById('lbl-chamada-size').textContent = cs + '%';
+    const fs = s.fontSize || 100;
+    document.getElementById('inp-fontsize').value  = fs;
+    document.getElementById('lbl-fontsize').textContent = fs + '%';
+    imgAtual        = s.img      || null;
+    imgPosAtual     = s.imgPos   || 'fundo';
+    imgSize         = s.imgSize  || 50;
+    imgAlign        = s.imgAlign || 'centro';
+    textAlign       = s.textAlign || 'left';
+    temaSelecionado = s.tema || 'escuro';
+
+    /* restaura sliders de imagem */
+    document.getElementById('inp-img-size').value = imgSize;
+    document.getElementById('lbl-img-size').textContent = imgSize + '%';
+    const ih = s.imgHeight || 150;
+    document.getElementById('inp-img-height').value = ih;
+    document.getElementById('lbl-img-height').textContent = ih + 'px';
+
+    /* restaura botões de alinhamento da imagem */
+    document.querySelectorAll('[data-img-align]').forEach(b => {
+      b.classList.toggle('active', b.dataset.imgAlign === imgAlign);
+    });
+
+    /* restaura botões de alinhamento do texto */
+    document.querySelectorAll('[data-align]').forEach(b => {
+      b.classList.toggle('active', b.dataset.align === textAlign);
+    });
+
+    /* restaura botões de tema */
+    document.querySelectorAll('[data-tema]').forEach(b => {
+      b.classList.toggle('active', b.dataset.tema === temaSelecionado);
+    });
+
+    if (imgAtual) {
+      mostrarThumb(imgAtual);
+      document.getElementById('img-pos-wrap').style.display = 'block';
+      document.getElementById('img-extra-wrap').style.display = imgPosAtual === 'fundo' ? 'none' : 'block';
+      document.querySelectorAll('[data-pos]').forEach(b => {
+        b.classList.toggle('active', b.dataset.pos === imgPosAtual);
+      });
+    } else {
+      document.getElementById('img-thumb').style.display  = 'none';
+      document.getElementById('img-hint').style.display   = 'block';
+      document.getElementById('img-remove').style.display = 'none';
+      document.getElementById('img-pos-wrap').style.display = 'none';
+    }
+  }
+
+  /* ════ Selecionar / navegar ════ */
+  function selecionarSlide(i) { atual = i; renderLista(); }
+  function navSlide(dir) {
+    const ni = atual + dir;
+    if (ni >= 0 && ni < slides.length) selecionarSlide(ni);
+  }
+
+  /* ════ Coletar formulário ════ */
+  function coletarFormulario() {
+    return {
+      categoria:   document.getElementById('sel-categoria').value,
+      chamada:     document.getElementById('inp-chamada').value.replace(/^\n+|\n+$/g, ''),
+      chamadaSize: parseInt(document.getElementById('inp-chamada-size').value),
+      texto:       document.getElementById('inp-texto').value,
+      img:         imgAtual,
+      imgPos:      imgPosAtual,
+      imgSize:     parseInt(document.getElementById('inp-img-size').value),
+      imgHeight:   parseInt(document.getElementById('inp-img-height').value),
+      imgAlign:    imgAlign,
+      fontSize:    parseInt(document.getElementById('inp-fontsize').value),
+      textAlign:   textAlign,
+      tema:        temaSelecionado,
+    };
+  }
+
+  function adicionarSlide() {
+    const s = coletarFormulario();
+    slides.splice(atual + 1, 0, s);
+    atual = Math.min(atual + 1, slides.length - 1);
+    renderLista();
+  }
+
+  function atualizarSlide() {
+    if (!slides.length) { adicionarSlide(); return; }
+    slides[atual] = coletarFormulario();
+    renderLista();
+  }
+
+  function removerSlide() {
+    if (!slides.length) return;
+    slides.splice(atual, 1);
+    if (atual >= slides.length) atual = slides.length - 1;
+    if (atual < 0) atual = 0;
+    renderLista();
+  }
+
+  function moverSlide(dir) {
+    const ni = atual + dir;
+    if (ni < 0 || ni >= slides.length) return;
+    [slides[atual], slides[ni]] = [slides[ni], slides[atual]];
+    atual = ni;
+    renderLista();
+  }
+
+  /* ════ Slide modelo ════ */
+  function adicionarSlideModelo() {
+    document.getElementById('sel-categoria').value = 'consumidor';
+    document.getElementById('inp-chamada').value   = 'Você tem direito e não sabe';
+    document.getElementById('inp-texto').value =
+`# Produto com defeito?
+A lei garante seu direito à troca ou reembolso. Veja os prazos:
+
+- *30 dias* — produtos não duráveis (alimentos, cosméticos)
+- *90 dias* — produtos duráveis (eletrodomésticos, móveis)
+- Prazo conta da data de entrega do produto`;
+    imgAtual = null;
+    adicionarSlide();
+  }
+
+  /* ════ Exportar PNG ════ */
+  function setStatus(msg) {
+    const el = document.getElementById('export-status');
+    document.getElementById('export-msg').textContent = msg || '';
+    el.classList.toggle('show', !!msg);
+  }
+
+  async function capturarSlide(indice) {
+    aplicarSlideNoFrame(slides[indice], indice, slides.length);
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+    await new Promise(r => setTimeout(r, 200));
+
+    const frame = document.getElementById('slide-frame');
+    return html2canvas(frame, {
+      scale: 2,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: '#1a2a3a',
+      logging: false,
+      width:  frame.offsetWidth,
+      height: frame.offsetHeight,
+      windowWidth:  frame.offsetWidth,
+      windowHeight: frame.offsetHeight,
+    });
+  }
+
+  async function exportarPNG() {
+    if (!slides.length) { alert('Adicione pelo menos um slide.'); return; }
+    setStatus('Gerando PNG…');
+    try {
+      const canvas = await capturarSlide(atual);
+      await baixarCanvas(canvas, `slide-${atual + 1}-tiagotavaresadv.png`);
+    } catch(e) { alert('Erro ao gerar PNG: ' + e.message); }
+    finally    { setStatus(null); renderLista(); }
+  }
+
+  async function exportarTodosPNG() {
+    if (!slides.length) { alert('Adicione pelo menos um slide.'); return; }
+    const total = slides.length;
+    for (let i = 0; i < total; i++) {
+      setStatus(`Gerando slide ${i + 1} de ${total}…`);
+      const canvas = await capturarSlide(i);
+      await baixarCanvas(canvas, `slide-${i + 1}-tiagotavaresadv.png`);
+      await new Promise(r => setTimeout(r, 150));
+    }
+    setStatus(null);
+    selecionarSlide(atual);
+  }
+
+  function baixarCanvas(canvas, nome) {
+    return new Promise(resolve => {
+      canvas.toBlob(blob => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = nome;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          resolve();
+        }, 200);
+      }, 'image/png');
+    });
+  }
+
+  /* ════ JSON ════ */
+  function exportarJSON() {
+    const blob = new Blob([JSON.stringify(slides, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'carrossel-tiagotavares.json';
+    a.click();
+  }
+  function importarJSON() { document.getElementById('file-import').click(); }
+  function lerJSON(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      try {
+        const data = JSON.parse(ev.target.result);
+        if (Array.isArray(data)) {
+          slides = data.map(s => ({
+            categoria:   s.categoria   || 'nenhuma',
+            chamada:     s.chamada     || '',
+            chamadaSize: s.chamadaSize || 100,
+            texto:       s.texto || s.html || '',
+            img:         s.img         || null,
+            imgPos:      s.imgPos      || 'fundo',
+            imgSize:     s.imgSize     || 100,
+            imgHeight:   s.imgHeight   || 150,
+            imgAlign:    s.imgAlign    || 'centro',
+            fontSize:    s.fontSize    || 100,
+            textAlign:   s.textAlign   || 'left',
+            tema:        s.tema        || 'escuro',
+          }));
+          atual = 0; renderLista();
+        } else { alert('JSON inválido.'); }
+      } catch { alert('Erro ao ler o arquivo.'); }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  }
+
+  /* ════ Preview ao vivo — listeners ════ */
+  ['sel-categoria', 'inp-chamada', 'inp-texto'].forEach(id => {
+    document.getElementById(id).addEventListener('input', atualizarPreviewAoVivo);
+    document.getElementById(id).addEventListener('change', atualizarPreviewAoVivo);
+  });
+
+  /* ════ Teclado ════ */
+  document.addEventListener('keydown', e => {
+    if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
+    if (e.key === 'ArrowLeft')  navSlide(-1);
+    if (e.key === 'ArrowRight') navSlide(1);
+  });
+
+  /* ════ Init ════ */
+  renderLista();
+</script>
+</body>
+</html>

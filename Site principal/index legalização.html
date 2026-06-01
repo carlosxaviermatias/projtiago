@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiago Tavares — Especialista em Legalização de Imóveis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #1a2740;
+            --accent: #b89b5e;
+            --surface: #f8f7f4;
+            --white: #ffffff;
+            --muted: #6b7a8d;
+            --border: rgba(26, 39, 64, .10);
+            --radius: 14px;
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--surface);
+            color: var(--primary);
+            line-height: 1.6;
+        }
+
+        /* ── NAVBAR ── */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6vw;
+            height: 80px;
+            background: rgba(26, 39, 64, .92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, .06);
+            transition: background .3s;
+        }
+
+        .nav-brand {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-logo {
+            height: 48px;
+            width: auto;
+            display: block;
+            filter: brightness(0) invert(1);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, .7);
+            text-decoration: none;
+            transition: color .2s;
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+        }
+
+        .btn-nav {
+            background: var(--accent);
+            color: var(--primary);
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            transition: opacity .3s, transform .3s;
+            box-shadow: 0 4px 15px rgba(184, 155, 94, .3);
+        }
+
+        .btn-nav:hover {
+            opacity: .95;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(184, 155, 94, .4);
+        }
+
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #fff;
+            font-size: 22px;
+        }
+
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+            position: absolute;
+            top: 80px;
+            left: 0;
+            right: 0;
+            background: var(--primary);
+            padding: 28px 6vw;
+            border-bottom: 1px solid rgba(255, 255, 255, .08);
+        }
+
+        .mobile-menu.open {
+            display: flex;
+        }
+
+        .mobile-menu a {
+            color: rgba(255, 255, 255, .8);
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .mobile-menu .btn-nav {
+            text-align: center;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(26, 39, 64, .9) 40%, rgba(26, 39, 64, .6));
+            z-index: 1;
+        }
+
+        .hero-img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 0 6vw;
+            padding-top: 80px;
+        }
+
+        .hero-eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .3em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 24px;
+        }
+
+        .hero-eyebrow::before {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background: var(--accent);
+            opacity: .8;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(42px, 6vw, 76px);
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.1;
+            max-width: 750px;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 em {
+            color: var(--accent);
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        .hero p {
+            font-size: 19px;
+            font-weight: 300;
+            color: rgba(255, 255, 255, .9);
+            max-width: 600px;
+            margin-bottom: 40px;
+            line-height: 1.7;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--primary);
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            text-decoration: none;
+            padding: 18px 36px;
+            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: background .3s, transform .3s, box-shadow .3s;
+            box-shadow: 0 8px 25px rgba(184, 155, 94, .3);
+        }
+
+        .btn-primary:hover {
+            background: #c8aa6e;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(184, 155, 94, .45);
+        }
+
+        .scroll-dot {
+            position: absolute;
+            bottom: 36px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            width: 2px;
+            height: 50px;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, .6), transparent);
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollPulse {
+
+            0%,
+            100% {
+                transform: translateX(-50%) translateY(0)
+            }
+
+            50% {
+                transform: translateX(-50%) translateY(10px)
+            }
+        }
+
+        /* ── SECTION SHARED ── */
+        section {
+            padding: 110px 6vw;
+        }
+
+        .section-inner {
+            max-width: 1180px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            display: block;
+            margin-bottom: 14px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(32px, 4vw, 50px);
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+
+        .divider {
+            width: 60px;
+            height: 3px;
+            background: var(--accent);
+            margin: 20px 0 0 0;
+            border-radius: 2px;
+        }
+
+        .divider-center {
+            margin: 20px auto 0;
+        }
+
+        /* ── ABOUT ── */
+        #about {
+            background: var(--white);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .about-img-wrap {
+            position: relative;
+        }
+
+        .about-img-wrap::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            width: 120px;
+            height: 120px;
+            border-top: 3px solid var(--accent);
+            border-left: 3px solid var(--accent);
+            opacity: .4;
+            border-radius: 6px 0 0 0;
+        }
+
+        .about-img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(26, 39, 64, .15);
+            display: block;
+            transition: transform .5s ease;
+        }
+
+        .about-img:hover {
+            transform: scale(1.02);
+        }
+
+        .about-badge {
+            position: absolute;
+            bottom: -30px;
+            right: -30px;
+            background: var(--primary);
+            color: #fff;
+            padding: 32px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(26, 39, 64, .3);
+        }
+
+        .about-badge .num {
+            font-family: 'Playfair Display', serif;
+            font-size: 46px;
+            font-weight: 700;
+            color: var(--accent);
+            display: block;
+            line-height: 1;
+        }
+
+        .about-badge .lbl {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            opacity: .7;
+            margin-top: 6px;
+            display: block;
+        }
+
+        .about-text {
+            padding-right: 20px;
+        }
+
+        .about-text p {
+            font-size: 17px;
+            font-weight: 400;
+            color: #4a5568;
+            line-height: 1.8;
+            margin-bottom: 20px;
+
+        }
+
+        .about-text strong {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .about-values {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            padding-top: 36px;
+            border-top: 1px solid var(--border);
+            margin-top: 36px;
+        }
+
+        .about-values h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-style: italic;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .about-values p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--muted);
+        }
+
+        /* ── SERVICES ── */
+        #services {
+            background: var(--surface);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #services::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -10%;
+            width: 35%;
+            height: 100%;
+            background: rgba(26, 39, 64, .03);
+            transform: skewX(-15deg);
+        }
+
+        .services-header {
+            text-align: center;
+            margin-bottom: 64px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .services-header p {
+            max-width: 600px;
+            margin: 20px auto 0;
+            color: var(--muted);
+            font-size: 16px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 32px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .service-card {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 48px 40px;
+            border: 1px solid rgba(26, 39, 64, .05);
+            box-shadow: 0 4px 20px rgba(26, 39, 64, .04);
+            transition: box-shadow .3s, transform .3s;
+        }
+
+        .service-card:hover {
+            box-shadow: 0 20px 50px rgba(26, 39, 64, .1);
+            transform: translateY(-8px);
+        }
+
+        .service-icon {
+            width: 72px;
+            height: 72px;
+            border-radius: 20px;
+            background: var(--surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: var(--accent);
+            margin-bottom: 32px;
+            transition: background .4s, color .4s, transform .4s;
+        }
+
+        .service-card:hover .service-icon {
+            background: var(--primary);
+            color: var(--accent);
+            transform: scale(1.05);
+        }
+
+        .service-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .service-card p {
+            font-size: 15px;
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .service-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 28px;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            color: var(--accent);
+            text-decoration: none;
+            transition: gap .3s, color .3s;
+        }
+
+        .service-card:hover .service-link {
+            gap: 14px;
+            color: var(--primary);
+        }
+
+        /* ── TESTIMONIALS ── */
+        #testimonials {
+            background: var(--primary);
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #testimonials::before {
+            content: '\201C';
+            position: absolute;
+            top: -60px;
+            left: 20px;
+            font-family: 'Playfair Display', serif;
+            font-size: 400px;
+            color: rgba(255, 255, 255, .03);
+            pointer-events: none;
+            line-height: 1;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .testimonials-intro .section-title {
+            color: #fff;
+        }
+
+        .testimonials-intro p {
+            font-size: 17px;
+            font-weight: 300;
+            color: rgba(255, 255, 255, .6);
+            line-height: 1.8;
+            margin-top: 20px;
+        }
+
+        .stars {
+            display: flex;
+            gap: 6px;
+            margin-top: 32px;
+            color: var(--accent);
+            font-size: 18px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+        }
+
+        .testimonial-card {
+            background: rgba(255, 255, 255, .03);
+            border: 1px solid rgba(255, 255, 255, .08);
+            border-radius: 20px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            transition: transform .3s, background .3s;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, .06);
+        }
+
+        .quote-icon {
+            font-size: 34px;
+            color: var(--accent);
+            opacity: .6;
+            margin-bottom: 24px;
+        }
+
+        .testimonial-card blockquote {
+            font-size: 16px;
+            font-style: italic;
+            font-weight: 300;
+            color: rgba(255, 255, 255, .9);
+            line-height: 1.8;
+            margin-bottom: 32px;
+        }
+
+        .author {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(184, 155, 94, .2);
+            border: 1px solid rgba(184, 155, 94, .4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent);
+            flex-shrink: 0;
+        }
+
+        .author-name {
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .author-role {
+            font-size: 11px;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-top: 4px;
+        }
+
+        /* ── CONTACT ── */
+        #contact {
+            background: var(--white);
+        }
+
+        .contact-box {
+            background: var(--surface);
+            border-radius: 40px;
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(26, 39, 64, .08);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .contact-info {
+            background: var(--primary);
+            color: #fff;
+            padding: 72px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contact-info .section-label {
+            color: var(--accent);
+        }
+
+        .contact-info h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 40px;
+            font-weight: 700;
+            margin-bottom: 48px;
+        }
+
+        .contact-items {
+            display: flex;
+            flex-direction: column;
+            gap: 36px;
+            flex-grow: 1;
+        }
+
+        .contact-item {
+            display: flex;
+            gap: 24px;
+        }
+
+        .contact-item-icon {
+            width: 54px;
+            height: 54px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, .06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-size: 20px;
+            flex-shrink: 0;
+            border: 1px solid rgba(255, 255, 255, .1);
+        }
+
+        .contact-item h4 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .contact-item p {
+            font-size: 15px;
+            font-weight: 300;
+            color: rgba(255, 255, 255, .6);
+            line-height: 1.5;
+        }
+
+        .social-section {
+            margin-top: 54px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, .08);
+        }
+
+        .social-section p {
+            font-size: 11px;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, .4);
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .social-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        .soc-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+            transition: opacity .3s, transform .3s;
+        }
+
+        .soc-btn:hover {
+            opacity: .9;
+            transform: translateY(-3px);
+        }
+
+        .soc-ig {
+            background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+        }
+
+        .soc-wa {
+            background: #25D366;
+        }
+
+        .soc-fb {
+            background: #1877F2;
+        }
+
+        .soc-li {
+            background: #0077B5;
+        }
+
+        .oab-badge {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--accent);
+            opacity: .8;
+        }
+
+        .contact-form {
+            padding: 72px;
+            background: #fff;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 10px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            background: var(--surface);
+            border: 1.5px solid rgba(26, 39, 64, .08);
+            border-radius: 12px;
+            padding: 16px 20px;
+            font-family: inherit;
+            font-size: 15px;
+            color: var(--primary);
+            outline: none;
+            transition: border-color .3s, background .3s;
+            appearance: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--accent);
+            background: #fff;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 140px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 20px;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background .3s, transform .3s;
+        }
+
+        .btn-submit:hover {
+            background: var(--accent);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            background: var(--surface);
+            padding: 48px 6vw;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-inner {
+            max-width: 1180px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .footer-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .footer-brand em {
+            color: var(--accent);
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .footer-links a {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            text-decoration: none;
+            transition: color .3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .footer-copy {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        /* ── FLOAT WPP ── */
+        .float-wa {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            z-index: 200;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: #25D366;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            text-decoration: none;
+            box-shadow: 0 8px 30px rgba(37, 211, 102, .4);
+            transition: transform .3s, box-shadow .3s;
+        }
+
+        .float-wa:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 40px rgba(37, 211, 102, .5);
+        }
+
+        .float-wa-tooltip {
+            position: absolute;
+            right: 80px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--primary);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 700;
+            padding: 10px 16px;
+            border-radius: 8px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, .2);
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .3s, transform .3s;
+            transform-origin: right;
+        }
+
+        .float-wa:hover .float-wa-tooltip {
+            opacity: 1;
+        }
+
+        /* ── RESPONSIVO ── */
+        @media (max-width: 960px) {
+
+            .nav-links,
+            .btn-nav {
+                display: none;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+
+            .about-img-wrap {
+                max-width: 480px;
+                margin: 0 auto;
+            }
+
+            .about-badge {
+                display: none;
+            }
+
+            .about-text {
+                padding-right: 0;
+            }
+
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+                gap: 48px;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-box {
+                grid-template-columns: 1fr;
+                border-radius: 28px;
+            }
+
+            .contact-info,
+            .contact-form {
+                padding: 48px 32px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 600px) {
+            section {
+                padding: 80px 5vw;
+            }
+
+            .hero h1 {
+                font-size: 38px;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-btns {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .hero-btns a {
+                text-align: center;
+                justify-content: center;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <a href="#home" class="nav-brand">
+            <img src="Logotiago.png" alt="Tiago Tavares Advocacia" class="nav-logo">
+        </a>
+        <ul class="nav-links">
+            <li><a href="#home">Início</a></li>
+            <li><a href="#about">Por que Legalizar?</a></li>
+            <li><a href="#services">Soluções</a></li>
+            <li><a href="#contact">Consultoria</a></li>
+        </ul>
+        <a href="https://wa.me/5524988387333" target="_blank" class="btn-nav">Agendar Análise</a>
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+            <i class="fas fa-bars"></i>
+        </button>
+    </nav>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#home" onclick="closeMenu()">Início</a>
+        <a href="#about" onclick="closeMenu()">Por que Legalizar?</a>
+        <a href="#services" onclick="closeMenu()">Soluções</a>
+        <a href="#contact" onclick="closeMenu()">Consultoria</a>
+        <a href="https://wa.me/5524988387333" target="_blank" class="btn-nav" style="margin-top: 10px;">Agendar
+            Análise</a>
+    </div>
+
+    <!-- HERO -->
+    <section id="home" class="hero">
+        <img class="hero-img" src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1920&q=80"
+            alt="Casa e Segurança" referrerpolicy="no-referrer">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <div class="hero-eyebrow">A Sua Posse Definitiva e Legalizada</div>
+            <h1>O seu imóvel é <em>realmente</em> seu?</h1>
+            <p>A irregularidade documental bloqueia vendas, trava financiamentos e é fonte certa de litígios.
+                Transformamos bens inseguros e desvalorizados em um patrimônio blindado, valorizado e perfeitamente
+                legal.</p>
+            <div class="hero-btns">
+                <a href="#services" class="btn-primary">Nossas Soluções <i class="fas fa-chevron-right"></i></a>
+                <a href="https://wa.me/5524988387333" class="btn-primary"
+                    style="background: transparent; border: 1.5px solid rgba(255,255,255,0.4); box-shadow: none;">Falar
+                    com Advogado</a>
+            </div>
+        </div>
+        <div class="scroll-dot"></div>
+    </section>
+
+    <!-- ABOUT / THE PROBLEM -->
+    <section id="about">
+        <div class="section-inner">
+            <div class="about-grid">
+                <div class="about-img-wrap">
+                    <img class="about-img" src="fototiago001.jpg" alt="Tiago Tavares Advogado Especialista">
+                    <div class="about-badge">
+                        <span class="num">100%</span>
+                        <span class="lbl">Foco em Solução de Imóveis</span>
+                    </div>
+                </div>
+                <div class="about-text">
+                    <span class="section-label">O Risco da Irregularidade</span>
+                    <h2 class="section-title">A pendência de hoje é o prejuízo de amanhã</h2>
+                    <div class="divider" style="margin-bottom:28px"></div>
+                    <p>A situação do seu imóvel está pendente ou irregular no Registro de Imóveis?
+                        <strong>Atenção:</strong> isso impede a venda para bons compradores, inviabiliza financiamentos
+                        bancários pelas principais instituições financeiras, complica e encarece brutalmente os
+                        processos de inventário, além de ser raiz para graves conflitos possessórios futuros.
+                    </p>
+                    <p>A regularização não é burocracia, é a única forma de garantir <strong>segurança jurídica
+                            real</strong> sobre o que você lutou para conquistar. Atuo focado milimetricamente na
+                        Legalização Estratégica de Imóveis, entregando soluções definitivas e seguras para o seu bem
+                        patrimonial.</p>
+                    <div class="about-values">
+                        <div>
+                            <h4>Blindagem de Patrimônio</h4>
+                            <p>Proteja seu imóvel de penhoras, ações demolitórias ou tomadas de posse de terceiros.</p>
+                        </div>
+                        <div>
+                            <h4>Alta Valorização</h4>
+                            <p>Um imóvel escriturado e com a matrícula regular chega a valorizar até 40% no mercado
+                                tradicional.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES (FOCUSED ON LEGALIZAÇÃO) -->
+    <section id="services">
+        <div class="section-inner">
+            <div class="services-header">
+                <span class="section-label">Especialidade</span>
+                <h2 class="section-title">Soluções Completas para o seu Imóvel</h2>
+                <div class="divider divider-center"></div>
+                <p>Analisamos estrategicamente cada situação para reduzir riscos, cortar processos burocráticos
+                    desnecessários e acelerar o registro do seu patrimônio perante o cartório competente.</p>
+            </div>
+            <div class="services-grid">
+
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-file-signature"></i></div>
+                    <h3>Usucapião Judicial e Extrajudicial</h3>
+                    <p>O caminho essencial para regularizar a sua posse e garantir a propriedade definitiva — a
+                        Escritura na mão, direto no seu nome. Priorizamos sempre a via extrajudicial para maior
+                        agilidade, avaliando cuidadosamente a viabilidade do seu caso.</p>
+                    <a href="#contact" class="service-link">Analisar meu caso <i class="fas fa-arrow-right"></i></a>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-draw-polygon"></i></div>
+                    <h3>Desmembramento de Áreas</h3>
+                    <p>Processo fundamental para dividir legalmente grandes terrenos, lotes ou áreas rurais, atendendo
+                        todas as normas do município e garantindo a abertura de matrículas individualizadas no RGI para
+                        cada nova fração.</p>
+                    <a href="#contact" class="service-link">Saber mais <i class="fas fa-arrow-right"></i></a>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-map-marked-alt"></i></div>
+                    <h3>Retificações de Registro</h3>
+                    <p>Muitas vezes, a metragem registrada no cartório não condiz com a realidade do lote formalizado.
+                        Atuamos com a retificação de áreas e confrontações, trazendo harmonia jurídica ao que realmente
+                        existe no plano físico e no Cartório de Imóveis.</p>
+                    <a href="#contact" class="service-link">Corrigir minha matrícula <i
+                            class="fas fa-arrow-right"></i></a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section id="testimonials">
+        <div class="section-inner">
+            <div class="testimonials-grid">
+                <div class="testimonials-intro">
+                    <span class="section-label">Resultados</span>
+                    <h2 class="section-title" style="color:#fff">Segurança que fala por si</h2>
+                    <p>O reflexo da nossa advocacia focada é entregar a escritura final nas mãos do cliente.
+                        Transformamos tensão em alívio patrimonial.</p>
+                    <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <div class="cards-grid">
+                    <div class="testimonial-card">
+                        <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+                        <blockquote>"Agradeço ao Tiago pela condução impecável do processo de Usucapião Extrajudicial do
+                            nosso terreno familiar de décadas. O que sempre achamos complexo e impossível foi resolvido
+                            muito mais rápido do que imaginávamos."</blockquote>
+                        <div class="author">
+                            <div class="author-avatar">M</div>
+                            <div>
+                                <div class="author-name">Maria Helena Silva</div>
+                                <div class="author-role">Posse transformou-se em Registro</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+                        <blockquote>"Precisávamos desmembrar uma porção grande do lote para venda urgente. A assessoria
+                            imobiliária fez toda a diferença em nos colocar num caminho limpo, aprovando tudo na
+                            prefeitura e já registrado."</blockquote>
+                        <div class="author">
+                            <div class="author-avatar">R</div>
+                            <div>
+                                <div class="author-name">Roberto Ferreira</div>
+                                <div class="author-role">Investidor de Área Subdividida</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+        <div class="section-inner">
+            <div class="contact-box">
+                <!-- Info -->
+                <div class="contact-info">
+                    <span class="section-label">Informações</span>
+                    <h2>Dê o 1º Passo</h2>
+                    <div class="contact-items">
+                        <div class="contact-item">
+                            <div class="contact-item-icon"><i class="fas fa-map-marker-alt"></i></div>
+                            <div>
+                                <h4>Localização / Online</h4>
+                                <p>Atendimento presencial no Rio de Janeiro e Assessoria Imobiliária Online em todo
+                                    Brasil.</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-item-icon"><i class="fas fa-envelope"></i></div>
+                            <div>
+                                <h4>E-mail Especializado</h4>
+                                <p>contato@tiagotavares.adv.br
+
+                                </p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-item-icon"><i class="fas fa-phone"></i></div>
+                            <div>
+                                <h4>Atendimento Rápido</h4>
+                                <p>(24) 98838-7333</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="social-section">
+                        <p>Acompanhe nosso conteúdo</p>
+                        <div class="social-row">
+                            <a href="https://www.instagram.com/tiagotavaresadv" target="_blank" class="soc-btn soc-ig"
+                                title="Instagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="https://wa.me/5524988387333" target="_blank" class="soc-btn soc-wa"
+                                title="WhatsApp">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                            <a href="https://www.tiktok.com/tiagotavaresadv" target="_blank" class="soc-btn soc-fb"
+                                title="TikTok">
+                                <i class="fab fa-tiktok"></i>
+                            </a>
+                        </div>
+                        <span class="oab-badge">OAB/RJ 270.860</span>
+                    </div>
+                </div>
+
+                <!-- Form -->
+                <div class="contact-form">
+                    <span class="section-label">Análise de Documentação</span>
+                    <h2 class="section-title" style="font-size:28px;margin-bottom:28px">Vamos traçar o caminho do seu
+                        imóvel?</h2>
+                    <form onsubmit="event.preventDefault()">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Nome Completo</label>
+                                <input type="text" placeholder="Insira seu nome">
+                            </div>
+                            <div class="form-group">
+                                <label>WhatsApp / Telefone</label>
+                                <input type="text" placeholder="(DD) 90000-0000">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Em qual processo precisa de ajuda?</label>
+                            <select>
+                                <option>Usucapião (Tenho a posse, mas não o documento)</option>
+                                <option>Desmembramento ou Unificação de Área</option>
+                                <option>Retificação de Metragem/Registro no Cartório</option>
+                                <option>Dúvida sobre Inventário de Bens</option>
+                                <option>Outras pendências imobiliárias</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Breve relato do seu problema com o imóvel</label>
+                            <textarea
+                                placeholder="Ex: Moro no terreno há 15 anos mas o registro ainda está em nome do antigo proprietário..."></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit">Solicitar Análise Gratuita</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-brand">TIAGO <em>TAVARES</em></div>
+            <div class="footer-links">
+                <a href="#home">Início</a>
+                <a href="#about">Por que Legalizar?</a>
+                <a href="#services">Nossas Soluções</a>
+                <a href="#contact">Consultoria</a>
+            </div>
+            <div class="footer-copy">&copy; 2026 Tiago Tavares Advocacia Imobiliária. Todos os direitos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <!-- FLOAT WHATSAPP -->
+    <a href="https://wa.me/5524988387333" target="_blank" class="float-wa" title="Falar no WhatsApp">
+        <span class="float-wa-tooltip">Plantão tira-dúvidas</span>
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const icon = hamburger.querySelector('i');
+
+        hamburger.addEventListener('click', () => {
+            mobileMenu.classList.toggle('open');
+            icon.className = mobileMenu.classList.contains('open') ? 'fas fa-times' : 'fas fa-bars';
+        });
+
+        function closeMenu() {
+            mobileMenu.classList.remove('open');
+            icon.className = 'fas fa-bars';
+        }
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            document.querySelector('.navbar').style.background =
+                window.scrollY > 60
+                    ? 'rgba(26,39,64,0.98)'
+                    : 'rgba(26,39,64,0.92)';
+        });
+    </script>
+</body>
+
+</html>

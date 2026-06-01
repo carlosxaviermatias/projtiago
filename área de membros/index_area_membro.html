@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Área do Cliente</title>
+
+    <style>
+        :root {
+            --primary: #1f2a30;
+            --secondary: #c8a96e;
+            --light: #f5f5f5;
+            --white: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--light);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 16px;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        }
+
+        h1 { color: var(--primary); margin: 0 0 8px; }
+        h2 { color: var(--secondary); margin: 0 0 12px; }
+
+        .hidden { display: none !important; }
+
+        .lgpd {
+            font-size: 12px;
+            color: #888;
+            line-height: 1.5;
+        }
+
+        /* Estilos do Login */
+        .login-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: var(--secondary);
+            color: var(--white);
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-login:hover {
+            background: #b0925c;
+        }
+
+        .erro-msg {
+            color: #d9534f;
+            margin-top: 10px;
+            font-size: 14px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Tela de Login -->
+    <div id="login-screen" class="container login-wrapper">
+        <div class="card login-card">
+            <h2 style="text-align: center; color: var(--primary); margin-bottom: 20px;">Acesso ao Sistema</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login">Login</label>
+                    <input type="text" id="login" placeholder="Digite seu login" required>
+                </div>
+                <div class="form-group">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" placeholder="Digite sua senha" required>
+                </div>
+                <button type="submit" class="btn-login">Entrar</button>
+                <p id="login-erro" class="erro-msg hidden">Login ou senha incorretos. Tente: admin / 1234</p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Área do Cliente (Conteúdo) -->
+    <div id="area-cliente" class="container hidden">
+
+        <div id="conteudo">
+
+            <div class="card">
+                <h1 id="nome">João da Silva</h1>
+                <p>Sua proposta jurídica personalizada:</p>
+            </div>
+
+            <div class="card">
+                <h2>Demanda</h2>
+                <p id="tipo"><strong>Tipo:</strong> Ação Indenizatória</p>
+                <p id="estrategia"><strong>Estratégia:</strong> Ingressar com ação de danos morais e materiais devido à falha na prestação de serviço.</p>
+                <p id="status"><strong>Status:</strong> Aguardando envio de documentação pelo cliente.</p>
+            </div>
+
+            <div class="card">
+                <h2>Honorários</h2>
+                <p id="entrada"><strong>Entrada:</strong> R$ 2.500,00</p>
+                <p id="exito"><strong>Êxito:</strong> 20% ao final do processo</p>
+            </div>
+
+            <div class="card">
+                <h2>Observações</h2>
+                <p id="obs">O processo tem duração estimada de 12 a 18 meses. As custas judiciais não estão inclusas nos honorários.</p>
+            </div>
+
+            <div class="card">
+                <p class="lgpd">
+                    Seus dados são tratados conforme a LGPD (Lei 13.709/18),
+                    utilizados exclusivamente para prestação de serviços jurídicos.
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const login = document.getElementById('login').value;
+            const senha = document.getElementById('senha').value;
+
+            // Login e senha fixos para teste
+            if (login === 'admin' && senha === '1234') {
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('area-cliente').classList.remove('hidden');
+            } else {
+                document.getElementById('login-erro').classList.remove('hidden');
+            }
+        });
+    </script>
+
+</body>
+
+</html>

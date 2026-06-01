@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Legalizzare | Consultoria Imobiliária</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* RESET & VARIABLES */
+        :root {
+            --bg-dark: #0f1115;
+            --bg-light: #f5f2ee;
+            --primary: #c62828;
+            --primary-light: #e53935;
+            --primary-dark: #b71c1c;
+            --text-light: #ffffff;
+            --text-dark: #1f2937;
+            --text-muted: #9ca3af;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* CONTAINER */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        /* HEADER */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10;
+        }
+
+        .logo img {
+            height: 48px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+        }
+
+        .btn-whatsapp {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            padding: 12px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(198, 40, 40, 0.3);
+        }
+
+        .btn-whatsapp::before {
+            content: '\f232';
+            font-family: 'Font Awesome 6 Brands';
+            font-size: 16px;
+        }
+
+        .btn-whatsapp:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(198, 40, 40, 0.5);
+        }
+
+        /* HERO */
+        .hero {
+            position: relative;
+            min-height: 85vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(rgba(15, 17, 21, 0.8), rgba(15, 17, 21, 0.95)),
+                url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=2000&q=80') center/cover;
+        }
+
+        .hero .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content {
+            max-width: 680px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero h1 {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: clamp(38px, 5vw, 56px);
+            font-weight: 600;
+            line-height: 1.15;
+            margin-bottom: 24px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #d1d5db;
+            margin-bottom: 40px;
+            max-width: 540px;
+            line-height: 1.7;
+        }
+
+        .btn-primary {
+            background: var(--primary-light);
+            padding: 16px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(198, 40, 40, 0.4);
+        }
+
+        /* SECTION LIGHT */
+        .light {
+            background: var(--bg-light);
+            color: var(--text-dark);
+            padding: 120px 0;
+        }
+
+        /* TITLES */
+        .section-title {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 40px;
+            margin-bottom: 60px;
+            text-align: center;
+        }
+
+        .section-title span {
+            color: var(--primary);
+            font-style: italic;
+        }
+
+        /* GRID */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        /* CARDS */
+        .card {
+            background: #fff;
+            padding: 40px;
+            border-radius: 20px;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card h3 {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 24px;
+            color: var(--primary);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card h3 i {
+            font-size: 20px;
+            opacity: 0.8;
+        }
+
+        .card ul {
+            list-style: none;
+        }
+
+        .card li {
+            margin-bottom: 12px;
+            font-size: 15px;
+            color: #4b5563;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card li::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: var(--primary-light);
+            font-size: 12px;
+        }
+
+        /* ABOUT */
+        .about {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-img-wrapper {
+            position: relative;
+        }
+
+        .about-img-wrapper::after {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            width: 100px;
+            height: 100px;
+            border-top: 3px solid var(--primary);
+            border-left: 3px solid var(--primary);
+            border-radius: 20px 0 0 0;
+            z-index: 1;
+        }
+
+        .about img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            display: block;
+            position: relative;
+            z-index: 2;
+        }
+
+        .about-content h2 {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 40px;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+
+        .about-content p {
+            font-size: 18px;
+            color: #4b5563;
+            line-height: 1.7;
+            text-align: justify;
+            margin-bottom: 20px;
+        }
+
+        /* CONTACT SECTION */
+        .contact-section {
+            background: #fff;
+            padding: 100px 0;
+            color: #333;
+        }
+
+        .contact-title {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            text-align: center;
+            letter-spacing: 4px;
+            margin-bottom: 60px;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+        }
+
+        .contact-form-area input,
+        .contact-form-area textarea {
+            width: 100%;
+            background: #f8f8f8;
+            border: none;
+            padding: 18px 20px;
+            margin-bottom: 15px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;
+            color: #555;
+            outline: none;
+            resize: none;
+        }
+
+        .contact-form-area input::placeholder,
+        .contact-form-area textarea::placeholder {
+            color: #aaa;
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .submit-row {
+            text-align: right;
+        }
+
+        .btn-submit {
+            background: var(--primary-dark);
+            color: #fff;
+            border: none;
+            padding: 16px 40px;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            background: #8e1515;
+        }
+
+        .contact-info-area {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .info-block {
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 25px;
+        }
+
+        .info-block:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .info-block h4 {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .info-block p {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        .info-block p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* BLOG */
+        .blog-section {
+            background: #2b2b2b;
+            padding: 100px 0;
+        }
+
+        .blog-section .section-title {
+            color: #fff;
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .blog-card {
+            background: #f4f1ea;
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+            border-radius: 4px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+        }
+
+        .blog-img-wrapper {
+            width: 100%;
+            height: 230px;
+            overflow: hidden;
+        }
+
+        .blog-card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .blog-card:hover .blog-card-img {
+            transform: scale(1.05);
+        }
+
+        .blog-content {
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            flex-grow: 1;
+        }
+
+        .blog-author-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .blog-author-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .blog-author-info {
+            display: flex;
+            flex-direction: column;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .author-name {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 2px;
+        }
+
+        .read-time {
+            font-size: 13px;
+            color: #888;
+        }
+
+        .blog-tag {
+            background: transparent;
+            color: #555;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            align-self: flex-start;
+            display: inline-block;
+            border: 1px solid #bbb;
+        }
+
+        .blog-title {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 21px;
+            font-weight: 400;
+            color: #222;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 900px) {
+            .blog-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* RESPONSIVO */
+        @media(max-width: 768px) {
+            .about {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .section-title {
+                font-size: 32px;
+            }
+
+            .light,
+            .contact-section {
+                padding: 80px 0;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+
+            .input-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="logo">
+                <!-- Caso não tenha a logo.png, exibirá o texto estilizado -->
+                <img src="logo_legalizzare.png" alt="Legalizzare"
+                    onerror="this.outerHTML='<span style=\'font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif; font-size: 24px; font-weight: 700; color: #fff;\'>Legalizzare</span>'">
+            </div>
+            <a href="https://wa.me/5524988648105" target="_blank" class="btn-whatsapp">WhatsApp</a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Regularização e segurança jurídica para o seu patrimônio</h1>
+                <p>Atuação estratégica em direito imobiliário, sucessório e engenharia aplicada à legalização de
+                    imóveis.</p>
+                <a href="https://wa.me/5524988648105" target="_blank" class="btn-primary">Fale com um especialista</a>
+
+                <div style="display: flex; gap: 25px; margin-top: 40px; justify-content: center; max-width: 250px;">
+                    <a href="https://www.instagram.com/legalizzare.imoveis/" target="_blank"
+                        style="color: #fff; font-size: 30px; transition: all 0.3s ease;"
+                        onmouseover="this.style.color='var(--primary-light)'; this.style.transform='translateY(-3px)';"
+                        onmouseout="this.style.color='#fff'; this.style.transform='none';">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <a href="https://www.facebook.com/Legalizzare" target="_blank"
+                        style="color: #fff; font-size: 30px; transition: all 0.3s ease;"
+                        onmouseover="this.style.color='var(--primary-light)'; this.style.transform='translateY(-3px)';"
+                        onmouseout="this.style.color='#fff'; this.style.transform='none';">
+                        <i class="fa-brands fa-facebook-f" style="width: 30px; text-align: center;"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="light">
+        <div class="container">
+            <h2 class="section-title">Nossa <span>Área de Atuação</span></h2>
+
+            <div class="grid">
+                <div class="card">
+                    <h3><i class="fa-solid fa-scale-balanced"></i> Direito Sucessório</h3>
+                    <ul>
+                        <li>Inventário</li>
+                        <li>Testamento</li>
+                        <li>Doação</li>
+                        <li>Holding Familiar</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fa-solid fa-building-shield"></i> Direito Imobiliário</h3>
+                    <ul>
+                        <li>Regularização</li>
+                        <li>Usucapião</li>
+                        <li>Loteamento</li>
+                        <li>Due Diligence</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fa-solid fa-compass-drafting"></i> Engenharia</h3>
+                    <ul>
+                        <li>Georeferenciamento</li>
+                        <li>Topografia</li>
+                        <li>Projetos</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="blog-section" id="blog">
+        <div class="container">
+            <h2 class="section-title">Nosso <span>Blog</span></h2>
+
+            <div class="blog-grid">
+
+                <a href="blog_propriedade_resolúvel.html" class="blog-card">
+                    <div class="blog-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1560518883-ce09059eeefa?auto=format&fit=crop&w=600&q=80"
+                            alt="Propriedade resolúvel e fiduciária" class="blog-card-img">
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-author-row">
+                            <img src="romalha.png" alt="Romalha Pereira" class="blog-author-img"
+                                onerror="this.style.display='none'">
+                            <div class="blog-author-info">
+                                <span class="author-name">Romalha Pereira</span>
+                                <span class="read-time">6 min de leitura</span>
+                            </div>
+                        </div>
+                        <span class="blog-tag">Garantias Imobiliárias</span>
+                        <h3 class="blog-title">Propriedade resolúvel e propriedade fiduciária: O que é?</h3>
+                    </div>
+                </a>
+
+                <a href="blog_arras_sinal.html" class="blog-card">
+                    <div class="blog-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=600&q=80"
+                            alt="Arras ou Sinal de Negócio" class="blog-card-img">
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-author-row">
+                            <img src="romalha.png" alt="Romalha Pereira" class="blog-author-img"
+                                onerror="this.style.display='none'">
+                            <div class="blog-author-info">
+                                <span class="author-name">Romalha Pereira</span>
+                                <span class="read-time">5 min de leitura</span>
+                            </div>
+                        </div>
+                        <span class="blog-tag">Compra e Venda de Imóveis</span>
+                        <h3 class="blog-title">Arras ou Sinal de Negócio: O Guia Estratégico para Segurança em Transações Imobiliárias</h3>
+                    </div>
+                </a>
+
+                <a href="blog_escritura_publica.html" class="blog-card">
+                    <div class="blog-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=600&q=80"
+                            alt="Escritura Pública de Imóvel" class="blog-card-img">
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-author-row">
+                            <img src="romalha.png" alt="Romalha Pereira" class="blog-author-img"
+                                onerror="this.style.display='none'">
+                            <div class="blog-author-info">
+                                <span class="author-name">Romalha Pereira</span>
+                                <span class="read-time">5 min de leitura</span>
+                            </div>
+                        </div>
+                        <span class="blog-tag">Compra e Venda de Imóveis</span>
+                        <h3 class="blog-title">Escritura Pública de Imóvel: O Guia Completo dos Documentos Necessários</h3>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="light" style="background: #fff; padding-top: 0;">
+        <div class="container about">
+            <div class="about-img-wrapper">
+                <img src="nossa_equipe.png" alt="Nossa Equipe">
+            </div>
+
+            <div class="about-content">
+                <h2>Nossa Equipe</h2>
+                <p>A Legalizzare é uma empresa de assessoria e consultoria que disponibiliza soluções integradas com o
+                    objetivo de agilizar, modernizar, uniformizar, desburocratizar, ou seja, simplificar o processo de
+                    regularização de um imóvel.</p>
+                <p>A empresa, com sede em Areal, Três Rios e Sapucaia, reúne uma equipe multidisciplinar formada por
+                    profissionais com vasta experiência no mercado de legalização de imóveis, oferecendo soluções
+                    completas para seus clientes.</p>
+                <p>Atendendo pessoas físicas, construtoras, incorporadoras, imobiliárias e demais empresas que
+                    necessitem do serviço de legalização de imóveis, a Legalizzare é comprometida com a ética e a
+                    transparência na execução de todas as etapas do serviço.</p>
+                <p>Legalizar seu imóvel é a melhor escolha. E a Legalizzare garante eficiência e agilidade em todas as
+                    fases do processo de regularização da sua propriedade, administrativa e judicialmente.</p>
+                <p><strong>Não se preocupe. Nós cuidamos de tudo para você.</strong></p>
+
+                <a href="nossa_equipe.html"
+                    style="display: flex; align-items: center; justify-content: space-between; background: var(--bg-light); padding: 20px 30px; border-radius: 15px; text-decoration: none; color: var(--text-dark); margin-top: 30px; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 15px rgba(0,0,0,0.02); transition: all 0.3s ease;"
+                    onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 25px rgba(0,0,0,0.08)';"
+                    onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 15px rgba(0,0,0,0.02)';">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div
+                            style="background: linear-gradient(135deg, var(--primary), var(--primary-light)); width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; box-shadow: 0 4px 10px rgba(198, 40, 40, 0.3);">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <span
+                            style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 18px; font-weight: 600;">Conheça
+                            Nossos Profissionais</span>
+                    </div>
+                    <i class="fa-solid fa-arrow-right" style="color: var(--primary); font-size: 18px;"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-section">
+        <div class="container">
+            <h2 class="contact-title">CONTATO</h2>
+
+            <div class="contact-grid">
+                <div class="contact-form-area">
+                    <form action="#" method="POST">
+                        <input type="text" placeholder="Nome" class="input-full">
+                        <input type="email" placeholder="Email" class="input-full">
+
+                        <div class="input-row">
+                            <input type="text" placeholder="Cidade">
+                            <input type="text" placeholder="Telefone">
+                            <input type="text" placeholder="Celular">
+                        </div>
+
+                        <textarea placeholder="Mensagem" rows="6" class="input-full"></textarea>
+
+                        <div class="submit-row">
+                            <button type="submit" class="btn-submit">ENVIAR</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="contact-info-area">
+
+                    <div class="info-block">
+                        <h4>TRÊS RIOS</h4>
+                        <p>Comercial e Residencial José Esteves<br>Rua Presidente Vargas, 595 sala 404 - Centro<br>Três
+                            Rios/RJ, 25802-200</p>
+                        <p><strong>Telefone:</strong> (24) 2030-0362</p>
+                    </div>
+
+                    <div class="info-block">
+                        <h4>WHATSAPP</h4>
+                        <p><a href="https://wa.me/5524988648105" target="_blank"
+                                style="color: inherit; text-decoration: none;"><i class="fa-brands fa-whatsapp"></i>
+                                (24) 98864-8105</a></p>
+                        <div style="display: flex; gap: 15px; margin-top: 15px;">
+                            <a href="https://www.instagram.com/legalizzare.imoveis/" target="_blank"
+                                style="color: #555; font-size: 24px; transition: all 0.3s ease;"
+                                onmouseover="this.style.color='var(--primary)'; this.style.transform='translateY(-3px)';"
+                                onmouseout="this.style.color='#555'; this.style.transform='none';">
+                                <i class="fa-brands fa-instagram"></i>
+                            </a>
+                            <a href="https://www.facebook.com/Legalizzare" target="_blank"
+                                style="color: #555; font-size: 24px; transition: all 0.3s ease;"
+                                onmouseover="this.style.color='var(--primary)'; this.style.transform='translateY(-3px)';"
+                                onmouseout="this.style.color='#555'; this.style.transform='none';">
+                                <i class="fa-brands fa-facebook-f"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer style="background:#fff; border-top:1px solid #e8e8e8; padding:30px 6vw;">
+        <div style="max-width:1180px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;">
+            <a href="index_romalha.html">
+                <img src="logo_legalizzare.png" alt="Legalizzare" style="height:40px; width:auto;">
+            </a>
+            <div style="font-size:11px; color:#999;">&copy; 2026 Legalizzare Consultoria Imobiliária. Todos os direitos reservados.</div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

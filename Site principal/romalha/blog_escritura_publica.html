@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escritura Pública de Imóvel: O Guia Completo | Legalizzare</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-dark: #0f1115;
+            --bg-light: #f5f2ee;
+            --primary: #c62828;
+            --primary-light: #e53935;
+            --primary-dark: #b71c1c;
+            --text-light: #ffffff;
+            --text-dark: #1f2937;
+            --text-muted: #9ca3af;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .site-header {
+            background: var(--bg-dark);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+        }
+
+        .site-header .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo img { height: 40px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
+
+        .btn-whatsapp {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            padding: 10px 22px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(198,40,40,0.3);
+        }
+
+        .btn-whatsapp::before {
+            content: '\f232';
+            font-family: 'Font Awesome 6 Brands';
+            font-size: 15px;
+        }
+
+        .btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(198,40,40,0.5); }
+
+        .breadcrumb { width: 90%; max-width: 780px; margin: 32px auto 0; }
+
+        .breadcrumb a {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb a:hover { color: var(--primary-dark); }
+
+        .article-wrapper {
+            width: 90%;
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 40px 0 80px;
+        }
+
+        .article-author-row { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+
+        .article-author-img {
+            width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid #e0dbd4;
+        }
+
+        .article-author-info { display: flex; flex-direction: column; }
+        .author-name { font-size: 15px; font-weight: 600; color: var(--text-dark); }
+        .article-meta { font-size: 13px; color: #888; }
+
+        .article-title {
+            font-size: clamp(28px, 4vw, 42px);
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--text-dark);
+            margin-bottom: 32px;
+        }
+
+        .article-tag {
+            display: inline-block;
+            background: #848c80;
+            color: #fff;
+            padding: 6px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 32px;
+        }
+
+        .article-featured-img {
+            width: 100%; border-radius: 12px; margin-bottom: 12px; display: block;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+        }
+
+        .article-img-caption { text-align: center; font-size: 13px; color: #999; margin-bottom: 40px; }
+
+        .article-body { font-size: 17px; line-height: 1.85; color: #333; }
+        .article-body p { margin-bottom: 24px; }
+
+        .article-body h2 {
+            font-size: 26px; font-weight: 700; color: var(--text-dark);
+            margin: 44px 0 18px; padding-bottom: 10px; border-bottom: 2px solid #e8e3dc;
+        }
+
+        .article-body h3 { font-size: 20px; font-weight: 700; color: var(--primary-dark); margin: 32px 0 12px; }
+        .article-body ul, .article-body ol { padding-left: 24px; margin-bottom: 24px; }
+        .article-body li { margin-bottom: 10px; }
+        .article-body strong { color: var(--text-dark); }
+
+        .article-body blockquote {
+            border-left: 4px solid var(--primary);
+            padding: 16px 24px;
+            background: #fff;
+            border-radius: 0 10px 10px 0;
+            margin: 32px 0;
+            font-style: italic;
+            color: #555;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+        }
+
+        .article-cta {
+            background: var(--bg-dark); border-radius: 16px; padding: 40px;
+            text-align: center; margin-top: 60px;
+        }
+
+        .article-cta h3 { color: #fff; font-size: 22px; margin-bottom: 12px; }
+        .article-cta p { color: #d1d5db; font-size: 15px; margin-bottom: 28px; }
+
+        .btn-cta {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            padding: 14px 32px; border-radius: 50px; text-decoration: none; color: #fff;
+            font-size: 15px; font-weight: 700; transition: all 0.3s ease;
+            display: inline-flex; align-items: center; gap: 8px;
+            box-shadow: 0 4px 15px rgba(198,40,40,0.4);
+        }
+
+        .btn-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(198,40,40,0.6); }
+
+        .article-divider { border: none; border-top: 2px solid #e8e3dc; margin: 48px 0; }
+
+        .back-to-blog {
+            display: inline-flex; align-items: center; gap: 8px; color: var(--primary);
+            text-decoration: none; font-weight: 600; font-size: 15px; margin-top: 48px; transition: gap 0.2s;
+        }
+
+        .back-to-blog:hover { gap: 12px; }
+
+        .site-footer {
+            background: var(--bg-dark); color: #888; text-align: center; padding: 30px 0; font-size: 13px;
+        }
+
+        @media (max-width: 768px) {
+            .article-wrapper { padding: 30px 0 60px; }
+            .article-cta { padding: 30px 20px; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="container">
+            <div class="logo">
+                <a href="index_romalha.html" style="display:inline-block;">
+                    <img src="logo_legalizzare.png" alt="Legalizzare"
+                        onerror="this.outerHTML='<span style=\'font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif; font-size: 22px; font-weight: 700; color: #fff;\'>Legalizzare</span>'">
+                </a>
+            </div>
+            <a href="https://wa.me/5524988648105" target="_blank" class="btn-whatsapp">WhatsApp</a>
+        </div>
+    </header>
+
+    <nav class="breadcrumb">
+        <a href="index_romalha.html#blog">
+            <i class="fa-solid fa-arrow-left"></i> Voltar ao Blog
+        </a>
+    </nav>
+
+    <article class="article-wrapper">
+
+        <div class="article-author-row">
+            <img src="romalha.png" alt="Romalha Pereira" class="article-author-img"
+                onerror="this.outerHTML='<div style=\'width:44px;height:44px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:18px;\'>R</div>'">
+            <div class="article-author-info">
+                <span class="author-name">Romalha Pereira</span>
+                <span class="article-meta">5 min de leitura &nbsp;·&nbsp; Abr 2025</span>
+            </div>
+        </div>
+
+        <span class="article-tag">Compra e Venda de Imóveis</span>
+
+        <h1 class="article-title">Escritura Pública de Imóvel: O Guia Completo dos Documentos Necessários</h1>
+
+        <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=80"
+            alt="Documentos de escritura pública" class="article-featured-img">
+        <p class="article-img-caption">Escritura Pública de Imóvel: tudo o que você precisa saber sobre documentação.</p>
+
+        <div class="article-body">
+
+            <p>A escritura pública de imóvel é o instrumento formal que formaliza juridicamente a transferência de propriedade de um bem imóvel entre comprador e vendedor. Lavrada em Cartório de Notas por um tabelião, ela é condição essencial para que o imóvel seja posteriormente registrado em nome do novo proprietário.</p>
+
+            <p>Mas o que muita gente não sabe é que <strong>a escritura, por si só, não transfere a propriedade</strong> — isso só ocorre com o registro no Cartório de Registro de Imóveis. A escritura é o título; o registro é o ato que transmite a titularidade.</p>
+
+            <h2>Quando a Escritura Pública é Obrigatória?</h2>
+
+            <p>De acordo com o artigo 108 do Código Civil, a escritura pública é obrigatória para a validade de negócios jurídicos que visem à constituição, transferência, modificação ou renúncia de direitos reais sobre imóveis de <strong>valor superior a 30 salários mínimos</strong>. Para imóveis de menor valor, é possível utilizar instrumentos particulares.</p>
+
+            <h2>Documentos do Vendedor (Pessoa Física)</h2>
+
+            <ul>
+                <li>RG e CPF (ou CNH)</li>
+                <li>Certidão de casamento atualizada (se casado)</li>
+                <li>Comprovante de endereço atualizado</li>
+                <li>Certidão negativa de débitos trabalhistas (CNDT)</li>
+                <li>Certidão negativa de tributos federais</li>
+            </ul>
+
+            <h2>Documentos do Comprador</h2>
+
+            <ul>
+                <li>RG e CPF (ou CNH)</li>
+                <li>Certidão de casamento ou nascimento atualizada</li>
+                <li>Comprovante de endereço</li>
+                <li>Declaração do regime de bens (se casado)</li>
+            </ul>
+
+            <h2>Documentos do Imóvel</h2>
+
+            <ul>
+                <li>Matrícula atualizada do imóvel (emitida há no máximo 30 dias)</li>
+                <li>IPTU do exercício corrente</li>
+                <li>Certidão negativa de débitos de IPTU</li>
+                <li>Habite-se (certidão de conclusão de obra)</li>
+                <li>Declaração de quitação de condomínio (se for apartamento)</li>
+                <li>Certidão de inteiro teor do imóvel</li>
+            </ul>
+
+            <blockquote>
+                "Documentação incompleta é a principal causa de atraso — e às vezes de inviabilização — de negócios imobiliários. Organize tudo com antecedência."
+            </blockquote>
+
+            <h2>Custos Envolvidos</h2>
+
+            <p>Os principais custos são:</p>
+
+            <ul>
+                <li><strong>ITBI</strong> (Imposto de Transmissão de Bens Imóveis): cobrado pelo município, varia de 2% a 3% do valor do imóvel.</li>
+                <li><strong>Emolumentos do Cartório de Notas:</strong> para lavrar a escritura (tabela definida por cada estado).</li>
+                <li><strong>Registro no CRI:</strong> para registrar a escritura em nome do comprador.</li>
+            </ul>
+
+            <h2>Passo a Passo Resumido</h2>
+
+            <ol>
+                <li>Reunir toda a documentação das partes e do imóvel.</li>
+                <li>Calcular e recolher o ITBI junto à Prefeitura.</li>
+                <li>Comparecer ao Cartório de Notas para lavratura da escritura.</li>
+                <li>Levar a escritura ao Cartório de Registro de Imóveis para registro.</li>
+                <li>Aguardar a conclusão do registro e retirar a certidão de matrícula atualizada em seu nome.</li>
+            </ol>
+
+            <hr class="article-divider">
+
+            <p>O processo de escrituração envolve diversas etapas burocráticas e prazos que, sem acompanhamento especializado, podem se tornar um verdadeiro labirinto. A Legalizzare oferece assessoria completa em todas as fases da transferência, garantindo agilidade e segurança jurídica para o seu negócio.</p>
+
+        </div>
+
+        <div class="article-cta">
+            <h3>Precisa de ajuda com a escritura do seu imóvel?</h3>
+            <p>Nossos especialistas cuidam de toda a documentação e acompanham cada etapa do processo por você.</p>
+            <a href="https://wa.me/5524988648105" target="_blank" class="btn-cta">
+                <i class="fa-brands fa-whatsapp"></i>
+                Falar com um especialista
+            </a>
+        </div>
+
+        <a href="index_romalha.html#blog" class="back-to-blog">
+            <i class="fa-solid fa-arrow-left"></i> Ver mais artigos
+        </a>
+
+    </article>
+
+    <footer class="site-footer">
+        <p>&copy; 2025 Legalizzare. Todos os direitos reservados.</p>
+    </footer>
+
+</body>
+
+</html>
