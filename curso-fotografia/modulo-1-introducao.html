@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 1 · Introdução à Fotografia Digital — Curso Fotografia com Smartphone</title>
+<meta name="description" content="História da fotografia, fisiologia do olhar, partes da câmera, o triângulo da exposição (ISO, abertura e velocidade), profundidade de campo, enquadramento, regra dos terços e composição.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='21' fill='none' stroke='%23f4b03e' stroke-width='3'/%3E%3Ccircle cx='24' cy='24' r='5' fill='%23f4b03e'/%3E%3C/svg%3E">
+</head>
+<body>
+<div id="progress"></div>
+
+<header class="site-header">
+  <div class="wrap nav">
+    <a href="index.html" class="brand" aria-label="Início">
+      <svg class="lens" viewBox="0 0 48 48" fill="none" aria-hidden="true"><circle cx="24" cy="24" r="21" stroke="#f4b03e" stroke-width="2.5"/><circle cx="24" cy="24" r="12" stroke="#f4b03e" stroke-width="2"/><circle cx="24" cy="24" r="4" fill="#f4b03e"/><circle cx="33" cy="15" r="2" fill="#ffd17a"/></svg>
+      <span>Foto<span style="color:var(--accent)">Smart</span><small>Curso de Fotografia</small></span>
+    </a>
+    <button class="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <ul class="nav-links">
+      <li><a href="index.html">Início</a></li>
+      <li><a href="index.html#modulos" class="active">Módulos</a></li>
+      <li><a href="mestres.html">Mestres</a></li>
+      <li><a href="glossario.html">Glossário</a></li>
+      <li><a href="modulo-2-iluminacao.html" class="nav-cta">Próximo módulo →</a></li>
+    </ul>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="mod-hero" style="--bg-img:url('assets/img/deco/preto-branco-rua.jpg')">
+  <div class="wrap">
+    <div class="crumb"><a href="index.html">Início</a> › <a href="index.html#modulos">Módulos</a> › Módulo 1</div>
+    <div class="kicker">
+      <span class="pill">Módulo 01</span>
+      <span class="pill pill--ghost">32 horas</span>
+      <span class="pill pill--ghost">Item de conhecimento: Introdução à Fotografia Digital</span>
+    </div>
+    <h1>Introdução à Fotografia Digital</h1>
+    <p>Da câmera escura ao sensor do seu celular. Neste módulo você constrói o alicerce: a história, o
+      funcionamento da câmera, o triângulo da exposição e os fundamentos da composição.</p>
+  </div>
+</section>
+<style>.mod-hero::before{ background-image:var(--bg-img); }</style>
+
+<div class="section">
+<div class="wrap">
+<div class="doc">
+
+  <!-- TOC -->
+  <aside class="toc">
+    <h5>Neste módulo</h5>
+    <ol>
+      <li><a href="#arte">1. A arte antes da foto</a></li>
+      <li><a href="#historia">2. História da fotografia</a></li>
+      <li><a href="#olhar">3. O olho e a câmera</a></li>
+      <li><a href="#partes">4. As partes da câmera</a></li>
+      <li><a href="#objetivas">5. Tipos de objetivas</a></li>
+      <li><a href="#exposicao">6. O triângulo da exposição</a></li>
+      <li><a href="#profundidade">7. Profundidade de campo</a></li>
+      <li><a href="#smartphone">8. A câmera do smartphone</a></li>
+      <li><a href="#enquadramento">9. Enquadramento e planos</a></li>
+      <li><a href="#tercos">10. A regra dos terços</a></li>
+      <li><a href="#composicao">11. Tipos de composição</a></li>
+      <li><a href="#mestres">12. O olhar dos mestres</a></li>
+    </ol>
+  </aside>
+
+  <!-- BODY -->
+  <div class="doc-body">
+
+    <div class="objective reveal">
+      <svg class="o-ico" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" stroke="#f4b03e" stroke-width="2"/><path d="M24 14v10l7 4" stroke="#f4b03e" stroke-width="2" stroke-linecap="round"/></svg>
+      <div><h4>Objetivo do módulo</h4>
+        <p>Conhecer a linguagem audiovisual e os fundamentos técnicos da fotografia: ler e analisar imagens,
+          entender como a câmera funciona e dominar exposição, enquadramento e composição.</p></div>
+    </div>
+
+    <!-- 1. ARTE -->
+    <section id="arte" class="reveal">
+      <p class="eyebrow">Parte 1</p>
+      <h2>A arte antes da foto: a luz na pintura</h2>
+      <p>Antes de existir a fotografia, os artistas já estudavam profundamente uma coisa que é o coração da nossa
+        arte: a <strong>luz</strong>. Entender como pintores usaram luz e sombra ao longo da história treina o seu
+        olhar para perceber <mark>de onde vem a luz</mark> e como ela cria volume, drama e emoção.</p>
+
+      <p>Ao longo dos movimentos artísticos — Renascimento, Barroco, Rococó, Neoclassicismo, Romantismo, Realismo,
+        Impressionismo, Arte Moderna, Contemporânea e Pop Art — a forma de tratar a luz mudou junto com a sociedade.
+        Repare especialmente na técnica do <strong>claro-escuro</strong> (<em>chiaroscuro</em>): o contraste forte
+        entre áreas iluminadas e escuras que dá tridimensionalidade e dramaticidade à cena.</p>
+
+      <div class="fig-2 reveal">
+        <figure class="frame"><img src="assets/img/historia/caravaggio-sao-mateus.jpg" alt="A Vocação de São Mateus, de Caravaggio" loading="lazy">
+          <figcaption><strong>Caravaggio — “A Vocação de São Mateus” (1599–1600).</strong> O mestre do claro-escuro: um feixe de luz corta a escuridão e guia o olhar.<span class="credit">Domínio público · Wikimedia Commons</span></figcaption></figure>
+        <figure class="frame"><img src="assets/img/historia/vermeer-moca-perola.jpg" alt="Moça com Brinco de Pérola, de Vermeer" loading="lazy">
+          <figcaption><strong>Vermeer — “Moça com Brinco de Pérola” (1665).</strong> Luz suave de janela, modelando o rosto com delicadeza.<span class="credit">Domínio público · Wikimedia Commons</span></figcaption></figure>
+      </div>
+
+      <div class="callout callout--tip reveal"><span class="ico">🎨</span><b class="title">Exercício de olhar</b>
+        <p>Ao ver uma pintura (ou uma foto), pergunte-se: <strong>De onde vem a luz?</strong> É dura ou suave?
+          Cria sombras marcadas ou um clima difuso? Esse mesmo raciocínio você vai usar para fotografar — é o
+          tema central do <a href="modulo-2-iluminacao.html">Módulo 2</a>.</p></div>
+
+      <div class="fig-2 reveal">
+        <figure class="frame"><img src="assets/img/historia/vermeer-leiteira.jpg" alt="A Leiteira, de Vermeer" loading="lazy">
+          <figcaption>Vermeer — “A Leiteira”. A luz lateral revela texturas do pão, do pano e da parede.<span class="credit">Domínio público</span></figcaption></figure>
+        <figure class="frame"><img src="assets/img/historia/wright-luz-vela.jpg" alt="Pintura iluminada por luz de vela" loading="lazy">
+          <figcaption>Joseph Wright — luz de uma única vela cria forte volume e atmosfera.<span class="credit">Domínio público</span></figcaption></figure>
+      </div>
+    </section>
+
+    <!-- 2. HISTÓRIA -->
+    <section id="historia" class="reveal">
+      <p class="eyebrow">Parte 2</p>
+      <h2>A história da fotografia</h2>
+      <p>A palavra <strong>fotografia</strong> vem do grego: <em>photos</em> (luz) + <em>graphein</em> (escrever) —
+        literalmente, <mark>“escrever com a luz”</mark>. Mas a ideia nasceu muito antes da química que fixa a imagem.</p>
+
+      <h3>O princípio: a câmera escura de orifício</h3>
+      <p>Desde a Antiguidade já se conhecia a <strong>câmera escura</strong> (<em>camera obscura</em>): um ambiente
+        ou caixa totalmente escura com um pequeno furo (orifício) numa das paredes. A luz que entra por esse furo
+        projeta, na parede oposta, a imagem invertida do que está lá fora. Artistas usavam isso para desenhar com
+        precisão. Faltava apenas um jeito de <strong>fixar</strong> aquela imagem.</p>
+
+      <div class="fig-2 reveal">
+        <figure class="frame"><img src="assets/img/historia/camera-obscura-gravura.jpg" alt="Gravura explicando o princípio da câmera escura" loading="lazy">
+          <figcaption>O princípio da câmera escura: o orifício projeta a cena invertida.<span class="credit">Wellcome Collection · Domínio público</span></figcaption></figure>
+        <figure class="frame"><img src="assets/img/historia/camera-obscura-caixa.jpg" alt="Câmera escura portátil em caixa" loading="lazy">
+          <figcaption>Câmera escura portátil em caixa — antepassada direta da máquina fotográfica.<span class="credit">Domínio público</span></figcaption></figure>
+      </div>
+
+      <h3>O princípio da fotossensibilidade</h3>
+      <p>A segunda peça do quebra-cabeça foi descobrir que certas substâncias (como os <strong>sais de prata</strong>)
+        escurecem quando expostas à luz. Unindo a <strong>câmera escura</strong> (que forma a imagem) com uma
+        superfície <strong>fotossensível</strong> (que reage à luz), nascia a possibilidade de registrar imagens
+        permanentemente.</p>
+
+      <h3>Os pioneiros</h3>
+      <div class="grid grid-2 reveal">
+        <div class="card">
+          <figure class="frame" style="margin:0 0 14px"><img class="img-tall" src="assets/img/historia/niepce-primeira-foto.jpg" alt="Vista da Janela em Le Gras, primeira fotografia" loading="lazy" style="aspect-ratio:4/3"></figure>
+          <h4 style="margin-top:0">Joseph Nicéphore Niépce (1765–1833)</h4>
+          <p class="muted">Em <strong>1826</strong> registrou a imagem considerada a <mark>primeira fotografia da
+            história</mark>: “Vista da Janela em Le Gras”. A exposição durou cerca de <strong>8 horas</strong>!</p>
+        </div>
+        <div class="card">
+          <figure class="frame" style="margin:0 0 14px"><img class="img-tall" src="assets/img/historia/boulevard-du-temple.jpg" alt="Boulevard du Temple, de Daguerre" loading="lazy" style="aspect-ratio:4/3"></figure>
+          <h4 style="margin-top:0">Louis J. M. Daguerre (1787–1851)</h4>
+          <p class="muted">Criou o <strong>daguerreótipo</strong> (1839), processo muito mais rápido e nítido.
+            Sua “Boulevard du Temple” traz a <mark>primeira pessoa fotografada</mark> da história — o homem que
+            parou para engraxar os sapatos.</p>
+        </div>
+      </div>
+
+      <div class="callout callout--info reveal"><span class="ico">🇧🇷</span><b class="title">A fotografia no Brasil</b>
+        <p>Pouca gente sabe: o francês radicado em Campinas <strong>Hercule Florence</strong> chegou a um processo
+          fotográfico de forma <strong>independente e isolada</strong>, por volta de 1833 — e foi ele quem cunhou a
+          palavra <em>“photographie”</em>. A descoberta ficou esquecida por mais de 150 anos, mas hoje é reconhecida
+          como parte essencial da história da fotografia.</p></div>
+
+      <h3>Da fotografia analógica à digital</h3>
+      <p>Por quase 200 anos a fotografia foi <strong>analógica</strong>: a luz sensibilizava um <strong>filme</strong>
+        químico, revelado depois em laboratório. A grande virada veio com a <strong>fotografia digital</strong>: no
+        lugar do filme, um <strong>sensor eletrônico</strong> converte a luz em dados, e a imagem fica pronta na hora.</p>
+      <div class="table-wrap reveal">
+        <table>
+          <thead><tr><th>Aspecto</th><th>Analógica (filme)</th><th>Digital (sensor)</th></tr></thead>
+          <tbody>
+            <tr><td>Captação da luz</td><td>Filme fotossensível</td><td>Sensor eletrônico</td></tr>
+            <tr><td>Resultado</td><td>Precisa revelar em laboratório</td><td>Imagem imediata na tela</td></tr>
+            <tr><td>Custo por foto</td><td>Cada clique custa filme</td><td>Praticamente zero</td></tr>
+            <tr><td>Quantidade</td><td>Limitada (24/36 poses)</td><td>Milhares de fotos</td></tr>
+            <tr><td>Edição</td><td>Química, no laboratório</td><td>Digital, no próprio aparelho</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>O <strong>smartphone</strong> é o ápice dessa evolução: um misto de computador, telefone e câmera digital
+        que mudou para sempre o modo como criamos e compartilhamos imagens.</p>
+
+      <div class="videos reveal">
+        <a class="video-card" href="https://www.youtube.com/results?search_query=hist%C3%B3ria+da+fotografia+document%C3%A1rio+portugu%C3%AAs" target="_blank" rel="noopener">
+          <div class="thumb"><div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+          <div class="vc-body"><div class="vc-tag">▶ Vídeo · YouTube</div><div class="vc-title">A história da fotografia</div><div class="vc-sub">Documentário sobre a invenção e evolução da imagem</div></div>
+        </a>
+        <a class="video-card" href="https://www.youtube.com/results?search_query=como+funciona+a+c%C3%A2mera+escura+camera+obscura" target="_blank" rel="noopener">
+          <div class="thumb"><div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+          <div class="vc-body"><div class="vc-tag">▶ Vídeo · YouTube</div><div class="vc-title">Como funciona a câmera escura</div><div class="vc-sub">O princípio óptico que originou a fotografia</div></div>
+        </a>
+      </div>
+    </section>
+
+    <!-- 3. OLHAR -->
+    <section id="olhar" class="reveal">
+      <p class="eyebrow">Parte 3</p>
+      <h2>Fisiologia do olhar: o olho e a câmera</h2>
+      <p>Os princípios de funcionamento de uma câmera permanecem os mesmos desde a invenção: uma <strong>câmara
+        escura</strong> com uma entrada de luz e uma superfície que fixa a imagem. Não por acaso, <mark>a câmera é
+        uma reprodução do olho humano</mark>. Veja a correspondência:</p>
+
+      <div class="diagram reveal">
+        <svg viewBox="0 0 720 300" role="img" aria-label="Comparação entre o olho humano e a câmera">
+          <!-- OLHO -->
+          <text x="160" y="34" fill="#fff" font-family="Fraunces,serif" font-size="22" text-anchor="middle">O olho humano</text>
+          <circle cx="160" cy="160" r="92" fill="#15171d" stroke="#2c303b"/>
+          <path d="M68 160 q92 -92 184 0 q-92 92 -184 0" fill="#1a1d25" stroke="#3a3f4d"/>
+          <circle cx="160" cy="160" r="34" fill="#21242e" stroke="#f4b03e" stroke-width="2"/>
+          <circle cx="160" cy="160" r="13" fill="#0e0f13"/>
+          <path d="M252 160 h60" stroke="#5ec8c0" stroke-width="2" stroke-dasharray="4 4"/>
+          <text x="160" y="270" fill="#868d9a" font-size="13" text-anchor="middle">cristalino · íris · retina</text>
+          <!-- setas -->
+          <g fill="#868d9a" font-size="13" font-family="Inter,sans-serif">
+            <text x="360" y="120" text-anchor="middle">cristalino → <tspan fill="#f4b03e">objetiva</tspan></text>
+            <text x="360" y="160" text-anchor="middle">íris → <tspan fill="#f4b03e">diafragma</tspan></text>
+            <text x="360" y="200" text-anchor="middle">retina → <tspan fill="#f4b03e">sensor</tspan></text>
+          </g>
+          <path d="M312 150 h96" stroke="#3a3f4d" stroke-width="1.5"/>
+          <!-- CÂMERA -->
+          <text x="560" y="34" fill="#fff" font-family="Fraunces,serif" font-size="22" text-anchor="middle">A câmera</text>
+          <rect x="470" y="100" width="180" height="120" rx="14" fill="#1a1d25" stroke="#2c303b"/>
+          <rect x="430" y="128" width="48" height="64" rx="8" fill="#21242e" stroke="#f4b03e" stroke-width="2"/>
+          <circle cx="454" cy="160" r="16" fill="#0e0f13" stroke="#f4b03e"/>
+          <rect x="600" y="120" width="14" height="80" rx="3" fill="#5ec8c0" opacity=".6"/>
+          <text x="560" y="270" fill="#868d9a" font-size="13" text-anchor="middle">objetiva · diafragma · sensor</text>
+        </svg>
+        <p class="cap">A objetiva organiza a luz (como o cristalino), o diafragma controla a entrada de luz (como a íris) e o sensor recebe a imagem (como a retina).</p>
+      </div>
+
+      <div class="callout callout--info reveal"><span class="ico">🔎</span><b class="title">Curiosidade</b>
+        <p>A imagem se projeta <strong>invertida</strong> (de cabeça para baixo) dentro do olho e da câmera —
+          é assim em qualquer sistema óptico. No olho, o <strong>cérebro</strong> faz a correção; na câmera, isso é
+          feito por espelhos, prismas e pelo processamento do sensor.</p></div>
+    </section>
+
+    <!-- 4. PARTES -->
+    <section id="partes" class="reveal">
+      <p class="eyebrow">Parte 4</p>
+      <h2>As partes da câmera fotográfica</h2>
+      <p>Quatro componentes trabalham juntos para que a luz refletida pelo objeto seja capturada com fidelidade:</p>
+      <div class="grid grid-2 reveal">
+        <div class="card"><h4 style="margin-top:0">🔭 Objetiva (lente)</h4><p class="muted" style="margin:0">Capta e conduz a luz até o sensor. O conjunto de lentes é responsável pelo <strong>foco</strong>. Cada objetiva tem uma <strong>distância focal</strong>.</p></div>
+        <div class="card"><h4 style="margin-top:0">⏱️ Obturador</h4><p class="muted" style="margin:0">Controla o <strong>tempo</strong> em que a luz sensibiliza o sensor — a velocidade. É ele que congela ou borra o movimento.</p></div>
+        <div class="card"><h4 style="margin-top:0">⭕ Diafragma</h4><p class="muted" style="margin:0">A “íris” da objetiva. Lâminas formam um orifício que regula <strong>quanta luz</strong> entra (a abertura).</p></div>
+        <div class="card"><h4 style="margin-top:0">📊 Fotômetro</h4><p class="muted" style="margin:0">Mede a luz da cena e calcula o melhor ajuste entre diafragma e obturador para uma exposição correta.</p></div>
+      </div>
+
+      <h3>DSLR × Mirrorless: e o sensor?</h3>
+      <p>Nas câmeras profissionais, o <strong>sensor</strong> é a peça que recebe a imagem (no lugar do antigo filme).
+        Dois grandes tipos de câmera dominam o mercado:</p>
+      <div class="table-wrap reveal">
+        <table>
+          <thead><tr><th></th><th>DSLR (reflex)</th><th>Mirrorless (sem espelho)</th></tr></thead>
+          <tbody>
+            <tr><td>Espelho interno</td><td>Sim — reflete a imagem para o visor óptico</td><td>Não — a imagem vai direto ao sensor e a um visor eletrônico</td></tr>
+            <tr><td>Tamanho/peso</td><td>Maior e mais pesada</td><td>Mais compacta e leve</td></tr>
+            <tr><td>Visor</td><td>Óptico (vê a cena real)</td><td>Eletrônico (vê já o resultado)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--key reveal"><span class="ico">📱</span><b class="title">E o smartphone?</b>
+        <p>Seu celular segue exatamente os mesmos princípios — só que tudo é <strong>controlado por software</strong>,
+          não por peças mecânicas. Por isso, entender a câmera “grande” te ajuda a dominar a câmera do bolso.
+          Vamos a fundo nisso na <a href="#smartphone">Parte 8</a>.</p></div>
+    </section>
+
+    <!-- 5. OBJETIVAS -->
+    <section id="objetivas" class="reveal">
+      <p class="eyebrow">Parte 5</p>
+      <h2>Tipos de objetivas (lentes)</h2>
+      <p>A <strong>distância focal</strong> (em milímetros) define o “ângulo de visão” da lente. Conhecer os tipos
+        ajuda a entender as <strong>câmeras múltiplas</strong> do seu celular (ultra-wide, principal, tele):</p>
+      <div class="table-wrap reveal">
+        <table>
+          <thead><tr><th>Objetiva</th><th>Característica</th><th>Indicada para</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Normal</strong> (~50mm)</td><td>Ângulo parecido com o do olho humano</td><td>Uso geral, dia a dia</td></tr>
+            <tr><td><strong>Grande angular</strong></td><td>Abrange uma área de visão maior; grande profundidade de campo</td><td>Paisagens, ambientes pequenos, arquitetura</td></tr>
+            <tr><td><strong>Teleobjetiva</strong></td><td>Distância focal longa; aproxima o assunto distante</td><td>Esportes, natureza, retratos de close</td></tr>
+            <tr><td><strong>Olho de peixe</strong></td><td>Angular extrema com forte distorção arredondada</td><td>Efeitos criativos</td></tr>
+            <tr><td><strong>Macro</strong></td><td>Focaliza objetos muito próximos</td><td>Detalhes, insetos, flores, texturas</td></tr>
+            <tr><td><strong>Zoom</strong></td><td>Distância focal variável (faz vários papéis)</td><td>Versatilidade</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 6. EXPOSIÇÃO -->
+    <section id="exposicao" class="reveal">
+      <p class="eyebrow">Parte 6 · o coração da técnica</p>
+      <h2>O triângulo da exposição</h2>
+      <p>Uma boa fotografia depende de uma boa <strong>exposição</strong> — a quantidade certa de luz chegando ao
+        sensor. Ela é o equilíbrio entre <strong>três ajustes</strong> que se influenciam mutuamente. Mexeu em um,
+        compensa no outro. Esse é o conceito mais importante de todo o curso:</p>
+
+      <div class="diagram reveal">
+        <svg viewBox="0 0 600 380" role="img" aria-label="Triângulo da exposição: ISO, abertura e velocidade">
+          <polygon points="300,40 80,330 520,330" fill="none" stroke="#f4b03e" stroke-width="2.5"/>
+          <circle cx="300" cy="185" r="56" fill="#1a1205" stroke="#c9871f"/>
+          <text x="300" y="180" fill="#f4b03e" font-family="Fraunces,serif" font-size="20" text-anchor="middle">EXPO-</text>
+          <text x="300" y="204" fill="#f4b03e" font-family="Fraunces,serif" font-size="20" text-anchor="middle">SIÇÃO</text>
+          <!-- topo: ISO -->
+          <circle cx="300" cy="40" r="9" fill="#5ec8c0"/>
+          <text x="300" y="20" fill="#fff" font-family="Fraunces,serif" font-size="20" text-anchor="middle">ISO</text>
+          <text x="300" y="64" fill="#868d9a" font-size="12" text-anchor="middle">sensibilidade à luz</text>
+          <!-- esq: abertura -->
+          <circle cx="80" cy="330" r="9" fill="#e8736b"/>
+          <text x="78" y="360" fill="#fff" font-family="Fraunces,serif" font-size="20" text-anchor="middle">ABERTURA</text>
+          <text x="78" y="378" fill="#868d9a" font-size="12" text-anchor="middle">diafragma (f)</text>
+          <!-- dir: velocidade -->
+          <circle cx="520" cy="330" r="9" fill="#f4b03e"/>
+          <text x="522" y="360" fill="#fff" font-family="Fraunces,serif" font-size="20" text-anchor="middle">VELOCIDADE</text>
+          <text x="522" y="378" fill="#868d9a" font-size="12" text-anchor="middle">obturador (1/s)</text>
+        </svg>
+        <p class="cap">Os três vértices da boa exposição. O segredo é equilibrá-los conforme a luz e a intenção da foto.</p>
+      </div>
+
+      <h3>⭕ Abertura / Diafragma (f)</h3>
+      <p>É o tamanho do orifício por onde a luz entra, medido em números <strong>f</strong> (f/1.8, f/2.8, f/4, f/5.6,
+        f/8, f/11, f/16…). Atenção ao detalhe que confunde todo mundo:</p>
+      <div class="callout callout--warn reveal"><span class="ico">⚠️</span><b class="title">Regra de ouro da abertura</b>
+        <p>O número f é <strong>inversamente proporcional</strong> ao tamanho da abertura. Ou seja:
+          <mark>quanto MENOR o número, MAIOR a abertura</mark> (entra mais luz). Ex.: <code>f/1.8</code> é muito mais
+          aberto que <code>f/16</code>.</p></div>
+
+      <div class="diagram reveal">
+        <svg viewBox="0 0 720 200" role="img" aria-label="Escala de abertura do diafragma">
+          <g text-anchor="middle" font-family="Inter,sans-serif">
+            <circle cx="70" cy="80" r="42" fill="#f4b03e" opacity=".95"/><text x="70" y="150" fill="#fff" font-size="15">f/1.8</text>
+            <circle cx="190" cy="80" r="33" fill="#f4b03e" opacity=".85"/><text x="190" y="150" fill="#fff" font-size="15">f/2.8</text>
+            <circle cx="310" cy="80" r="25" fill="#f4b03e" opacity=".75"/><text x="310" y="150" fill="#fff" font-size="15">f/5.6</text>
+            <circle cx="430" cy="80" r="17" fill="#f4b03e" opacity=".6"/><text x="430" y="150" fill="#fff" font-size="15">f/8</text>
+            <circle cx="550" cy="80" r="11" fill="#f4b03e" opacity=".5"/><text x="550" y="150" fill="#fff" font-size="15">f/11</text>
+            <circle cx="660" cy="80" r="7" fill="#f4b03e" opacity=".4"/><text x="660" y="150" fill="#fff" font-size="15">f/16</text>
+          </g>
+          <text x="70" y="185" fill="#5ec8c0" font-size="12" text-anchor="middle">+ luz · - profundidade</text>
+          <text x="660" y="185" fill="#5ec8c0" font-size="12" text-anchor="middle">- luz · + profundidade</text>
+        </svg>
+        <p class="cap">Aberturas maiores (números menores) deixam entrar mais luz e desfocam o fundo. Aberturas menores deixam tudo nítido.</p>
+      </div>
+
+      <h3>⏱️ Velocidade do obturador</h3>
+      <p>É o <strong>tempo</strong> que o obturador fica aberto, em frações de segundo: <code>1/30</code>,
+        <code>1/60</code>, <code>1/125</code>, <code>1/500</code>, <code>1/1000</code>… Quanto maior a velocidade
+        (fração menor), menos tempo de luz — e mais o movimento é <strong>congelado</strong>.</p>
+      <div class="diagram reveal">
+        <svg viewBox="0 0 720 150" role="img" aria-label="Escala de velocidade do obturador">
+          <defs><linearGradient id="vg" x1="0" x2="1"><stop offset="0" stop-color="#e8736b"/><stop offset="1" stop-color="#5ec8c0"/></linearGradient></defs>
+          <rect x="40" y="60" width="640" height="14" rx="7" fill="url(#vg)"/>
+          <g font-family="Inter,sans-serif" font-size="13" fill="#b9bfca" text-anchor="middle">
+            <text x="60" y="48">1/4 s</text><text x="60" y="98">lenta</text>
+            <text x="360" y="48">1/125 s</text>
+            <text x="660" y="48">1/2000 s</text><text x="660" y="98">rápida</text>
+          </g>
+          <text x="120" y="125" fill="#e8736b" font-size="12" text-anchor="middle">rastro / borrão de movimento</text>
+          <text x="600" y="125" fill="#5ec8c0" font-size="12" text-anchor="middle">congela o movimento</text>
+        </svg>
+        <p class="cap">Velocidade lenta → efeito de rastro (água sedosa, luzes em traço). Velocidade alta → ação “parada no ar”.</p>
+      </div>
+
+      <h3>📈 ISO — sensibilidade do sensor</h3>
+      <p>O <strong>ISO</strong> mede a sensibilidade do sensor à luz. Quanto maior o ISO, mais sensível — útil em
+        ambientes escuros — mas surge o <strong>ruído</strong> (granulação). A escala vai de cerca de <code>ISO 50</code>
+        a <code>ISO 25.000</code>.</p>
+      <div class="callout callout--tip reveal"><span class="ico">🎚️</span><b class="title">ISO na prática</b>
+        <p>• <strong>100 ISO</strong> → sol forte &nbsp;•&nbsp; <strong>400 ISO</strong> → dia nublado &nbsp;•&nbsp;
+          <strong>800–3200 ISO</strong> → ambientes internos. Regra geral: <mark>use o menor ISO possível</mark> para
+          a melhor qualidade de imagem.</p></div>
+
+      <div class="table-wrap reveal">
+        <table>
+          <thead><tr><th>Ajuste</th><th>Valor baixo</th><th>Valor alto</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Abertura</strong> (f)</td><td>Número pequeno = muita luz, <em>pouca</em> profundidade (fundo desfocado)</td><td>Número grande = pouca luz, <em>muita</em> profundidade (tudo nítido)</td></tr>
+            <tr><td><strong>ISO</strong></td><td>Fotos limpas, sem ruído / precisa de mais luz</td><td>Fotos com ruído/granulação / precisa de menos luz</td></tr>
+            <tr><td><strong>Velocidade</strong></td><td>Lenta: capta mais luz, efeito de rastro</td><td>Rápida: capta menos luz, congela o movimento</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="videos reveal">
+        <a class="video-card" href="https://www.youtube.com/results?search_query=tri%C3%A2ngulo+da+exposi%C3%A7%C3%A3o+ISO+abertura+velocidade+explicado" target="_blank" rel="noopener">
+          <div class="thumb"><div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+          <div class="vc-body"><div class="vc-tag">▶ Vídeo · YouTube</div><div class="vc-title">Triângulo da exposição explicado</div><div class="vc-sub">ISO, abertura e velocidade na prática</div></div>
+        </a>
+      </div>
+    </section>
+
+    <!-- 7. PROFUNDIDADE -->
+    <section id="profundidade" class="reveal">
+      <p class="eyebrow">Parte 7</p>
+      <h2>Profundidade de campo</h2>
+      <p>É a <strong>zona de nitidez</strong> à frente e atrás do assunto focado. Ela é controlada principalmente
+        pela <strong>abertura do diafragma</strong>:</p>
+      <ul>
+        <li><strong>Baixa profundidade de campo</strong> → fundo desfocado (abertura grande, f pequeno). Ótima para
+          <mark>retratos</mark>: separa o assunto do fundo.</li>
+        <li><strong>Alta profundidade de campo</strong> → tudo nítido, do perto ao longe (abertura pequena, f grande).
+          Ideal para <mark>paisagens</mark>.</li>
+      </ul>
+
+      <div class="diagram reveal">
+        <svg viewBox="0 0 700 220" role="img" aria-label="Diagrama de profundidade de campo">
+          <rect x="20" y="92" width="40" height="44" rx="6" fill="#21242e" stroke="#f4b03e"/>
+          <text x="40" y="160" fill="#868d9a" font-size="12" text-anchor="middle">câmera</text>
+          <!-- zona de nitidez -->
+          <rect x="250" y="40" width="150" height="150" fill="#f4b03e" opacity=".12"/>
+          <line x1="250" y1="30" x2="250" y2="200" stroke="#f4b03e" stroke-dasharray="4 4"/>
+          <line x1="400" y1="30" x2="400" y2="200" stroke="#f4b03e" stroke-dasharray="4 4"/>
+          <text x="325" y="24" fill="#f4b03e" font-size="13" text-anchor="middle">zona de nitidez</text>
+          <!-- assuntos -->
+          <circle cx="160" cy="150" r="14" fill="#3a3f4d"/><text x="160" y="185" fill="#868d9a" font-size="11" text-anchor="middle">perto (desfocado)</text>
+          <circle cx="325" cy="150" r="16" fill="#5ec8c0"/><text x="325" y="185" fill="#5ec8c0" font-size="11" text-anchor="middle">foco</text>
+          <circle cx="560" cy="150" r="14" fill="#3a3f4d"/><text x="560" y="185" fill="#868d9a" font-size="11" text-anchor="middle">longe (desfocado)</text>
+          <path d="M60 114 L680 70 M60 114 L680 158" stroke="#2c303b"/>
+        </svg>
+        <p class="cap">Só o que estiver dentro da “zona de nitidez” fica em foco. A abertura controla o tamanho dessa zona.</p>
+      </div>
+
+      <div class="fig-2 reveal">
+        <figure class="frame"><img src="assets/img/tecnica/abertura-f5.jpg" alt="Flores fotografadas com abertura f/5" loading="lazy">
+          <figcaption><strong>Abertura grande (≈ f/5).</strong> Pouca profundidade: a flor da frente em foco, o resto desfoca.<span class="credit">Wikimedia Commons</span></figcaption></figure>
+        <figure class="frame"><img src="assets/img/tecnica/abertura-f32.jpg" alt="Flores fotografadas com abertura f/32" loading="lazy">
+          <figcaption><strong>Abertura pequena (≈ f/32).</strong> Muita profundidade: quase tudo aparece nítido.<span class="credit">Wikimedia Commons</span></figcaption></figure>
+      </div>
+      <figure class="frame reveal"><img class="img-wide" src="assets/img/tecnica/profundidade-bokeh.jpg" alt="Retrato com fundo totalmente desfocado (bokeh)" loading="lazy">
+        <figcaption>O fundo cremoso e desfocado tem até nome: <strong>bokeh</strong>. No celular, o “modo retrato” simula esse efeito por software.<span class="credit">Wikimedia Commons</span></figcaption></figure>
+    </section>
+
+    <!-- 8. SMARTPHONE -->
+    <section id="smartphone" class="reveal">
+      <p class="eyebrow">Parte 8 · mão na massa</p>
+      <h2>Conhecendo a câmera do smartphone</h2>
+      <p>Chegou a hora de transferir tudo isso para o seu aparelho. O <strong>sensor</strong> do celular é bem menor
+        que o de uma câmera profissional (em média <strong>1,27 cm</strong>) — por isso, quanto maior e melhor o
+        sensor, mais detalhes ele captura. Como o celular não tem peças mecânicas, <mark>diafragma, obturador e ISO
+        são controlados por software</mark>.</p>
+
+      <figure class="frame reveal"><img class="img-wide" src="assets/img/deco/smartphone.jpg" alt="Fotografando com smartphone" loading="lazy">
+        <figcaption>Toda a teoria dos módulos anteriores se aplica aqui — só muda a forma de ajustar.</figcaption></figure>
+
+      <div class="callout callout--info reveal"><span class="ico">📲</span><b class="title">App recomendado: Câmera FV-5</b>
+        <p>Cada fabricante tem uma interface diferente. Para aprender os ajustes <strong>manuais</strong> de forma
+          padronizada, usamos em aula o app gratuito <strong>Câmera FV-5 Lite</strong> (Android/iOS). Ele expõe ISO,
+          velocidade, foco, balanço de branco, medição e histograma — exatamente o que estudamos.</p></div>
+
+      <h3>O histograma</h3>
+      <p>É um gráfico que indica se a <strong>exposição está correta</strong>. Ele mostra a distribuição de luz da
+        foto, das sombras (esquerda) às altas-luzes (direita):</p>
+      <div class="diagram reveal">
+        <svg viewBox="0 0 720 180" role="img" aria-label="Tipos de histograma">
+          <g font-family="Inter,sans-serif">
+            <!-- subexposta -->
+            <rect x="20" y="20" width="200" height="110" rx="8" fill="#15171d" stroke="#2c303b"/>
+            <path d="M30 130 Q60 40 90 130 Q110 70 130 130 L210 130 Z" fill="#5aa6e8" opacity=".5"/>
+            <text x="120" y="155" fill="#868d9a" font-size="13" text-anchor="middle">Subexposta (escura)</text>
+            <!-- correta -->
+            <rect x="260" y="20" width="200" height="110" rx="8" fill="#15171d" stroke="#2c303b"/>
+            <path d="M270 130 Q330 25 360 30 Q390 25 450 130 Z" fill="#58c08b" opacity=".55"/>
+            <text x="360" y="155" fill="#58c08b" font-size="13" text-anchor="middle">Correta (equilibrada)</text>
+            <!-- superexposta -->
+            <rect x="500" y="20" width="200" height="110" rx="8" fill="#15171d" stroke="#2c303b"/>
+            <path d="M510 130 L590 130 Q610 70 630 130 Q660 40 690 130 Z" fill="#f0a23a" opacity=".5"/>
+            <text x="600" y="155" fill="#868d9a" font-size="13" text-anchor="middle">Superexposta (clara)</text>
+          </g>
+        </svg>
+        <p class="cap">Massa toda à esquerda = foto escura. Toda à direita = foto “estourada”. Bem distribuída = exposição equilibrada. Mas sempre interprete também a cena!</p>
+      </div>
+
+      <h3>Balanço de branco (White Balance)</h3>
+      <p>Cada fonte de luz tem uma <strong>cor</strong> (temperatura, em Kelvin). O balanço de branco informa ao
+        sensor qual é essa luz, para que o branco apareça realmente branco — sem ficar alaranjado ou azulado.</p>
+      <div class="diagram reveal">
+        <svg viewBox="0 0 720 120" role="img" aria-label="Escala de temperatura de cor">
+          <defs><linearGradient id="kelvin" x1="0" x2="1"><stop offset="0" stop-color="#ffb24d"/><stop offset=".5" stop-color="#fff7e8"/><stop offset="1" stop-color="#7fb6ff"/></linearGradient></defs>
+          <rect x="30" y="30" width="660" height="34" rx="17" fill="url(#kelvin)"/>
+          <g font-family="Inter,sans-serif" font-size="12" fill="#b9bfca" text-anchor="middle">
+            <text x="80" y="86">2000K</text><text x="80" y="102" fill="#868d9a">vela / quente</text>
+            <text x="260" y="86">3500K</text><text x="260" y="102" fill="#868d9a">lâmpada</text>
+            <text x="440" y="86">5500K</text><text x="440" y="102" fill="#868d9a">luz do dia</text>
+            <text x="630" y="86">8000K+</text><text x="630" y="102" fill="#868d9a">sombra / frio</text>
+          </g>
+        </svg>
+        <p class="cap">Luz quente (baixos Kelvin) puxa para o laranja; luz fria (altos Kelvin) puxa para o azul.</p>
+      </div>
+
+      <h3>Foco e medição de luz</h3>
+      <div class="grid grid-2 reveal">
+        <div class="card"><h4 style="margin-top:0">🎯 Modos de foco</h4><p class="muted" style="margin:0">Por <strong>toque</strong> (você escolhe onde focar), <strong>automático</strong> (perto/longe), ou <strong>detecção de rostos</strong>. O ícone de montanha = foco longe; flor = foco perto.</p></div>
+        <div class="card"><h4 style="margin-top:0">📐 Modos de medição</h4><p class="muted" style="margin:0"><strong>Matricial</strong> (média de toda a cena), <strong>ponderada ao centro</strong> ou <strong>pontual</strong> (mede só um ponto). Escolha conforme onde está a luz importante.</p></div>
+      </div>
+
+      <div class="callout callout--example reveal"><span class="ico">🏖️</span><b class="title">Exemplo prático: futevôlei na praia</b>
+        <p>Dia ensolarado e você quer a bola “parada no ar”. Solução: <strong>velocidade alta</strong> para congelar
+          (entre <code>1/250</code> e <code>1/500</code>); como há muita luz, o <strong>ISO pode ficar baixo</strong>
+          (100–400). No celular não dá para mexer no diafragma — então compensamos na velocidade e no ISO,
+          sempre observando o histograma e a imagem.</p></div>
+
+      <div class="callout callout--tip reveal"><span class="ico">🤳</span><b class="title">Modo automático × manual</b>
+        <p>O automático resolve a maioria das situações — use-o para focar só na composição. Mas quando ele “erra” ou
+          você quer um efeito específico, é o <strong>modo manual</strong> que te dá liberdade criativa. Por isso
+          aprendemos como tudo funciona. <strong>Agora solte sua criatividade!</strong></p></div>
+
+      <div class="videos reveal">
+        <a class="video-card" href="https://www.youtube.com/results?search_query=fotografia+com+celular+modo+profissional+manual+tutorial" target="_blank" rel="noopener">
+          <div class="thumb"><div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+          <div class="vc-body"><div class="vc-tag">▶ Vídeo · YouTube</div><div class="vc-title">Modo profissional/manual do celular</div><div class="vc-sub">Como ajustar ISO, velocidade e foco</div></div>
+        </a>
+        <a class="video-card" href="https://www.youtube.com/results?search_query=10+dicas+para+fotografar+com+smartphone" target="_blank" rel="noopener">
+          <div class="thumb"><div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+          <div class="vc-body"><div class="vc-tag">▶ Vídeo · YouTube</div><div class="vc-title">10 dicas para fotografar com o celular</div><div class="vc-sub">Truques rápidos para fotos melhores</div></div>
+        </a>
+      </div>
+    </section>
+
+    <!-- 9. ENQUADRAMENTO -->
+    <section id="enquadramento" class="reveal">
+      <p class="eyebrow">Parte 9 · composição</p>
+      <h2>Enquadramento e planos</h2>
+      <p>Enquadrar é <strong>decidir o que entra no quadro</strong> da foto. É um dos fatores que mais contribuem
+        para uma boa imagem. O enquadramento depende de três elementos: o <strong>plano</strong> (distância
+        câmera–objeto), a <strong>altura</strong> e o <strong>lado</strong> do ângulo.</p>
+
+      <p>Os <strong>planos</strong> definem o quanto mostramos do assunto. Veja a escala clássica, do mais aberto ao
+        mais fechado:</p>
+      <div class="diagram reveal">
+        <svg viewBox="0 0 700 260" role="img" aria-label="Os planos de enquadramento sobre uma figura humana">
+          <!-- figura simples -->
+          <g transform="translate(70,20)">
+            <circle cx="60" cy="35" r="22" fill="#21242e" stroke="#3a3f4d"/>
+            <rect x="34" y="58" width="52" height="90" rx="14" fill="#21242e" stroke="#3a3f4d"/>
+            <rect x="40" y="146" width="18" height="80" fill="#21242e" stroke="#3a3f4d"/>
+            <rect x="62" y="146" width="18" height="80" fill="#21242e" stroke="#3a3f4d"/>
+          </g>
+          <!-- linhas de corte -->
+          <g stroke="#f4b03e" stroke-dasharray="5 5" stroke-width="1.4">
+            <line x1="60" y1="40" x2="320" y2="40"/>
+            <line x1="60" y1="70" x2="320" y2="70"/>
+            <line x1="60" y1="120" x2="320" y2="120"/>
+            <line x1="60" y1="170" x2="320" y2="170"/>
+            <line x1="60" y1="246" x2="320" y2="246"/>
+          </g>
+          <g font-family="Inter,sans-serif" font-size="13" fill="#b9bfca">
+            <text x="330" y="34">Primeiríssimo plano — só o rosto/olhos</text>
+            <text x="330" y="64">Primeiro plano — cabeça e ombros</text>
+            <text x="330" y="114">Plano médio — da cintura para cima</text>
+            <text x="330" y="164">Plano americano — do joelho para cima</text>
+            <text x="330" y="240">Plano geral — corpo inteiro + ambiente</text>
+          </g>
+        </svg>
+        <p class="cap">Quanto mais fechado o plano, mais intimidade e detalhe; quanto mais aberto, mais contexto e ambiente.</p>
+      </div>
+      <p class="muted">Há ainda o <strong>plano detalhe</strong> (um close extremo de um objeto ou parte: um olho,
+        uma aliança, a textura de uma fruta) e o <strong>plano médio curto</strong> (entre o médio e o primeiro plano).</p>
+
+      <h3>Enquadramento com linhas e perspectivas</h3>
+      <p>Aproveitar a <strong>convergência de linhas</strong> (uma rua, uma ponte, trilhos, um corredor) cria sensação
+        de <strong>profundidade e tridimensionalidade</strong>. Muito usado em paisagem e arquitetura.</p>
+      <figure class="frame reveal"><img class="img-wide" src="assets/img/tecnica/linhas-guia.jpg" alt="Estrada reta criando linhas de fuga" loading="lazy">
+        <figcaption>As <strong>linhas-guia</strong> conduzem o olhar de quem vê para dentro da foto, em direção ao ponto de interesse.<span class="credit">Wikimedia Commons</span></figcaption></figure>
+    </section>
+
+    <!-- 10. TERÇOS -->
+    <section id="tercos" class="reveal">
+      <p class="eyebrow">Parte 10</p>
+      <h2>A regra dos terços</h2>
+      <p>A técnica de composição mais conhecida. Imagine a cena dividida em <strong>9 partes iguais</strong>, com
+        duas linhas verticais e duas horizontais — como um “jogo da velha”. Os <strong>4 pontos</strong> onde as
+        linhas se cruzam são os <mark>pontos de força</mark> da imagem.</p>
+      <div class="diagram reveal">
+        <svg viewBox="0 0 480 300" role="img" aria-label="Grade da regra dos terços">
+          <rect x="10" y="10" width="460" height="280" rx="8" fill="#15171d" stroke="#2c303b"/>
+          <g stroke="#f4b03e" stroke-width="1.4" opacity=".8">
+            <line x1="163" y1="10" x2="163" y2="290"/><line x1="316" y1="10" x2="316" y2="290"/>
+            <line x1="10" y1="103" x2="470" y2="103"/><line x1="10" y1="196" x2="470" y2="196"/>
+          </g>
+          <g fill="#f4b03e">
+            <circle cx="163" cy="103" r="7"/><circle cx="316" cy="103" r="7"/>
+            <circle cx="163" cy="196" r="7"/><circle cx="316" cy="196" r="7"/>
+          </g>
+          <text x="240" y="160" fill="#868d9a" font-size="13" text-anchor="middle" font-family="Inter,sans-serif">posicione o que importa nos pontos ●</text>
+        </svg>
+        <p class="cap">Em vez de centralizar tudo, coloque os elementos importantes sobre os pontos ou linhas. A composição fica mais dinâmica e agradável.</p>
+      </div>
+      <figure class="frame reveal"><img class="img-wide" src="assets/img/tecnica/regra-tercos.jpg" alt="Foto aplicando a regra dos terços" loading="lazy">
+        <figcaption>Repare como o ponto de interesse não está no centro, mas sobre um dos pontos de força.<span class="credit">Wikimedia Commons</span></figcaption></figure>
+      <div class="callout callout--tip reveal"><span class="ico">📱</span><b class="title">Ative a grade no seu celular</b>
+        <p>Quase todo smartphone tem a opção de mostrar a <strong>grade (grid)</strong> na tela da câmera. Ative-a
+          nas configurações: ela exibe exatamente as linhas dos terços e ajuda demais a compor na hora do clique.</p></div>
+    </section>
+
+    <!-- 11. COMPOSIÇÃO -->
+    <section id="composicao" class="reveal">
+      <p class="eyebrow">Parte 11</p>
+      <h2>Tipos de composição</h2>
+      <p>Além dos terços, há várias formas de organizar os elementos para criar imagens mais interessantes:</p>
+      <div class="grid grid-2 reveal">
+        <div class="card"><h4 style="margin-top:0">🪟 Enquadramento dentro do enquadramento</h4><p class="muted" style="margin:0">Usar uma janela, porta ou arco para “emoldurar” o assunto.</p></div>
+        <div class="card"><h4 style="margin-top:0">⚖️ Composição simétrica</h4><p class="muted" style="margin:0">Padrões que se repetem e se equilibram — naturalmente agradáveis ao olhar.</p></div>
+        <div class="card"><h4 style="margin-top:0">🔁 Sobreposição</h4><p class="muted" style="margin:0">Elementos em camadas (frente, meio, fundo) que dão profundidade.</p></div>
+        <div class="card"><h4 style="margin-top:0">↔️ Linhas horizontais, verticais e diagonais</h4><p class="muted" style="margin:0">Horizontais transmitem calma; verticais, força; diagonais, dinamismo e movimento.</p></div>
+        <div class="card"><h4 style="margin-top:0">🌑 Sombras</h4><p class="muted" style="margin:0">A sombra como elemento gráfico, criando contraste e mistério.</p></div>
+        <div class="card"><h4 style="margin-top:0">💧 Reflexos</h4><p class="muted" style="margin:0">Água, vidros e espelhos duplicam a cena e criam simetria e surpresa.</p></div>
+      </div>
+      <figure class="frame reveal"><img class="img-wide" src="assets/img/tecnica/simetria-reflexo.jpg" alt="Construção refletida na água formando simetria" loading="lazy">
+        <figcaption>Simetria + reflexo na água: a harmonia ordenada satisfaz naturalmente o olhar.<span class="credit">Wikimedia Commons</span></figcaption></figure>
+    </section>
+
+    <!-- 12. MESTRES -->
+    <section id="mestres" class="reveal">
+      <p class="eyebrow">Parte 12 · inspiração</p>
+      <h2>O olhar dos mestres</h2>
+      <p>Para quem começa, ter <strong>referências</strong> é fundamental. Estudar quem domina a linguagem
+        fotográfica ajuda você a construir o seu próprio estilo e identidade. Pesquise sempre — é parte do ofício.</p>
+      <div class="grid grid-2 reveal" style="align-items:center">
+        <figure class="frame" style="margin:0"><img src="assets/img/mestres/salgado.jpg" alt="Sebastião Salgado" loading="lazy" style="aspect-ratio:1/1; object-fit:cover"></figure>
+        <div>
+          <h3 style="margin-top:0">Comece por Sebastião Salgado</h3>
+          <p class="muted">O fotógrafo brasileiro mais reconhecido do mundo, mestre do preto e branco e da
+            fotografia social e ambiental. Mas ele é só o começo: Cartier-Bresson, Annie Leibovitz, Walter Firmo,
+            Evandro Teixeira, Luisa Dörr e outros te esperam.</p>
+          <a href="mestres.html" class="btn btn--primary">Conhecer os mestres da fotografia →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGER -->
+    <nav class="pager reveal">
+      <a href="index.html"><span class="dir">← Voltar</span><span class="ttl">Página inicial</span></a>
+      <a href="modulo-2-iluminacao.html" class="next"><span class="dir">Próximo módulo →</span><span class="ttl">2 · Fotografia e Iluminação</span></a>
+    </nav>
+
+  </div>
+</div>
+</div>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="index.html" class="brand" style="margin-bottom:12px"><svg class="lens" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="21" stroke="#f4b03e" stroke-width="2.5"/><circle cx="24" cy="24" r="12" stroke="#f4b03e" stroke-width="2"/><circle cx="24" cy="24" r="4" fill="#f4b03e"/></svg><span>Foto<span style="color:var(--accent)">Smart</span></span></a>
+        <p>Material de estudo do curso <strong>Fotografia Digital com Smartphone</strong> — 200h.</p>
+        <div class="instructor"><div class="av">TT</div><div><b>Tiago Tavares</b><span>Instrutor do curso</span></div></div>
+      </div>
+      <div><h5>Módulos</h5><ul>
+        <li><a href="modulo-1-introducao.html">1 · Introdução à Fotografia</a></li>
+        <li><a href="modulo-2-iluminacao.html">2 · Fotografia e Iluminação</a></li>
+        <li><a href="modulo-3-edicao.html">3 · Edição de Imagem</a></li>
+        <li><a href="modulo-4-empreendedorismo.html">4 · Empreendedorismo</a></li>
+        <li><a href="modulo-5-projeto.html">5 · Projeto Fotográfico</a></li></ul></div>
+      <div><h5>Explorar</h5><ul>
+        <li><a href="mestres.html">O Olhar dos Mestres</a></li>
+        <li><a href="glossario.html">Glossário de termos</a></li>
+        <li><a href="index.html#modulos">Todos os módulos</a></li></ul></div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="year">2026</span> · Curso Fotografia Digital com Smartphone · Instrutor Tiago Tavares</span>
+      <span>Conteúdo baseado no material SENAI/Firjan · Imagens: domínio público &amp; Creative Commons</span>
+    </div>
+  </div>
+</footer>
+
+<button id="toTop" aria-label="Voltar ao topo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M6 11l6-6 6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
