@@ -123,6 +123,61 @@
     });
   }
 
+  /* ---- Editor interativo ao vivo (Módulo 3) ---- */
+  const ed = $("#liveEditor");
+  if (ed) {
+    const img = $(".editor-img", ed);
+    const temp = $(".editor-temp", ed);
+    const bwBtn = $("#ec-bw", ed);
+    let bw = false;
+    const state = { brightness: 100, contrast: 100, saturate: 100, temp: 0 };
+    function apply() {
+      img.style.filter =
+        "brightness(" + state.brightness + "%) contrast(" + state.contrast + "%) saturate(" +
+        (bw ? 0 : state.saturate) + "%)";
+      const t = state.temp;
+      if (t === 0) {
+        temp.style.opacity = 0;
+      } else {
+        temp.style.background = t > 0 ? "rgb(255,150,40)" : "rgb(40,120,255)";
+        temp.style.opacity = Math.min((Math.abs(t) / 100) * 0.5, 0.5);
+      }
+    }
+    function setOut(r) {
+      const out = r.closest(".ec-row").querySelector("output");
+      if (out) out.textContent = r.dataset.unit ? r.value + r.dataset.unit : (r.value > 0 ? "+" : "") + r.value;
+    }
+    $$("input[type=range]", ed).forEach((r) => {
+      r.addEventListener("input", () => {
+        state[r.dataset.filter] = +r.value;
+        setOut(r);
+        apply();
+      });
+    });
+    if (bwBtn) {
+      bwBtn.addEventListener("click", () => {
+        bw = !bw;
+        bwBtn.classList.toggle("active", bw);
+        bwBtn.textContent = bw ? "Voltar à cor" : "Preto e branco";
+        apply();
+      });
+    }
+    const resetBtn = $("#ec-reset", ed);
+    if (resetBtn) {
+      resetBtn.addEventListener("click", () => {
+        state.brightness = 100; state.contrast = 100; state.saturate = 100; state.temp = 0;
+        bw = false;
+        if (bwBtn) { bwBtn.classList.remove("active"); bwBtn.textContent = "Preto e branco"; }
+        $$("input[type=range]", ed).forEach((r) => {
+          r.value = r.dataset.filter === "temp" ? 0 : 100;
+          setOut(r);
+        });
+        apply();
+      });
+    }
+    apply();
+  }
+
   /* ---- Footer year ---- */
   const y = $("#year");
   if (y) y.textContent = new Date().getFullYear();
