@@ -302,6 +302,24 @@ tbody tr:hover{ background:rgba(255,255,255,.02); }
   background:var(--surface-2); border:1px solid var(--accent-deep); }
 .check li::after{ content:"✓"; position:absolute; left:4px; top:1px; color:var(--accent); font-weight:800; font-size:.85rem; }
 
+/* ---------- Atividade prática (exercícios) ---------- */
+.exercise{ position:relative; background:linear-gradient(135deg,rgba(244,176,62,.09),var(--surface) 55%);
+  border:1px solid var(--accent-deep); border-radius:var(--radius); padding:24px 28px 26px; margin:2.8em 0 1em; }
+.exercise .ex-tag{ display:inline-flex; align-items:center; gap:.5em; font-family:var(--sans); font-weight:800;
+  font-size:.74rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-bottom:.4em; }
+.exercise h3{ margin:.1em 0 .35em; font-size:1.4rem; }
+.exercise > p{ color:var(--text-soft); margin-bottom:1em; }
+.exercise .ex-meta{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:1.2em; }
+.exercise .ex-meta span{ font-size:.78rem; background:var(--bg-2); border:1px solid var(--line); color:var(--text-soft);
+  padding:5px 12px; border-radius:30px; }
+.exercise .ex-meta span b{ color:var(--accent-2); font-weight:600; }
+.exercise ol{ margin:0 0 1.1em; padding-left:1.3em; }
+.exercise ol li{ margin:.5em 0; }
+.exercise ol li::marker{ color:var(--accent); font-weight:700; }
+.exercise .ex-tip{ display:flex; gap:.7em; align-items:flex-start; background:var(--bg-2); border-radius:10px;
+  padding:13px 16px; font-size:.92rem; color:var(--text-soft); border-left:3px solid var(--accent); }
+.exercise .ex-tip b{ color:var(--accent); }
+
 /* ---------- CTA band ---------- */
 .cta-band{ background:linear-gradient(115deg,#1d1810,#14161d); border:1px solid var(--line); border-radius:22px;
   padding:clamp(34px,5vw,60px); text-align:center; position:relative; overflow:hidden; }
