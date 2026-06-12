@@ -1,315 +1,323 @@
-// Quiz Modulo 1 - Introducao a Fotografia
-// Estruturado com Taxonomia de Bloom (lembrar, entender, aplicar, analisar, avaliar, criar)
+/* Quiz Modulo 1 - Introducao a Fotografia Digital
+   10 questoes com imagens, alinhadas a Taxonomia de Bloom
+   Gera PDF com gabarito e resultado do aluno
+*/
 
-const quizModulo1 = {
-  titulo: "Quiz - Modulo 1 - Introducao a Fotografia Digital",
-  questoes: [
-    {
-      num: 1,
-      bloom: "lembrar",
-      texto: "A palavra fotografia vem do grego e significa literalmente:",
-      opcoes: [
-        "Capturar a realidade",
-        "Escrever com a luz",
-        "Desenhar com sombras",
-        "Congelar o tempo"
-      ],
-      correta: 1,
-      explicacao: "Photo (luz) + graphein (escrever) = escrever com a luz."
-    },
-    {
-      num: 2,
-      bloom: "entender",
-      texto: "O que e a camera escura e qual e sua importancia na historia da fotografia?",
-      opcoes: [
-        "Uma caixa fechada que projeta a imagem invertida de um objeto, foi o primeiro principio optico que inspirou a camera moderna",
-        "Uma sala de laboratorio para revelar filmes fotograficos",
-        "Um filtro usado em cameras analogicas para melhorar o contraste",
-        "Um tipo especial de lente que captura imagens em ambientes escuros"
-      ],
-      correta: 0,
-      explicacao: "A camera escura (camera obscura) e o principio base: um furo projeta a cena invertida. Os artistas usavam para desenhar com precisao."
-    },
-    {
-      num: 3,
-      bloom: "lembrar",
-      texto: "O triangulo da exposicao e formado por tres ajustes. Quais sao?",
-      opcoes: [
-        "Foco, zoom e balanco de branco",
-        "ISO, abertura e velocidade do obturador",
-        "Diafragma, sensor e objetiva",
-        "Histograma, brilho e contraste"
-      ],
-      correta: 1,
-      explicacao: "ISO (sensibilidade), abertura (f) e velocidade (1/s) formam os tres vertices da exposicao correta."
-    },
-    {
-      num: 4,
-      bloom: "entender",
-      texto: "Por que a abertura e medida em numeros f inversamente proporcionais ao tamanho? (Ex: f/1.8 e maior que f/16)",
-      opcoes: [
-        "E apenas uma convencao historica sem motivo tecnico",
-        "Porque o numero f representa a proporcao entre a distancia focal da lente e o diametro da abertura",
-        "Para confundir fotografos iniciantes",
-        "Porque a luz refrata de forma inversa no sensor"
-      ],
-      correta: 1,
-      explicacao: "f = distancia focal ÷ diametro da abertura. Quanto menor o resultado, maior a abertura. f/1.8 = grande (muita luz); f/16 = pequena (pouca luz)."
-    },
-    {
-      num: 5,
-      bloom: "aplicar",
-      texto: "Voce esta fotografando um jogador saltando para fazer uma cesta. A luz e abundante. Qual ajuste de velocidade do obturador voce usaria para congelar o movimento?",
-      opcoes: [
-        "1/30 s (lenta)",
-        "1/125 s (moderada)",
-        "1/500 s a 1/1000 s (rapida)",
-        "5 s (muito lenta para borrao criativo)"
-      ],
-      correta: 2,
-      explicacao: "Movimentos rapidos exigem velocidades altas (fracoes pequenas). 1/500 a 1/1000 congela acoes explosivas. 1/30 deixaria borrao."
-    },
-    {
-      num: 6,
-      bloom: "entender",
-      texto: "Qual e a relacao entre ISO e qualidade da imagem?",
-      opcoes: [
-        "ISO alto = imagem mais clara, sem perda de qualidade",
-        "ISO baixo = imagem mais sensivel a luz, com mais ruido",
-        "ISO alto = mais sensibilidade, MAS mais ruido/granulacao; ISO baixo = imagem mais limpa, precisa de mais luz",
-        "ISO nao interfere na qualidade, so na velocidade de cameras digitais"
-      ],
-      correta: 2,
-      explicacao: "Regra: use o menor ISO possivel para cada situacao. ISO 100 em dia ensolarado; ISO 1600-3200 em interiores; ISO acima de 3200 comeca a aparecer granulacao."
-    },
-    {
-      num: 7,
-      bloom: "aplicar",
-      texto: "Voce quer fotografar um retrato com fundo desfocado (bokeh). Qual combinacao de ajustes e ideal?",
-      opcoes: [
-        "Abertura f/16 (pequena), velocidade 1/30 s, ISO 100",
-        "Abertura f/1.8 ou f/2.8 (grande), velocidade moderada, ISO ajustado a luz",
-        "Abertura f/8, velocidade 1/500 s, ISO 800",
-        "Todas as opcoes acima funcionam igualmente bem"
-      ],
-      correta: 1,
-      explicacao: "Aberturas grandes (numeros f pequenos) criam baixa profundidade de campo, desfocando o fundo. f/1.8-f/2.8 e ideal para retratos com bokeh."
-    },
-    {
-      num: 8,
-      bloom: "analisar",
-      texto: "Ao fotografar com seu smartphone em modo manual (app FV-5), voce ve o histograma concentrado a esquerda. O que isso indica e o que voce faria?",
-      opcoes: [
-        "A foto esta corretamente exposta; histograma a esquerda e normal",
-        "A foto esta superexposta (muito clara); voce diminuiria ISO/velocidade",
-        "A foto esta subexposta (muito escura); voce aumentaria ISO, velocidade ou reduziria a abertura",
-        "O histograma nao influencia a exposicao final"
-      ],
-      correta: 2,
-      explicacao: "Histograma a esquerda = sombras concentradas = imagem escura. Solucao: aumentar ISO, aumentar velocidade, ou abrir mais o diafragma (se possivel)."
-    },
-    {
-      num: 9,
-      bloom: "avaliar",
-      texto: "Qual e a vantagem de conhecer a regra dos tercos em vez de centralizar sempre o assunto?",
-      opcoes: [
-        "Nao ha vantagem real; e so uma moda de fotografos",
-        "Composicoes fora do centro criam dinamismo, equilibrio visual mais interessante e guiam naturalmente o olhar do espectador",
-        "Apenas profissionais precisam conhecer essa regra",
-        "Serve apenas para fotografias de paisagem, nao para retratos"
-      ],
-      correta: 1,
-      explicacao: "Posicionar o assunto sobre os pontos de forca (cruzamentos das linhas) cria composicoes naturalmente mais atraentes e profissionais que centralizar tudo."
-    },
-    {
-      num: 10,
-      bloom: "criar",
-      texto: "Voce precisa fotografar o jornal sobre uma mesa em um dia nublado (pouca luz), quer o texto legivel (foco nitido) e o fundo desfocado. Qual seria sua estrategia de ajustes?",
-      opcoes: [
-        "Aumentar ISO para 3200, usar f/1.8, compensar a luz com menos velocidade (1/30)",
-        "Usar ISO 100, f/16 e 1/8 s (tripe necessario)",
-        "Aumentar ISO moderadamente (800-1600), usar a maior abertura possivel (f/2.8-f/4), velocidade rapida o bastante para evitar borrao (1/60-1/125) e confiar no ajuste de luz real",
-        "Impossivel: voce teria que escolher entre foco total ou fundo desfocado"
-      ],
-      correta: 2,
-      explicacao: "Solucao equilibrada: ISO um pouco elevado para dia nublado, abertura grande para desfoque do fundo E foco (profundidade) razoavel, velocidade segura para nao tremer. Sem luz extra, e um compromisso entre os tres."
-    }
-  ]
-};
+var quizState = { nome: "", respostas: [], currentQuestion: 0, iniciado: false };
 
-let quizState = {
-  nome: "",
-  respostas: [],
-  currentQuestion: 0,
-  iniciado: false
-};
+var questoes = [
+  /* 1 - LEMBRAR */
+  {
+    nivel: "lembrar",
+    badge: "Lembrar",
+    enunciado: "Esta e considerada a primeira fotografia da historia, tirada em 1826. Quem a produziu?",
+    imagem: "assets/img/historia/niepce-primeira-foto.jpg",
+    imgAlt: "Vista da Janela em Le Gras, primeira fotografia da historia",
+    opcoes: [
+      "Louis Daguerre",
+      "Joseph Nicephore Niepce",
+      "Hercule Florence",
+      "William Fox Talbot"
+    ],
+    correta: 1,
+    explicacao: "Joseph Nicephore Niepce registrou 'Vista da Janela em Le Gras' em 1826 com exposicao de 8 horas, sendo considerada a primeira fotografia da historia."
+  },
+
+  /* 2 - LEMBRAR */
+  {
+    nivel: "lembrar",
+    badge: "Lembrar",
+    enunciado: "O que controla o ISO na fotografia digital?",
+    imagem: null,
+    opcoes: [
+      "O tempo que o obturador fica aberto",
+      "O tamanho do orificio do diafragma",
+      "A sensibilidade do sensor a luz",
+      "A distancia focal da objetiva"
+    ],
+    correta: 2,
+    explicacao: "ISO mede a sensibilidade do sensor a luz. Quanto maior o ISO, mais sensivel (util no escuro), mas surge ruido/granulacao na imagem."
+  },
+
+  /* 3 - ENTENDER */
+  {
+    nivel: "entender",
+    badge: "Entender",
+    enunciado: "Observe esta pintura de Caravaggio. Que tecnica de iluminacao ele utilizou — a mesma que inspira fotografos ate hoje?",
+    imagem: "assets/img/historia/caravaggio-sao-mateus.jpg",
+    imgAlt: "A Vocacao de Sao Mateus - Caravaggio, exemplo de chiaroscuro",
+    opcoes: [
+      "Luz de preenchimento difusa",
+      "Contraluz total (backlight)",
+      "Claro-escuro (chiaroscuro) — contraste forte entre luz e sombra",
+      "Luz plana e uniforme"
+    ],
+    correta: 2,
+    explicacao: "O chiaroscuro (claro-escuro) e a tecnica de criar contraste dramatico entre areas de luz e escuridao. Caravaggio era mestre nisso — um feixe de luz corta a escuridao e guia o olhar. Fotografos de retrato usam essa ideia ate hoje."
+  },
+
+  /* 4 - ENTENDER */
+  {
+    nivel: "entender",
+    badge: "Entender",
+    enunciado: "Qual e a relacao entre o numero f (ex: f/1.8 ou f/16) e o tamanho da abertura do diafragma?",
+    imagem: null,
+    opcoes: [
+      "Quanto maior o numero f, maior a abertura e mais luz entra",
+      "Quanto menor o numero f, maior a abertura e mais luz entra",
+      "O numero f nao afeta a quantidade de luz",
+      "A relacao depende da marca da camera"
+    ],
+    correta: 1,
+    explicacao: "O numero f e inversamente proporcional a abertura: f/1.8 e muito aberto (entra muita luz), f/16 e muito fechado (entra pouca luz). Confunde bastante pois e ao contrario do que parece!"
+  },
+
+  /* 5 - APLICAR */
+  {
+    nivel: "aplicar",
+    badge: "Aplicar",
+    enunciado: "Voce quer fazer um retrato com o rosto nítido e o fundo bem desfocado (bokeh). Qual configuracao de abertura vai escolher?",
+    imagem: "assets/img/tecnica/profundidade-bokeh.jpg",
+    imgAlt: "Exemplo de bokeh - fundo desfocado em retrato fotografico",
+    opcoes: [
+      "f/16 — abertura pequena, tudo nitido",
+      "f/8 — abertura media, profundidade moderada",
+      "f/2.8 — abertura grande, separa o sujeito do fundo",
+      "f/22 — minima abertura, maxima nitidez"
+    ],
+    correta: 2,
+    explicacao: "Para bokeh (fundo desfocado), use abertura grande = numero f pequeno como f/1.8, f/2.8. A profundidade de campo pequena separa o sujeito do fundo. Para retratos, f/1.8-f/2.8 e ideal."
+  },
+
+  /* 6 - APLICAR */
+  {
+    nivel: "aplicar",
+    badge: "Aplicar",
+    enunciado: "Voce quer fotografar um jogo de futevôlei na praia e congelar a bola no ar. Qual velocidade de obturador usar?",
+    imagem: null,
+    opcoes: [
+      "1/15 s — velocidade lenta, cria efeito de rastro",
+      "1/60 s — velocidade media, para pessoas paradas",
+      "1/500 s — velocidade rapida, congela o movimento",
+      "2 s — longa exposicao para luz suave"
+    ],
+    correta: 2,
+    explicacao: "Para congelar acao rapida como uma bola no ar, use velocidade alta: 1/500s ou mais. Velocidades lentas (1/15, 1/30) criam rastros de movimento — bonito para agua ou carros, mas nao para esportes."
+  },
+
+  /* 7 - ANALISAR */
+  {
+    nivel: "analisar",
+    badge: "Analisar",
+    enunciado: "Analise esta fotografia. O ponto de interesse (carro) foi posicionado deliberadamente fora do centro. Que regra de composicao foi aplicada?",
+    imagem: "assets/img/tecnica/regra-tercos.jpg",
+    imgAlt: "Fotografia demonstrando a regra dos tercos com objeto fora do centro",
+    opcoes: [
+      "Composicao simetrica",
+      "Regra dos tercos — sujeito posicionado no ponto de forca",
+      "Enquadramento dentro do enquadramento",
+      "Linha do horizonte centrada"
+    ],
+    correta: 1,
+    explicacao: "A regra dos tercos divide o quadro em 9 partes iguais. Posicionar o sujeito nos 4 pontos de intersecao (pontos de forca) cria composicao mais dinamica e agradavel do que centralizar tudo."
+  },
+
+  /* 8 - ANALISAR */
+  {
+    nivel: "analisar",
+    badge: "Analisar",
+    enunciado: "Compare as duas imagens abaixo. f/5 (esquerda) tem fundo desfocado; f/32 (direita) tem tudo nitido. Por que a diferenca?",
+    imagem: null,
+    imgPair: ["assets/img/tecnica/abertura-f5.jpg", "assets/img/tecnica/abertura-f32.jpg"],
+    imgAltPair: ["Abertura f/5 - baixa profundidade de campo", "Abertura f/32 - alta profundidade de campo"],
+    opcoes: [
+      "A diferenca e pelo ISO: f/5 tem ISO alto e f/32 tem ISO baixo",
+      "A diferenca e pela velocidade: f/5 e mais rapido",
+      "A abertura controla a profundidade de campo: f/5 (aberto) = fundo desfocado; f/32 (fechado) = tudo nitido",
+      "Nao ha diferenca real, e edicao de pos-producao"
+    ],
+    correta: 2,
+    explicacao: "A abertura controla diretamente a profundidade de campo. Abertura grande (f/5, f/1.8) = profundidade de campo pequena = fundo desfocado. Abertura pequena (f/32, f/16) = profundidade de campo grande = tudo nitido do perto ao longe."
+  },
+
+  /* 9 - AVALIAR */
+  {
+    nivel: "avaliar",
+    badge: "Avaliar",
+    enunciado: "Voce vai fotografar um por do sol na praia com pessoas se movendo. Seu objetivo e ter o ceu bem exposto, as pessoas como silhuetas e a agua com efeito sedoso. Qual combinacao de configuracoes faz mais sentido?",
+    imagem: null,
+    opcoes: [
+      "ISO 3200, f/1.8, 1/1000s — maximo de velocidade e luz",
+      "ISO 100, f/11, 2s — ISO baixo, boa profundidade, velocidade lenta para o efeito de agua",
+      "ISO 800, f/2.8, 1/500s — boa para fotos de acao",
+      "ISO 100, f/1.8, 1/8000s — abertura maxima para bokeh no por do sol"
+    ],
+    correta: 1,
+    explicacao: "Para por do sol com agua sedosa: ISO baixo (100) = imagem limpa; f/11 = tudo nitido do primeiro plano ao horizonte; velocidade lenta (2s) = efeit de agua sedosa E as pessoas viram silhuetas pela exposicao longa. Isso e o triangulo da exposicao na pratica!"
+  },
+
+  /* 10 - CRIAR */
+  {
+    nivel: "criar",
+    badge: "Criar",
+    enunciado: "Observe esta foto com simetria perfeita e reflexo na agua. Voce foi fotografar o mesmo lago. Que decisoes de composicao voce tomaria para criar uma imagem com sensacao de calma e equilibrio?",
+    imagem: "assets/img/tecnica/simetria-reflexo.jpg",
+    imgAlt: "Fotografia com composicao simetrica e reflexo na agua",
+    opcoes: [
+      "Inclinar a camera 45 graus para criar dinamismo e tensao visual",
+      "Posicionar o horizonte no centro do quadro, deixar a simetria dominar e aguardar agua calma para o reflexo ficar perfeito",
+      "Usar zoom maximo e fotografar apenas detalhes do reflexo",
+      "Posicionar o sujeito no canto superior direito quebrando a simetria"
+    ],
+    correta: 1,
+    explicacao: "Para calma e equilibrio: horizonte centralizado enfatiza a simetria; agua parada cria o reflexo perfeito; composicao simetrica transmite ordem e paz. Linhas diagonais e enquadramentos dinamicos servem para tensao e movimento — o oposto do que se busca aqui."
+  }
+];
+
+/* ---- Utilitarios ---- */
+function nivelCor(n) {
+  var cores = { lembrar:"#4e9af1", entender:"#7ec86e", aplicar:"#f4b03e", analisar:"#e07af0", avaliar:"#f07a7a", criar:"#f0a07a" };
+  return cores[n] || "#aaa";
+}
 
 function iniciarQuiz() {
-  const modal = document.getElementById("quizModal");
-  const nomeInput = document.getElementById("nomeAluno");
-  const nome = nomeInput.value.trim();
-
-  if (!nome) {
-    alert("Por favor, digite seu nome completo.");
-    return;
-  }
-
+  var nomeEl = document.getElementById("quizNomeInput");
+  if (!nomeEl) return;
+  var nome = nomeEl.value.trim();
+  if (!nome) { nomeEl.style.borderColor = "#f07a7a"; nomeEl.focus(); return; }
+  nomeEl.style.borderColor = "";
   quizState.nome = nome;
+  quizState.respostas = [];
+  quizState.currentQuestion = 0;
   quizState.iniciado = true;
-  quizState.respostas = new Array(quizModulo1.questoes.length).fill(-1);
-
   document.getElementById("quizNomeModal").style.display = "none";
   document.getElementById("quizConteudo").style.display = "block";
-
-  mostrarQuestao(0);
+  renderQuestao();
 }
 
-function mostrarQuestao(idx) {
-  const q = quizModulo1.questoes[idx];
-  const container = document.getElementById("quizQuestaoContainer");
+function renderQuestao() {
+  var q = questoes[quizState.currentQuestion];
+  var total = questoes.length;
+  var idx = quizState.currentQuestion;
+  var container = document.getElementById("quizQuestaoContainer");
+  var progPct = Math.round((idx / total) * 100);
 
-  let html = `
-    <div class="quiz-header">
-      <h3>${q.num} de ${quizModulo1.questoes.length}</h3>
-      <div class="quiz-progress"><div class="quiz-progress-bar" style="width: ${((idx + 1) / quizModulo1.questoes.length) * 100}%"></div></div>
-    </div>
-    <div class="quiz-question">
-      <p class="quiz-bloom"><span class="bloom-badge bloom-${q.bloom}">${q.bloom.toUpperCase()}</span></p>
-      <h4>${q.texto}</h4>
-    </div>
-    <div class="quiz-options">
-  `;
-
-  q.opcoes.forEach((opcao, i) => {
-    const checked = quizState.respostas[idx] === i ? "checked" : "";
-    html += `
-      <label class="quiz-option">
-        <input type="radio" name="opcao" value="${i}" ${checked} onchange="registrarResposta(${idx}, ${i})">
-        <span>${String.fromCharCode(65 + i)})</span>
-        <span>${opcao}</span>
-      </label>
-    `;
-  });
-
-  html += `
-    </div>
-    <div class="quiz-nav">
-      <button class="btn btn--secondary" onclick="questaoAnterior()" ${idx === 0 ? "disabled" : ""}>Anterior</button>
-      <button class="btn btn--primary" onclick="proximaQuestao()" ${idx === quizModulo1.questoes.length - 1 ? "disabled" : ""}>Proxima</button>
-      ${idx === quizModulo1.questoes.length - 1 ? `<button class="btn btn--success" onclick="finalizarQuiz()">Finalizar e gerar gabarito</button>` : ""}
-    </div>
-  `;
-
-  container.innerHTML = html;
-  quizState.currentQuestion = idx;
-}
-
-function registrarResposta(questaoIdx, opcaoIdx) {
-  quizState.respostas[questaoIdx] = opcaoIdx;
-}
-
-function proximaQuestao() {
-  if (quizState.currentQuestion < quizModulo1.questoes.length - 1) {
-    mostrarQuestao(quizState.currentQuestion + 1);
-    document.getElementById("quizQuestaoContainer").scrollIntoView({ behavior: "smooth" });
+  var imgHtml = "";
+  if (q.imgPair) {
+    imgHtml = '<div class="quiz-img-pair">'
+      + '<img src="' + q.imgPair[0] + '" alt="' + (q.imgAltPair ? q.imgAltPair[0] : "") + '" loading="lazy">'
+      + '<img src="' + q.imgPair[1] + '" alt="' + (q.imgAltPair ? q.imgAltPair[1] : "") + '" loading="lazy">'
+      + '</div>';
+  } else if (q.imagem) {
+    imgHtml = '<img src="' + q.imagem + '" alt="' + (q.imgAlt || "") + '" class="quiz-img-single" loading="lazy">';
   }
+
+  var opcoesHtml = q.opcoes.map(function(op, i) {
+    return '<label class="quiz-option"><input type="radio" name="qop" value="' + i + '"> <span>' + op + '</span></label>';
+  }).join("");
+
+  container.innerHTML =
+    '<div class="quiz-progress-bar"><div style="width:' + progPct + '%"></div></div>'
+    + '<div class="quiz-counter">Questao ' + (idx + 1) + ' de ' + total + '</div>'
+    + '<div class="quiz-badge" style="background:' + nivelCor(q.nivel) + '">' + q.badge + '</div>'
+    + '<p class="quiz-enunciado">' + q.enunciado + '</p>'
+    + imgHtml
+    + '<div class="quiz-opcoes">' + opcoesHtml + '</div>'
+    + '<button class="btn btn--primary quiz-btn-prox" onclick="responderQuestao()">Proximo →</button>';
 }
 
-function questaoAnterior() {
-  if (quizState.currentQuestion > 0) {
-    mostrarQuestao(quizState.currentQuestion - 1);
-    document.getElementById("quizQuestaoContainer").scrollIntoView({ behavior: "smooth" });
-  }
-}
-
-function finalizarQuiz() {
-  if (quizState.respostas.includes(-1)) {
-    alert("Voce ainda nao respondeu todas as questoes. Revise antes de finalizar.");
+function responderQuestao() {
+  var sel = document.querySelector('input[name="qop"]:checked');
+  if (!sel) {
+    var div = document.querySelector(".quiz-opcoes");
+    if (div) { div.style.animation = "shake .3s ease"; setTimeout(function(){ div.style.animation=""; }, 400); }
     return;
   }
-
-  let acertos = 0;
-  quizModulo1.questoes.forEach((q, idx) => {
-    if (quizState.respostas[idx] === q.correta) acertos++;
-  });
-
-  const nota = Math.round((acertos / quizModulo1.questoes.length) * 100);
-  mostrarResultado(acertos, nota);
-  gerarPDF(acertos, nota);
-}
-
-function mostrarResultado(acertos, nota) {
-  const container = document.getElementById("quizQuestaoContainer");
-  const emoji = nota >= 80 ? "Excelente!" : nota >= 60 ? "Bom!" : "Continuar estudando";
-
-  let html = `
-    <div class="quiz-resultado">
-      <div class="resultado-card">
-        <h3>Quiz finalizado!</h3>
-        <p class="resultado-nome"><strong>${quizState.nome}</strong></p>
-        <div class="resultado-nota">${nota}%</div>
-        <p class="resultado-sub">${acertos} de ${quizModulo1.questoes.length} questoes corretas</p>
-        <div class="resultado-msg">
-          <p>${emoji}</p>
-        </div>
-        <a href="modulo-1-introducao.html" class="btn btn--secondary" style="margin-top: 20px;">Voltar ao Modulo</a>
-      </div>
-    </div>
-  `;
-
-  container.innerHTML = html;
-}
-
-function gerarPDF(acertos, nota) {
-  if (typeof jsPDF === "undefined") {
-    alert("PDF library nao carregada. Tente novamente.");
-    return;
+  quizState.respostas.push(parseInt(sel.value));
+  quizState.currentQuestion++;
+  if (quizState.currentQuestion < questoes.length) {
+    renderQuestao();
+  } else {
+    renderResultado();
   }
+}
 
-  const doc = new jsPDF();
-  const largura = doc.internal.pageSize.getWidth();
-  const altura = doc.internal.pageSize.getHeight();
-  let y = 20;
+function renderResultado() {
+  var container = document.getElementById("quizQuestaoContainer");
+  var acertos = 0;
+  quizState.respostas.forEach(function(r, i) {
+    if (r === questoes[i].correta) acertos++;
+  });
+  var pct = Math.round((acertos / questoes.length) * 100);
+  var emoji = pct >= 80 ? "🏆" : pct >= 60 ? "📸" : "📚";
+  var msg = pct >= 80 ? "Excelente domínio do conteudo!" : pct >= 60 ? "Bom progresso! Revise os topicos errados." : "Continue estudando — voce ja sabe bastante, mas precisa revisar!";
 
-  doc.setFontSize(18);
-  doc.setFont(undefined, "bold");
-  doc.text("Quiz - Modulo 1 - Introducao a Fotografia", largura / 2, y, { align: "center" });
+  var detalhes = questoes.map(function(q, i) {
+    var certo = quizState.respostas[i] === q.correta;
+    return '<div class="quiz-det-row ' + (certo ? "certo" : "errado") + '">'
+      + '<span class="quiz-det-ico">' + (certo ? "✓" : "✗") + '</span>'
+      + '<div><b>Q' + (i+1) + ' [' + q.badge + ']:</b> ' + (certo ? "Correta" : "Errada")
+      + (certo ? "" : ' — Certa: <em>' + q.opcoes[q.correta] + '</em>')
+      + '<br><small>' + q.explicacao + '</small></div></div>';
+  }).join("");
 
-  y += 15;
-  doc.setFontSize(11);
-  doc.setFont(undefined, "normal");
-  doc.text("Aluno: " + quizState.nome, 20, y);
-  y += 8;
-  doc.text("Data: " + new Date().toLocaleDateString("pt-BR"), 20, y);
-  y += 8;
-  doc.text("Nota: " + nota + "% (" + acertos + "/" + quizModulo1.questoes.length + ")", 20, y);
+  container.innerHTML =
+    '<div class="quiz-resultado">'
+    + '<div class="quiz-res-emoji">' + emoji + '</div>'
+    + '<h3 class="quiz-res-nome">' + quizState.nome + '</h3>'
+    + '<div class="quiz-res-score">' + acertos + '<span>/' + questoes.length + '</span></div>'
+    + '<div class="quiz-res-pct">' + pct + '% de acertos</div>'
+    + '<p class="quiz-res-msg">' + msg + '</p>'
+    + '<div class="quiz-detalhes">' + detalhes + '</div>'
+    + '<div class="quiz-acoes">'
+    + '<button class="btn btn--outline" onclick="gerarPDF()">⬇ Baixar PDF com gabarito</button>'
+    + '<button class="btn btn--primary" onclick="fecharQuiz()">Fechar</button>'
+    + '</div>'
+    + '</div>';
+}
 
-  y += 15;
-  doc.setFont(undefined, "bold");
-  doc.setFontSize(12);
-  doc.text("Respostas e Gabarito:", 20, y);
+/* ---- Geracao de PDF ---- */
+function gerarPDF() {
+  var acertos = 0;
+  quizState.respostas.forEach(function(r, i) { if (r === questoes[i].correta) acertos++; });
+  var pct = Math.round((acertos / questoes.length) * 100);
+  var data = new Date().toLocaleDateString("pt-BR");
+  var hora = new Date().toLocaleTimeString("pt-BR", {hour:"2-digit", minute:"2-digit"});
 
-  y += 10;
-  doc.setFontSize(10);
-  doc.setFont(undefined, "normal");
+  var linhas = [];
+  linhas.push("QUIZ - MODULO 1: INTRODUCAO A FOTOGRAFIA DIGITAL");
+  linhas.push("Curso Fotografia Digital com Smartphone - FotoSmart");
+  linhas.push("Instrutor: Tiago Tavares");
+  linhas.push("========================================");
+  linhas.push("Aluno: " + quizState.nome);
+  linhas.push("Data: " + data + " as " + hora);
+  linhas.push("Resultado: " + acertos + "/" + questoes.length + " (" + pct + "%)");
+  linhas.push("========================================");
+  linhas.push("");
+  linhas.push("GABARITO COMPLETO:");
+  linhas.push("");
 
-  quizModulo1.questoes.forEach((q, idx) => {
-    const resposta = quizState.respostas[idx];
-    const correta = q.correta === resposta;
-
-    if (y > altura - 30) {
-      doc.addPage();
-      y = 20;
-    }
-
-    doc.text("Q" + q.num + ". " + q.texto.substring(0, 50) + "...", 20, y);
-    y += 8;
-    doc.text("Sua resposta: " + String.fromCharCode(65 + resposta), 25, y);
-    y += 5;
-    doc.text("Gabarito: " + String.fromCharCode(65 + q.correta), 25, y);
-    y += 8;
+  questoes.forEach(function(q, i) {
+    var certo = quizState.respostas[i] === q.correta;
+    linhas.push("Q" + (i+1) + " [" + q.badge + "] " + q.enunciado);
+    q.opcoes.forEach(function(op, oi) {
+      var prefixo = oi === q.correta ? "[GABARITO] " : "[ ] ";
+      var marcado = oi === quizState.respostas[i] && !certo ? "[ALUNO] " : "";
+      linhas.push("  " + prefixo + marcado + op);
+    });
+    linhas.push("  >> " + q.explicacao);
+    linhas.push("  Status: " + (certo ? "CORRETA" : "ERRADA"));
+    linhas.push("");
   });
 
-  const nomeArquivo = "Quiz-M1-" + quizState.nome.replace(/\s+/g, "-") + "-" + new Date().getTime() + ".pdf";
-  doc.save(nomeArquivo);
+  var conteudo = linhas.join("\n");
+  var blob = new Blob([conteudo], { type: "text/plain;charset=utf-8" });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement("a");
+  a.href = url;
+  a.download = "quiz-modulo1-" + quizState.nome.replace(/\s+/g, "-") + ".txt";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }
