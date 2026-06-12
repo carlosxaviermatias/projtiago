@@ -494,3 +494,44 @@ tbody tr:hover{ background:rgba(255,255,255,.02); }
 .term dt{ font-family:var(--serif); font-size:1.2rem; color:#fff; margin-bottom:.2em; }
 .term dd{ margin:0; color:var(--text-soft); }
 .term .term-mod{ font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--accent); margin-left:8px; }
+
+/* ---------- Sensor comparison ---------- */
+.sensor-diag{ display:grid; grid-template-columns:auto 1fr; gap:24px; align-items:center; margin:24px 0;
+  background:rgba(255,255,255,.02); border:1px solid rgba(255,255,255,.07); border-radius:12px; padding:20px; }
+.sensor-diag svg{ width:220px; height:auto; flex-shrink:0; }
+.sensor-legend{ display:flex; flex-direction:column; gap:10px; }
+.sensor-legend-item{ display:flex; align-items:flex-start; gap:10px; font-size:.82rem; color:#b9bfca; line-height:1.4; }
+.sensor-dot{ width:10px; height:10px; border-radius:2px; flex-shrink:0; margin-top:3px; }
+@media(max-width:520px){ .sensor-diag{ grid-template-columns:1fr; } .sensor-diag svg{ width:100%; max-width:240px; margin:0 auto; } }
+
+/* ---------- Interactive lens table ---------- */
+.lentes-ui{ display:grid; grid-template-columns:1fr 190px; gap:16px; margin:20px 0; }
+.lentes-list{ border:1px solid rgba(255,255,255,.09); border-radius:10px; overflow:hidden; }
+.lente-row{ padding:11px 16px; cursor:pointer; border-bottom:1px solid rgba(255,255,255,.06);
+  transition:background .15s; border-left:3px solid transparent; display:flex; flex-direction:column; gap:2px; }
+.lente-row:last-child{ border-bottom:none; }
+.lente-row:hover{ background:rgba(244,176,62,.07); border-left-color:rgba(244,176,62,.4); }
+.lente-row.sel{ background:rgba(244,176,62,.1); border-left-color:#f4b03e; }
+.lente-row b{ font-size:.88rem; color:#e8dcc8; }
+.lente-row small{ font-size:.76rem; color:#868d9a; }
+.lente-panel{ border:1px solid rgba(255,255,255,.09); border-radius:10px; overflow:hidden;
+  background:rgba(255,255,255,.02); display:flex; flex-direction:column; }
+.lente-panel svg{ width:100%; height:auto; display:block; }
+.lente-panel-cap{ padding:8px 10px; font-size:.74rem; color:#868d9a; text-align:center;
+  border-top:1px solid rgba(255,255,255,.06); line-height:1.4; }
+@media(max-width:580px){ .lentes-ui{ grid-template-columns:1fr; } .lente-panel{ display:none; } .lente-panel.mobile-show{ display:flex; } }
+
+/* ---------- Shutter simulator ---------- */
+.shutter-sim{ margin:24px 0; }
+.shutter-wrap{ position:relative; width:100%; max-width:520px; margin:0 auto 16px; }
+#shutterCanvas{ display:block; width:100%; border-radius:10px; border:2px solid #2a2a2a; background:#0d1117; }
+.shutter-flash{ position:absolute; inset:0; background:#fff; opacity:0; border-radius:10px;
+  pointer-events:none; transition:opacity 60ms linear; }
+.shutter-flash.on{ opacity:1; }
+.shutter-btns{ display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin:0 auto; max-width:520px; }
+.shutter-btn{ background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.14); color:#b9bfca;
+  padding:9px 14px; border-radius:8px; cursor:pointer; font-family:inherit; font-size:.82rem;
+  text-align:center; transition:all .18s; line-height:1.5; min-width:70px; }
+.shutter-btn:hover{ border-color:rgba(244,176,62,.5); color:#f4b03e; }
+.shutter-btn.sel{ border-color:#f4b03e; color:#f4b03e; background:rgba(244,176,62,.1); }
+.shutter-result-txt{ text-align:center; font-size:.85rem; color:#868d9a; margin-top:10px; min-height:1.2em; }
