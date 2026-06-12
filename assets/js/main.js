@@ -100,6 +100,19 @@
       lb.classList.add("open");
     });
   });
+  // Cards/elementos com data-img abrem um exemplo no lightbox
+  $$("[data-img]").forEach((el) => {
+    const openIt = () => {
+      lbImg.src = el.dataset.img;
+      lbImg.alt = el.dataset.cap || "";
+      lbCap.textContent = el.dataset.cap || "";
+      lb.classList.add("open");
+    };
+    el.addEventListener("click", openIt);
+    el.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openIt(); }
+    });
+  });
   lb.addEventListener("click", () => lb.classList.remove("open"));
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") lb.classList.remove("open");
