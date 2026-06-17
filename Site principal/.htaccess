@@ -1,0 +1,12 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Redireciona legalizacao.tiagotavares.online para regularizacaoobras.html
+    RewriteCond %{HTTP_HOST} ^legalizacao\.tiagotavares\.online$ [NC]
+    RewriteRule ^(.*)$ regularizacaoobras.html [L]
+
+    # Redireciona www.legalizacao.tiagotavares.online para regularizacaoobras.html
+    RewriteCond %{HTTP_HOST} ^www\.legalizacao\.tiagotavares\.online$ [NC]
+    RewriteRule ^(.*)$ regularizacaoobras.html [L]
+</IfModule>
