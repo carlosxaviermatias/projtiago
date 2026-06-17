@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regularização de Obras | Renée Pereira - Consultoria Imobiliária</title>
+    <meta name="description" content="Regularize sua construção com segurança. Orientação completa em CNO, SERO, INSS de Obra e CND. Consultoria de Renée Pereira - especialista em regularização.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(135deg, #FF8C00 0%, #FF7F00 100%);
+            color: white;
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 30px;
+            transition: opacity 0.3s;
+        }
+
+        nav a:hover {
+            opacity: 0.8;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            background: linear-gradient(135deg, rgba(255,140,0,0.95) 0%, rgba(255,127,0,0.95) 100%),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="1200" height="600" fill="url(%23grid)"/></svg>');
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            right: -100px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 400px;
+            height: 400px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            filter: blur(40px);
+        }
+
+        .hero .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #FF8C00;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            border: none;
+            font-size: 16px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        /* SECTIONS */
+        section {
+            padding: 80px 0;
+        }
+
+        section.light {
+            background: #f9f9f9;
+        }
+
+        h2 {
+            font-size: 40px;
+            margin-bottom: 50px;
+            text-align: center;
+            color: #333;
+        }
+
+        h2 .highlight {
+            color: #FF8C00;
+        }
+
+        /* CARDS GRID */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-top: 4px solid #FF8C00;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #FF8C00, #FF7F00);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 40px;
+            color: white;
+        }
+
+        .card h3 {
+            color: #FF8C00;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+
+        .card p {
+            color: #666;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        /* PROCESS SECTION */
+        .process-timeline {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            position: relative;
+            margin: 60px 0;
+            flex-wrap: wrap;
+        }
+
+        .process-timeline::before {
+            content: '';
+            position: absolute;
+            top: 40px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #FF8C00;
+            z-index: -1;
+        }
+
+        .process-step {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+            position: relative;
+        }
+
+        .process-step-number {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border: 3px solid #FF8C00;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
+            color: #FF8C00;
+            margin: 0 auto 20px;
+        }
+
+        .process-step h4 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .process-step p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* PROBLEMS SECTION */
+        .problems-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .problem-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #FF8C00;
+        }
+
+        .problem-icon {
+            width: 50px;
+            height: 50px;
+            background: #FFF0E6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FF8C00;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .problem-item h4 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .problem-item p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* SPECIALIST SECTION */
+        .specialist {
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 60px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .specialist-photo {
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .specialist-info h3 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .specialist-info .role {
+            color: #FF8C00;
+            font-size: 18px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .specialist-info ul {
+            list-style: none;
+            margin: 30px 0;
+        }
+
+        .specialist-info li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+        }
+
+        .specialist-info li::before {
+            content: '✓';
+            color: #FF8C00;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .specialist-contact {
+            background: white;
+            color: #333;
+            padding: 30px;
+            border-radius: 12px;
+        }
+
+        .specialist-contact h4 {
+            color: #FF8C00;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .contact-method {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .contact-method:last-child {
+            border-bottom: none;
+        }
+
+        .contact-method-icon {
+            width: 50px;
+            height: 50px;
+            background: #FFF0E6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FF8C00;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .contact-method a {
+            color: #FF8C00;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .contact-method a:hover {
+            color: #8B4513;
+        }
+
+        /* WHY CHOOSE */
+        .why-choose {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin: 50px 0;
+        }
+
+        .why-item {
+            text-align: center;
+        }
+
+        .why-item-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .why-item h4 {
+            color: #FF8C00;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .why-item p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 80px;
+        }
+
+        footer p {
+            margin-bottom: 10px;
+        }
+
+        .footer-links {
+            margin-top: 20px;
+        }
+
+        .footer-links a {
+            color: #FF8C00;
+            text-decoration: none;
+            margin: 0 15px;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+
+            h2 {
+                font-size: 28px;
+            }
+
+            section {
+                padding: 50px 0;
+            }
+
+            .specialist {
+                grid-template-columns: 1fr;
+                padding: 40px;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .process-timeline::before {
+                display: none;
+            }
+
+            .process-timeline {
+                flex-direction: column;
+            }
+
+            .process-step {
+                margin-bottom: 30px;
+            }
+
+            header .container {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card, .problem-item {
+            animation: fadeInUp 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="container">
+            <div class="logo">🏗️ Regularização de Obras</div>
+            <nav>
+                <a href="#beneficios">Benefícios</a>
+                <a href="#documentos">Documentos</a>
+                <a href="#processo">Processo</a>
+                <a href="#especialista">Especialista</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container">
+            <h1>Sua Obra Regularizada com Segurança</h1>
+            <p>Orientação completa em CNO, SERO, INSS de Obra e CND</p>
+            <p style="font-size: 16px; opacity: 0.85; margin-top: 20px;">Evite multas, problemas na venda ou refinanciamento de imóvel</p>
+            <a href="#especialista" class="cta-button">Conversar com Especialista</a>
+        </div>
+    </section>
+
+    <!-- PROBLEMA VOCÊ SABIA? -->
+    <section id="beneficios" class="light">
+        <div class="container">
+            <h2>Você <span class="highlight">Sabia?</span></h2>
+            <div class="problems-list">
+                <div class="problem-item">
+                    <div class="problem-icon">💰</div>
+                    <div>
+                        <h4>Dificuldade para Vender</h4>
+                        <p>Muitas construções estão há anos sem regularização junto à prefeitura e Receita Federal.</p>
+                    </div>
+                </div>
+                <div class="problem-item">
+                    <div class="problem-icon">⚠️</div>
+                    <div>
+                        <h4>Notificações e Multas</h4>
+                        <p>Você recebe notificações do Fisco que geram pendências na documentação do imóvel.</p>
+                    </div>
+                </div>
+                <div class="problem-item">
+                    <div class="problem-icon">🏦</div>
+                    <div>
+                        <h4>Problemas de Financiamento</h4>
+                        <p>Impossível refinanciar ou fazer empréstimo com garantia do imóvel irregular.</p>
+                    </div>
+                </div>
+                <div class="problem-item">
+                    <div class="problem-icon">⏰</div>
+                    <div>
+                        <h4>Custos Futuros</h4>
+                        <p>Quanto mais tempo passa, mais multas e juros acumulam junto ao governo.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DOCUMENTOS -->
+    <section id="documentos">
+        <div class="container">
+            <h2>Documentos Essenciais para <span class="highlight">Regularização</span></h2>
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">📋</div>
+                    <h3>CNO</h3>
+                    <p><strong>Cadastro Nacional de Obras</strong></p>
+                    <p>O cadastro obrigatório da obra perante a Receita Federal. Identifica a construção e permite regularização correta.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">✅</div>
+                    <h3>SERO</h3>
+                    <p><strong>Serviço Eletrônico de Aferiçao</strong></p>
+                    <p>Sistema para informar dados da construção à Receita Federal. Fundamental para legalizar a obra no âmbito fiscal.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🏢</div>
+                    <h3>INSS de Obra</h3>
+                    <p><strong>Contribuição Previdenciária</strong></p>
+                    <p>Análise da situação previdenciária da construção. Garante que tudo está em dia com a seguridade social.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">📝</div>
+                    <h3>CND</h3>
+                    <p><strong>Certidão Negativa de Débito</strong></p>
+                    <p>Documento que comprova que não há débitos junto ao governo. Essencial para venda e financiamentos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROCESSO -->
+    <section id="processo" class="light">
+        <div class="container">
+            <h2>Como Funciona o <span class="highlight">Processo?</span></h2>
+            <p style="text-align: center; color: #666; margin-bottom: 50px; font-size: 16px;">
+                Nosso trabalho é analisar toda a documentação e conduzir o processo até a conclusão completa.
+            </p>
+            <div class="process-timeline">
+                <div class="process-step">
+                    <div class="process-step-number">1</div>
+                    <h4>Análise Inicial</h4>
+                    <p>Examinamos a documentação existente da obra</p>
+                </div>
+                <div class="process-step">
+                    <div class="process-step-number">2</div>
+                    <h4>Levantamento de Dados</h4>
+                    <p>Coletamos informações da obra e proprietário</p>
+                </div>
+                <div class="process-step">
+                    <div class="process-step-number">3</div>
+                    <h4>Regularização Fiscal</h4>
+                    <p>Processamos junto à Receita Federal</p>
+                </div>
+                <div class="process-step">
+                    <div class="process-step-number">4</div>
+                    <h4>Documentos Entregues</h4>
+                    <p>Você recebe os documentos finalizados</p>
+                </div>
+                <div class="process-step">
+                    <div class="process-step-number">5</div>
+                    <h4>Segurança Garantida</h4>
+                    <p>Imóvel totalmente regularizado e legal</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- POR QUE ESCOLHER -->
+    <section>
+        <div class="container">
+            <h2>Por Que Escolher <span class="highlight">Nosso Trabalho?</span></h2>
+            <div class="why-choose">
+                <div class="why-item">
+                    <div class="why-item-icon">🎯</div>
+                    <h4>Especialização</h4>
+                    <p>Experiência completa em regularização de obras</p>
+                </div>
+                <div class="why-item">
+                    <div class="why-item-icon">⚡</div>
+                    <h4>Agilidade</h4>
+                    <p>Processo acelerado e eficiente</p>
+                </div>
+                <div class="why-item">
+                    <div class="why-item-icon">🛡️</div>
+                    <h4>Segurança</h4>
+                    <p>Documentação completa e legal</p>
+                </div>
+                <div class="why-item">
+                    <div class="why-item-icon">💪</div>
+                    <h4>Responsabilidade</h4>
+                    <p>Acompanhamento do início ao fim</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ESPECIALISTA -->
+    <section id="especialista" class="light">
+        <div class="container">
+            <h2>Conheça a <span class="highlight">Especialista</span></h2>
+            <div class="specialist">
+                <div class="specialist-photo">
+                    <img src="renee-pereira.jpg" alt="Renée Pereira - Especialista em Regularização de Obras" style="width: 100%; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.15);">
+                </div>
+                <div class="specialist-info">
+                    <h3>Renée Pereira</h3>
+                    <div class="role">Consultora Imobiliária | Especialista em Regularização de Obras</div>
+                    <p>Com experiência consolidada no ramo imobiliário, Renée Pereira se destaca na análise e condução de processos de regularização de obras. Sua expertise abrange:</p>
+                    <ul>
+                        <li>Regularização junto à Receita Federal</li>
+                        <li>Análise fiscal e previdenciária completa</li>
+                        <li>Consultoria para venda de imóveis irregulares</li>
+                        <li>Acompanhamento de todo processo burocrático</li>
+                        <li>Solução de pendências e débitos</li>
+                    </ul>
+                    <p style="margin-top: 20px;">Renée coloca seu conhecimento a serviço de sua tranquilidade patrimonial. Você cuida do seu negócio. Ela cuida da burocracia.</p>
+                </div>
+                <div class="specialist-contact">
+                    <h4>📞 Entre em Contato</h4>
+                    <div class="contact-method">
+                        <div class="contact-method-icon">💬</div>
+                        <div>
+                            <strong>WhatsApp</strong><br>
+                            <a href="https://wa.me/5521999999999" target="_blank">(21) 99999-9999</a>
+                        </div>
+                    </div>
+                    <div class="contact-method">
+                        <div class="contact-method-icon">✉️</div>
+                        <div>
+                            <strong>Email</strong><br>
+                            <a href="mailto:renee@example.com.br">renee@example.com.br</a>
+                        </div>
+                    </div>
+                    <div class="contact-method">
+                        <div class="contact-method-icon">📱</div>
+                        <div>
+                            <strong>Instagram</strong><br>
+                            <a href="https://instagram.com/renee.pereira" target="_blank">@renee.pereira</a>
+                        </div>
+                    </div>
+                    <div style="background: #FFF0E6; padding: 15px; border-radius: 8px; margin-top: 20px; border: 1px solid #FFD4B3;">
+                        <p style="color: #8B4513; font-weight: 600; margin: 0;">Você cuida do seu patrimônio. Nos cuidamos da burocracia.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section style="background: linear-gradient(135deg, #FF8C00 0%, #FF7F00 100%); color: white; text-align: center;">
+        <div class="container">
+            <h2 style="color: white; margin-bottom: 30px;">Pronto para Regularizar sua Obra?</h2>
+            <p style="font-size: 18px; margin-bottom: 30px;">Agende uma consulta gratuita e sem compromisso com Renée Pereira</p>
+            <a href="https://wa.me/5521999999999" target="_blank" class="cta-button" style="background: white; color: #FF8C00;">Iniciar Conversa no WhatsApp</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Regularização de Obras | Consultoria de Renée Pereira</p>
+            <p style="font-size: 12px; color: #999;">Todos os direitos reservados</p>
+            <div class="footer-links">
+                <a href="#beneficios">Benefícios</a>
+                <a href="#documentos">Documentos</a>
+                <a href="#processo">Processo</a>
+                <a href="#especialista">Especialista</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
