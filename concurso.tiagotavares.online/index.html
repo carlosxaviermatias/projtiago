@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal de Estudos RLM - Taxonomia de Bloom</title>
+  <meta name="description" content="Aprenda Raciocínio Lógico Matemático (RLM) para concursos públicos de forma interativa e profunda utilizando a metodologia estruturada da Taxonomia de Bloom.">
+  <link rel="stylesheet" href="styles.css">
+  <!-- FontAwesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container header-inner">
+      <a href="#" class="logo">
+        <i class="fa-solid fa-brain"></i>
+        <span>concurso.tiagotavares.online</span>
+      </a>
+      
+      <!-- Progress Tracker -->
+      <div class="progress-widget" id="user-progress-widget" title="Seu progresso nos níveis da Taxonomia de Bloom">
+        <div class="progress-info">
+          <span class="progress-label">Cognição Bloom</span>
+          <span class="progress-percent" id="header-progress-text">0%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="header-progress-fill"></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Grid -->
+  <main class="container main-grid">
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      
+      <!-- Bloom Pyramid Card -->
+      <div class="sidebar-card">
+        <div class="card-title-sm">
+          <span>Metodologia Bloom</span>
+          <i class="fa-solid fa-layer-group text-muted"></i>
+        </div>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4;">
+          Clique nos níveis da pirâmide abaixo para alternar os módulos de aprendizado cognitivo.
+        </p>
+        
+        <!-- Interactive 2.5D Pyramid -->
+        <div class="pyramid-container" id="bloom-pyramid">
+          <div class="pyramid-slice" data-level="6" title="Nível 6: Criar - Montar fórmulas e tabelas-verdade">6. Criar</div>
+          <div class="pyramid-slice" data-level="5" title="Nível 5: Avaliar - Encontrar falácias em provas lógicas">5. Avaliar</div>
+          <div class="pyramid-slice" data-level="4" title="Nível 4: Analisar - Validar a estrutura de argumentos">4. Analisar</div>
+          <div class="pyramid-slice" data-level="3" title="Nível 3: Aplicar - Resolver questões de concursos reais">3. Aplicar</div>
+          <div class="pyramid-slice" data-level="2" title="Nível 2: Entender - Simular proposições com Diagramas de Venn">2. Entender</div>
+          <div class="pyramid-slice" data-level="1" title="Nível 1: Lembrar - Memorizar conectivos e tabelas básicas">1. Lembrar</div>
+        </div>
+      </div>
+
+      <!-- Navigation List Card -->
+      <div class="sidebar-card">
+        <div class="card-title-sm">
+          <span>Níveis de Estudo</span>
+          <i class="fa-solid fa-list-check text-muted"></i>
+        </div>
+        <div class="nav-levels">
+          <div class="nav-level-item active" data-level="1" id="nav-item-1">
+            <span class="nav-level-num">L1</span>
+            <span class="nav-level-name">Lembrar</span>
+            <span class="status-dot" id="progress-dot-level-1"></span>
+          </div>
+          <div class="nav-level-item" data-level="2" id="nav-item-2">
+            <span class="nav-level-num">L2</span>
+            <span class="nav-level-name">Entender</span>
+            <span class="status-dot" id="progress-dot-level-2"></span>
+          </div>
+          <div class="nav-level-item" data-level="3" id="nav-item-3">
+            <span class="nav-level-num">L3</span>
+            <span class="nav-level-name">Aplicar</span>
+            <span class="status-dot" id="progress-dot-level-3"></span>
+          </div>
+          <div class="nav-level-item" data-level="4" id="nav-item-4">
+            <span class="nav-level-num">L4</span>
+            <span class="nav-level-name">Analisar</span>
+            <span class="status-dot" id="progress-dot-level-4"></span>
+          </div>
+          <div class="nav-level-item" data-level="5" id="nav-item-5">
+            <span class="nav-level-num">L5</span>
+            <span class="nav-level-name">Avaliar</span>
+            <span class="status-dot" id="progress-dot-level-5"></span>
+          </div>
+          <div class="nav-level-item" data-level="6" id="nav-item-6">
+            <span class="nav-level-num">L6</span>
+            <span class="nav-level-name">Criar</span>
+            <span class="status-dot" id="progress-dot-level-6"></span>
+          </div>
+        </div>
+        
+        <button class="btn btn-sm mt-4 w-100" id="reset-progress-btn" style="width: 100%; justify-content: center;">
+          <i class="fa-solid fa-rotate-left"></i> Resetar Progresso
+        </button>
+      </div>
+
+    </aside>
+
+    <!-- Content Area -->
+    <article class="content-area">
+      
+      <!-- Congratulations Banner -->
+      <div class="congratulations-panel" id="congratulations-badge">
+        <i class="fa-solid fa-trophy congrats-icon"></i>
+        <div class="congrats-text">
+          <h4>Mestre do Raciocínio Lógico!</h4>
+          <p>Você completou todas as tarefas da taxonomia de Bloom e provou possuir desde a memorização básica até a capacidade de criação lógica. Pronto para gabaritar!</p>
+        </div>
+      </div>
+
+      <!-- LEVEL 1: LEMBRAR -->
+      <section class="bloom-section active" id="level-section-1">
+        <div class="main-card level-1">
+          <span class="section-badge">Nível 1: Conhecimento</span>
+          <h2 class="section-title">Lembrar (Remember)</h2>
+          <p class="section-desc">O primeiro passo do aprendizado é recordar termos lógicos básicos, conectivos simbólicos e os valores fundamentais de tabelas-verdade.</p>
+          
+          <!-- Conceitos Básicos Panel -->
+          <div class="card-panel basic-concepts-panel" style="margin-bottom: 30px;">
+            <h3 class="subtitle"><i class="fa-solid fa-graduation-cap text-primary"></i> Guia Rápido de Conceitos Lógicos</h3>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">
+              Entenda os fundamentos e regras lógicas básicas antes de preencher a tabela ou fazer as questões.
+            </p>
+            <div class="concepts-tabs">
+              <button class="concept-tab-btn active" data-concept="proposicao">Proposições</button>
+              <button class="concept-tab-btn" data-concept="negacao">Negação (~)</button>
+              <button class="concept-tab-btn" data-concept="conjuncao">Conjunção (&and;)</button>
+              <button class="concept-tab-btn" data-concept="disjuncao">Disjunção (&or;)</button>
+              <button class="concept-tab-btn" data-concept="condicional">Condicional (&rarr;)</button>
+              <button class="concept-tab-btn" data-concept="bicondicional">Bicondicional (&harr;)</button>
+            </div>
+            <div class="concept-contents">
+              <!-- Proposicao -->
+              <div class="concept-content-item active" id="concept-proposicao">
+                <h4>O que é uma Proposição?</h4>
+                <p>É uma sentença declarativa (que afirma algo) que pode ser classificada unicamente como <strong>Verdadeira (V)</strong> ou <strong>Falsa (F)</strong>, nunca ambas.</p>
+                <div class="concept-examples">
+                  <div class="example-box correct">
+                    <strong>Exemplos de Proposição:</strong>
+                    <ul>
+                      <li>"O número 2 é par." (Valor lógico: V)</li>
+                      <li>"A capital do Brasil é Salvador." (Valor lógico: F)</li>
+                    </ul>
+                  </div>
+                  <div class="example-box wrong">
+                    <strong>Não são Proposições (sentenças imperativas, exclamativas, interrogativas ou abertas):</strong>
+                    <ul>
+                      <li>"Que dia lindo!" (Exclamação)</li>
+                      <li>"Qual o seu nome?" (Interrogação)</li>
+                      <li>"x + 5 = 10" (Sentença aberta, pois depende do valor de x)</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Negação -->
+              <div class="concept-content-item" id="concept-negacao">
+                <h4>Negação (~ ou &not;) &bull; "Não"</h4>
+                <p>A negação é um modificador lógico que inverte o valor de uma proposição. Se uma proposição é Verdadeira, sua negação é Falsa, e vice-versa.</p>
+                <div class="rule-highlight">
+                  <strong>Regra de Ouro:</strong> Inverte o valor lógico.
+                </div>
+                <div class="concept-examples">
+                  <div class="example-box">
+                    <strong>Exemplo:</strong> Se P = "Está chovendo" (V), então ~P = "Não está chovendo" (F).
+                  </div>
+                </div>
+              </div>
+
+              <!-- Conjunção -->
+              <div class="concept-content-item" id="concept-conjuncao">
+                <h4>Conjunção (&and; ou ^) &bull; Operador "E"</h4>
+                <p>A conjunção liga duas proposições e exige que <strong>ambas</strong> sejam verdadeiras ao mesmo tempo para que o resultado final seja Verdadeiro.</p>
+                <div class="rule-highlight">
+                  <strong>Regra de Ouro:</strong> Só é <strong>VERDADE</strong> se <strong>AMBOS</strong> forem verdadeiros (V &and; V = V). Qualquer outro caso resulta em Falso.
+                </div>
+                <div class="concept-examples">
+                  <div class="example-box">
+                    <strong>Exemplo Prático:</strong> "Eu fiz o almoço E lavei a louça."
+                    <p style="margin-top: 5px; font-size: 13px; color: var(--text-muted);">Se eu fiz o almoço mas NÃO lavei a louça, eu menti sobre o conjunto (F).</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Disjunção -->
+              <div class="concept-content-item" id="concept-disjuncao">
+                <h4>Disjunção (&or; ou v) &bull; Operador "OU"</h4>
+                <p>A disjunção exige apenas que <strong>pelo menos uma</strong> das partes seja verdadeira para que o resultado final seja Verdadeiro. Ela é inclusiva.</p>
+                <div class="rule-highlight">
+                  <strong>Regra de Ouro:</strong> Só é <strong>FALSO</strong> se <strong>AMBOS</strong> forem falsos (F &or; F = F). Se houver pelo menos um Verdadeiro, o resultado é V.
+                </div>
+                <div class="concept-examples">
+                  <div class="example-box">
+                    <strong>Exemplo Prático:</strong> "Vou ao cinema OU vou comer pizza."
+                    <p style="margin-top: 5px; font-size: 13px; color: var(--text-muted);">Basta eu ir ao cinema para a frase ser verdade. Se eu fizer ambos, também continua sendo verdade.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Condicional -->
+              <div class="concept-content-item" id="concept-condicional">
+                <h4>Condicional (&rarr;) &bull; "Se... então"</h4>
+                <p>A condicional estabelece uma relação de causa e efeito (ou condição suficiente e necessária). O antecedente implica o consequente.</p>
+                <div class="rule-highlight">
+                  <strong>Regra de Ouro:</strong> Só é <strong>FALSO</strong> quando o antecedente é Verdadeiro e o consequente é Falso (<strong>V &rarr; F = F</strong>). Lembre-se da regra mnemônica: <em>"Vera Fischer é Falsa"</em>. Todos os demais casos são Verdadeiros.
+                </div>
+                <div class="concept-examples">
+                  <div class="example-box">
+                    <strong>Exemplo Prático:</strong> "Se chover (antecedente), então a rua estará molhada (consequente)."
+                    <ul style="margin-top: 5px; font-size: 13px; color: var(--text-muted); padding-left: 20px;">
+                      <li>Se choveu e a rua está molhada (V &rarr; V): Verdade (promessa cumprida).</li>
+                      <li>Se choveu e a rua está seca (V &rarr; F): Falso (mentira, a rua deveria estar molhada).</li>
+                      <li>Se não choveu e a rua está molhada (F &rarr; V): Verdade (a rua pode ter sido molhada por um regador, a promessa inicial não foi descumprida).</li>
+                      <li>Se não choveu e a rua está seca (F &rarr; F): Verdade (nenhuma promessa foi violada).</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Bicondicional -->
+              <div class="concept-content-item" id="concept-bicondicional">
+                <h4>Bicondicional (&harr;) &bull; "Se e somente se"</h4>
+                <p>A bicondicional exige uma equivalência mútua de valores lógicos para que o resultado final seja verdadeiro.</p>
+                <div class="rule-highlight">
+                  <strong>Regra de Ouro:</strong> É <strong>VERDADE</strong> quando ambos os lados possuem o <strong>MESMO</strong> valor lógico (V &harr; V = V; F &harr; F = V). Se forem diferentes, é Falso.
+                </div>
+                <div class="concept-examples">
+                  <div class="example-box">
+                    <strong>Exemplo Prático:</strong> "Eu viajo se e somente se eu tiver férias."
+                    <p style="margin-top: 5px; font-size: 13px; color: var(--text-muted);">Só faz sentido se ambas as condições acontecerem juntas (Viajo e Tenho Férias) ou se nenhuma acontecer (Não viajo e Não tenho férias).</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="module-grid">
+            <!-- Flashcards Panel -->
+            <div class="card-panel">
+              <h3 class="subtitle"><i class="fa-solid fa-clone text-primary"></i> Flashcards Lógicos</h3>
+              <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">Clique no cartão para revelar a definição lógica.</p>
+              
+              <div class="flashcard-container">
+                <div class="flashcard" id="flashcard">
+                  <div class="front">
+                    <h3>Termo Lógico</h3>
+                    <span>Clique para virar</span>
+                  </div>
+                  <div class="back">
+                    <p>Definição do conectivo ou propriedade lógica.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="card-controls">
+                <button class="btn" id="card-prev"><i class="fa-solid fa-arrow-left"></i> Anterior</button>
+                <span id="card-counter" class="badge">1 / 8</span>
+                <button class="btn" id="card-next">Próximo <i class="fa-solid fa-arrow-right"></i></button>
+              </div>
+            </div>
+
+            <!-- Interactive Matrix Panel -->
+            <div class="card-panel">
+              <h3 class="subtitle"><i class="fa-solid fa-table-cells text-primary"></i> Complete a Tabela-Verdade</h3>
+              <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">Clique nas células com "?" para alternar entre V e F e tente acertar as operações lógicas. Clique em qualquer linha para ver a explicação passo a passo.</p>
+              
+              <table class="rlm-table">
+                <thead>
+                  <tr>
+                    <th>P</th>
+                    <th>Q</th>
+                    <th>~P</th>
+                    <th>P &and; Q</th>
+                    <th>P &or; Q</th>
+                    <th>P &rarr; Q</th>
+                  </tr>
+                </thead>
+                <tbody id="interactive-table-body">
+                  <!-- Generated dynamically in bloom-modules.js -->
+                </tbody>
+              </table>
+              <div class="mt-4 d-flex" style="display:flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                <button class="btn btn-primary" id="check-table-btn">Verificar Respostas</button>
+                <div id="table-result" style="font-size: 13px; font-weight: 600;"></div>
+              </div>
+
+              <!-- Dynamic Explanation Box -->
+              <div class="table-explanation-card" id="table-explanation-box" style="display: none; margin-top: 20px;">
+                <h4 class="subtitle text-primary" style="font-size: 15px; margin-bottom: 10px;"><i class="fa-solid fa-lightbulb"></i> Explicação Passo a Passo:</h4>
+                <div class="explanation-row-info" id="explanation-row-values" style="margin-bottom: 12px; font-weight: bold; font-size: 14px; color: #fff;"></div>
+                <ul class="explanation-details-list" id="explanation-details-list" style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px;">
+                  <!-- Generated dynamically in bloom-modules.js -->
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Infográfico Lembrar -->
+          <div class="infographic-card">
+            <h3 class="subtitle"><i class="fa-solid fa-circle-info"></i> Infográfico: Resumo Prático dos Conectivos</h3>
+            <div class="info-grid">
+              <div class="info-item">
+                <div class="info-icon"><i class="fa-solid fa-circle-nodes"></i></div>
+                <h4>Conjunção (E)</h4>
+                <span class="info-val">P &and; Q</span>
+                <p style="font-size: 12px; color: var(--text-muted);">Só é <b>VERDADE</b> se ambos forem verdadeiros.</p>
+              </div>
+              <div class="info-item">
+                <div class="info-icon"><i class="fa-solid fa-shuffle"></i></div>
+                <h4>Disjunção (OU)</h4>
+                <span class="info-val">P &or; Q</span>
+                <p style="font-size: 12px; color: var(--text-muted);">Só é <b>FALSO</b> se ambos forem falsos.</p>
+              </div>
+              <div class="info-item">
+                <div class="info-icon"><i class="fa-solid fa-arrow-right"></i></div>
+                <h4>Condicional (Se... então)</h4>
+                <span class="info-val">P &rarr; Q</span>
+                <p style="font-size: 12px; color: var(--text-muted);">Só é <b>FALSO</b> no caso V &rarr; F (Vera Fischer).</p>
+              </div>
+              <div class="info-item">
+                <div class="info-icon"><i class="fa-solid fa-arrows-left-right"></i></div>
+                <h4>Bicondicional</h4>
+                <span class="info-val">P &harr; Q</span>
+                <p style="font-size: 12px; color: var(--text-muted);">É <b>VERDADE</b> se ambos forem iguais (VV ou FF).</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LEVEL 2: ENTENDER -->
+      <section class="bloom-section" id="level-section-2">
+        <div class="main-card level-2">
+          <span class="section-badge">Nível 2: Compreensão</span>
+          <h2 class="section-title">Entender (Understand)</h2>
+          <p class="section-desc">Compreender conceitos significa interpretar ideias, traduzir linguagens naturais para diagramas e identificar leis fundamentais de equivalência lógica.</p>
+          
+          <div class="module-grid">
+            <!-- Venn Diagram Simulator -->
+            <div class="card-panel">
+              <h3 class="subtitle"><i class="fa-solid fa-circle-nodes text-info"></i> Simulador de Diagramas de Venn</h3>
+              <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">Selecione uma proposição ou relação lógica para visualizar a área correspondente destacada.</p>
+              
+              <div class="venn-svg-container">
+                <svg id="venn-svg" viewBox="0 0 300 200" width="100%">
+                  <!-- Background Universe U -->
+                  <rect x="5" y="5" width="290" height="190" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="2" rx="8"></rect>
+                  <text x="20" y="25" fill="var(--text-muted)" font-size="12" font-family="monospace">Universo (U)</text>
+                  
+                  <!-- Circle A -->
+                  <circle cx="110" cy="100" r="60" id="circleA" class="venn-area"></circle>
+                  <!-- Circle B -->
+                  <circle cx="190" cy="100" r="60" id="circleB" class="venn-area"></circle>
+                  
+                  <!-- Intersection overlap calculated path -->
+                  <!-- cx1=110, cx2=190, r=60. Intersection points at x=150, y=100 +/- 44.72 -->
+                  <path d="M 150,55.28 A 60,60 0 0,1 150,144.72 A 60,60 0 0,1 150,55.28" id="overlap" class="venn-area"></path>
+                  
+                  <!-- Labels -->
+                  <text x="90" y="105" fill="#fff" font-weight="bold" font-size="14">A</text>
+                  <text x="205" y="105" fill="#fff" font-weight="bold" font-size="14">B</text>
+                </svg>
+              </div>
+              <div class="diagram-description" id="venn-info">
+                Selecione uma operação para ler a explicação correspondente.
+              </div>
+            </div>
+
+            <!-- Controls and Equivalences -->
+            <div class="card-panel" style="display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <h3 class="subtitle"><i class="fa-solid fa-sliders text-info"></i> Proposições e Operações</h3>
+                <div class="venn-controls" style="margin-bottom: 25px;">
+                  <button class="btn venn-control-btn active" data-relation="intersection"><i class="fa-solid fa-scissors"></i> Interseção (A &and; B)</button>
+                  <button class="btn venn-control-btn" data-relation="union"><i class="fa-solid fa-circle-nodes"></i> União (A &or; B)</button>
+                  <button class="btn venn-control-btn" data-relation="difference"><i class="fa-solid fa-minus"></i> Diferença (A - B)</button>
+                  <button class="btn venn-control-btn" data-relation="subset"><i class="fa-solid fa-compress"></i> Todo A é B (A &sub; B)</button>
+                  <button class="btn venn-control-btn" data-relation="disjoint"><i class="fa-solid fa-ban"></i> Nenhum A é B (A &cap; B = &empty;)</button>
+                </div>
+              </div>
+
+              <!-- Equivalence quick card -->
+              <div>
+                <h3 class="subtitle"><i class="fa-solid fa-equals text-info"></i> Leis de Equivalência Úteis</h3>
+                <div class="equivalence-grid">
+                  <div class="eq-card">
+                    <span class="eq-title">Lei de De Morgan</span>
+                    <span class="eq-formula">~(P &and; Q) &equiv; ~P &or; ~Q</span>
+                  </div>
+                  <div class="eq-card">
+                    <span class="eq-title">Equivalência Condicional</span>
+                    <span class="eq-formula">P &rarr; Q &equiv; ~P &or; Q</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LEVEL 3: APLICAR -->
+      <section class="bloom-section" id="level-section-3">
+        <div class="main-card level-3">
+          <span class="section-badge">Nível 3: Aplicação</span>
+          <h2 class="section-title">Aplicar (Apply)</h2>
+          <p class="section-desc">Demonstre sua capacidade prática resolvendo questões adaptadas de bancas examinadoras de concursos de alto nível no Brasil.</p>
+          
+          <!-- Quiz Arena -->
+          <div class="card-panel">
+            <div class="quiz-header">
+              <h3 class="subtitle" id="quiz-question-title"><span class="badge">Banca - Ano</span></h3>
+              <i class="fa-solid fa-bullseye text-success" style="font-size: 20px;"></i>
+            </div>
+            
+            <div class="quiz-question-box" id="quiz-question-text">
+              Carregando enunciado da questão...
+            </div>
+            
+            <ul class="quiz-options" id="quiz-options-list">
+              <!-- Rendered dynamically -->
+            </ul>
+            
+            <!-- Explanation component -->
+            <div class="quiz-explanation" id="quiz-explanation-card" style="display: none;">
+              <h4 class="subtitle text-success" style="font-size: 15px; margin-bottom: 8px;"><i class="fa-solid fa-lightbulb"></i> Resolução Passo a Passo:</h4>
+              <p id="quiz-explanation-text" style="font-size: 14px; line-height: 1.5; color: var(--text-main);"></p>
+            </div>
+
+            <div class="mt-4" style="display: flex; justify-content: space-between; align-items: center; margin-top: 25px;">
+              <button class="btn btn-primary" id="quiz-next-btn" style="display: none;">Próxima Questão <i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+
+            <div class="quiz-progress-track">
+              <div class="progress-fill" id="quiz-progress-meter" style="width: 0%; height: 100%;"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LEVEL 4: ANALISAR -->
+      <section class="bloom-section" id="level-section-4">
+        <div class="main-card level-4">
+          <span class="section-badge">Nível 4: Análise</span>
+          <h2 class="section-title">Analisar (Analyze)</h2>
+          <p class="section-desc">Analisar envolve decompor um argumento complexo em suas premissas e conclusão para determinar se a estrutura dedutiva é válida ou se constitui uma falácia lógica.</p>
+          
+          <div class="module-grid">
+            <!-- Argument Builder Panel -->
+            <div class="card-panel">
+              <h3 class="subtitle"><i class="fa-solid fa-diagram-project text-cyan"></i> Estrutura de Argumento</h3>
+              <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Configure as premissas e a conclusão nos seletores e verifique se o argumento é formalmente correto.</p>
+              
+              <div class="analyzer-form">
+                <div class="form-group">
+                  <label for="analise-p1">Premissa 1 (Fórmula Condicional/Disjuntiva):</label>
+                  <select id="analise-p1" class="select-custom">
+                    <option value="p_cond_q">Se eu estudar bastante (P), então serei aprovado (Q) [P &rarr; Q]</option>
+                    <option value="p_or_q">Eu estudo bastante (P) ou serei aprovado (Q) [P &or; Q]</option>
+                    <option value="p_and_q">Eu estudo bastante (P) e serei aprovado (Q) [P &and; Q]</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="analise-p2">Premissa 2 (Fato Constatado):</label>
+                  <select id="analise-p2" class="select-custom">
+                    <option value="p">Eu estudei bastante [P]</option>
+                    <option value="not_p">Eu não estudei bastante [~P]</option>
+                    <option value="q">Fui aprovado no concurso [Q]</option>
+                    <option value="not_q">Não fui aprovado no concurso [~Q]</option>
+                    <option value="none">Nenhuma premissa de suporte adicional</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="analise-c">Conclusão Proposta:</label>
+                  <select id="analise-c" class="select-custom">
+                    <option value="q">Serei/Fui aprovado [Q]</option>
+                    <option value="not_q">Não serei/fui aprovado [~Q]</option>
+                    <option value="p">Estudei bastante [P]</option>
+                    <option value="not_p">Não estudei bastante [~P]</option>
+                  </select>
+                </div>
+
+                <button class="btn btn-primary mt-2" id="analyze-verify-btn" style="width: 100%; justify-content: center;">
+                  <i class="fa-solid fa-shield-halved"></i> Verificar Validade do Argumento
+                </button>
+              </div>
+            </div>
+
+            <!-- Analysis Output -->
+            <div class="card-panel" style="display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <h3 class="subtitle"><i class="fa-solid fa-chart-simple text-cyan"></i> Resultado da Análise</h3>
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">O resultado abaixo mudará conforme você monta e verifica a estrutura silogística ao lado.</p>
+                
+                <div id="analyze-result-box" style="display: none;">
+                  <!-- Output dynamic -->
+                </div>
+              </div>
+
+              <!-- Extra Tip -->
+              <div class="alert-box info" style="margin-top: 15px; font-size: 12.5px;">
+                <h4 style="margin-bottom: 5px; font-weight: 700;"><i class="fa-solid fa-circle-question"></i> Dica de Prova:</h4>
+                Nunca assuma a veracidade do argumento pela sua intuição. A validade lógica depende <b>exclusivamente</b> da estrutura das relações, não do significado real das palavras.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LEVEL 5: AVALIAR -->
+      <section class="bloom-section" id="level-section-5">
+        <div class="main-card level-5">
+          <span class="section-badge">Nível 5: Avaliação</span>
+          <h2 class="section-title">Avaliar (Evaluate)</h2>
+          <p class="section-desc">Avaliar consiste em examinar criticamente uma demonstração lógica completa para julgar sua consistência interna e localizar falhas de raciocínio.</p>
+          
+          <div class="card-panel">
+            <h3 class="subtitle"><i class="fa-solid fa-magnifying-glass text-warning"></i> Detetive de Falácias: Encontre o Erro</h3>
+            <p class="eval-instructions">Uma dedução lógica está descrita abaixo. Apenas uma das linhas representa um salto lógico inválido. Identifique e clique na linha incorreta!</p>
+            
+            <div style="background: rgba(0,0,0,0.2); padding: 15px 20px; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: 20px;">
+              <h4 id="eval-stage-title" style="margin-bottom: 8px; font-weight: 700; color: var(--color-warning);">Título do Caso</h4>
+              <p id="eval-stage-context" style="font-size: 14px; color: var(--text-muted);"></p>
+            </div>
+
+            <ul class="eval-steps" id="eval-steps-list">
+              <!-- Injected by JS -->
+            </ul>
+
+            <div id="eval-result-box" style="display: none;">
+              <!-- Output dynamic -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LEVEL 6: CRIAR -->
+      <section class="bloom-section" id="level-section-6">
+        <div class="main-card level-6">
+          <span class="section-badge">Nível 6: Síntese</span>
+          <h2 class="section-title">Criar (Create)</h2>
+          <p class="section-desc">O topo da cognição na taxonomia de Bloom. Aqui você formula suas próprias expressões lógicas complexas e analisa seus comportamentos lógicos globais.</p>
+          
+          <div class="module-grid">
+            <!-- Logic Sandbox Builder -->
+            <div class="card-panel">
+              <h3 class="subtitle"><i class="fa-solid fa-code text-danger"></i> Logic Sandbox</h3>
+              <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">Digite sua proposição composta usando as variáveis P e Q ou use os botões lógicos rápidos abaixo.</p>
+              
+              <div class="sandbox-editor">
+                <div class="formula-input-wrapper">
+                  <input type="text" id="sandbox-formula-input" placeholder="Ex: (P ^ Q) -> ~Q" class="input-text" autocomplete="off" spellcheck="false">
+                </div>
+
+                <div class="sandbox-keyboard">
+                  <button class="char-btn" data-char="P">P</button>
+                  <button class="char-btn" data-char="Q">Q</button>
+                  <button class="char-btn" data-char="~">~ (Negação)</button>
+                  <button class="char-btn" data-char="^">^ (E)</button>
+                  <button class="char-btn" data-char="v">v (OU)</button>
+                  <button class="char-btn" data-char="→">&rarr; (Se... então)</button>
+                  <button class="char-btn" data-char="↔">&harr; (Bicondicional)</button>
+                  <button class="char-btn" data-char="(">(</button>
+                  <button class="char-btn" data-char=")">)</button>
+                </div>
+
+                <div class="sandbox-actions">
+                  <button class="btn btn-primary" id="sandbox-build-btn" style="flex-grow: 1; justify-content: center;"><i class="fa-solid fa-gears"></i> Gerar Tabela-Verdade</button>
+                  <button class="btn" id="sandbox-clear-btn"><i class="fa-solid fa-trash-can"></i> Limpar</button>
+                </div>
+                
+                <div id="sandbox-error-msg" style="color: var(--color-danger); font-size: 13px; font-weight: 500; min-height: 20px;"></div>
+              </div>
+            </div>
+
+            <!-- Truth table preview -->
+            <div class="card-panel" style="display: flex; flex-direction: column; min-height: 300px;">
+              <h3 class="subtitle"><i class="fa-solid fa-table text-danger"></i> Tabela-Verdade Gerada</h3>
+              <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">A tabela correspondente aparecerá automaticamente abaixo ao processar a fórmula.</p>
+              
+              <div style="flex-grow: 1; overflow-y: auto;">
+                <table class="rlm-table">
+                  <thead id="sandbox-table-header">
+                    <!-- Dynamic -->
+                  </thead>
+                  <tbody id="sandbox-table-body">
+                    <!-- Dynamic -->
+                  </tbody>
+                </table>
+              </div>
+
+              <div id="sandbox-stats" class="alert-box success" style="display: none; margin-top: 15px; padding: 12px 18px;">
+                <!-- Classification dynamic -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </article>
+  </main>
+
+  <!-- Achievement Toast Notification -->
+  <div class="toast" id="toast-achievement">
+    <div class="toast-icon">&starf;</div>
+    <div class="toast-content">
+      <span class="toast-title">Nível Concluído!</span>
+      <span class="toast-desc" id="toast-level-name">Lembrar - Domínio das tabelas-verdade</span>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 concurso.tiagotavares.online. Desenvolvido para Raciocínio Lógico Matemático.</p>
+      <p style="margin-top: 5px; font-size: 12px; color: rgba(255,255,255,0.3);">Estruturado com base na Taxonomia de Objetivos Educacionais de Bloom.</p>
+    </div>
+  </footer>
+
+  <!-- Code Scripts -->
+  <script src="data-questions.js"></script>
+  <script src="bloom-modules.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
