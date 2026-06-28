@@ -9,4 +9,8 @@
     # Redireciona www.legalizacao.tiagotavares.online para regularizacaoobras.html
     RewriteCond %{HTTP_HOST} ^www\.legalizacao\.tiagotavares\.online$ [NC]
     RewriteRule ^(.*)$ regularizacaoobras.html [L]
+
+    # Redireciona tiagotavares.com.br (e www) para tiagotavares.adv.br
+    RewriteCond %{HTTP_HOST} ^(www\.)?tiagotavares\.com\.br$ [NC]
+    RewriteRule ^(.*)$ https://tiagotavares.adv.br/$1 [R=301,L]
 </IfModule>

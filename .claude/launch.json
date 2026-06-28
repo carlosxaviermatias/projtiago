@@ -1,0 +1,33 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "painel",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["/Users/tiagotavares/Documents/github/Tiago/painel/server.py"],
+      "port": 8770,
+      "env": {
+        "PAINEL_SENHA": "devlocal123",
+        "PAINEL_PORT": "8770"
+      }
+    },
+    {
+      "name": "jonatan-site",
+      "runtimeExecutable": "/Users/tiagotavares/.local/node/bin/node",
+      "runtimeArgs": ["/Users/tiagotavares/Documents/github/Jonatan Bandeira/site-jonatan/app.js"],
+      "port": 3000
+    },
+    {
+      "name": "concursos",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["/Users/tiagotavares/Documents/github/Tiago/concursos-policia/server.py"],
+      "port": 8780
+    },
+    {
+      "name": "curso-fotografia",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8731", "--directory", "/Users/tiagotavares/Documents/github/Tiago/curso-fotografia"],
+      "port": 8731
+    }
+  ]
+}
