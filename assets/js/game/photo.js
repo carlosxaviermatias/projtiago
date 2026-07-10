@@ -14,6 +14,7 @@ import { save } from "./save.js";
 import { combinedCaps, EQUIPMENT } from "./data/equipment.js";
 import { CRITERIA_INFO, STARS } from "./data/strings.js";
 import { toast } from "./dialogue.js";
+import { canvasPoint } from "./fullscreen.js";
 
 /* ---------- valores discretos dos controles ---------- */
 export const ISOS = [100, 200, 400, 800, 1600, 3200, 6400];
@@ -108,13 +109,12 @@ export class CameraScene {
     el.querySelector("#gqShutter").addEventListener("pointerdown", (e) => { e.preventDefault(); this.shoot(); });
     el.querySelector("#gqCamClose").addEventListener("pointerdown", (e) => { e.preventDefault(); this.engine.pop(); });
 
-    // arrastar no canvas move o retículo (touch/mouse)
+    // arrastar no canvas move o retículo (touch/mouse) — canvasPoint() já
+    // resolve a conversão corretamente mesmo com o jogo rotacionado (fullscreen mobile)
     const cv = this.engine.canvas;
     this._drag = (e) => {
       if (e.buttons === 0 && e.type === "pointermove") return;
-      const r = cv.getBoundingClientRect();
-      const sx = ((e.clientX - r.left) / r.width) * VIEW_W;
-      const sy = ((e.clientY - r.top) / r.height) * VIEW_H;
+      const { x: sx, y: sy } = canvasPoint(e, cv);
       this.cx = this.fase.camX + sx;
       this.cy = this.fase.camY + sy;
       this.clampReticle();

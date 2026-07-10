@@ -233,3 +233,58 @@ body.gq-touch #gameCamUI.open ~ #gameTouch .gq-abtns{ display:none; }
 /* ---------- página em volta ---------- */
 .gq-pagehead{ text-align:center; max-width:700px; margin:0 auto 26px; }
 .gq-below{ max-width:960px; margin:18px auto 0; }
+
+/* ---------- tela cheia horizontal (mobile) ---------- */
+body.gq-fs-on{ overflow:hidden; }
+
+.gq-fsbtn{
+  display:none; position:absolute; top:10px; right:10px; z-index:20;
+  align-items:center; gap:6px; background:rgba(14,15,19,.8);
+  border:1px solid var(--line); border-radius:30px; color:#fff;
+  font-size:.8rem; font-weight:700; font-family:var(--sans);
+  padding:8px 14px; cursor:pointer; pointer-events:auto; touch-action:manipulation;
+}
+body.gq-touch .gq-fsbtn{ display:flex; }
+.gq-fsbtn:hover{ border-color:var(--accent); }
+.gq-fsbtn.on{ border-color:var(--accent-deep); color:var(--accent-2); }
+
+/* fullscreen ativo: shell cobre a viewport inteira */
+#gameShell.gq-fs{
+  position:fixed; inset:0; z-index:9999;
+  max-width:none; margin:0; border:0; border-radius:0;
+  width:100vw; height:100vh; height:100dvh;
+  display:flex; align-items:center; justify-content:center;
+  background:#0b0c10;
+}
+/* paisagem real (API nativa ou telefone já deitado): canvas preenche mantendo 16:9 */
+#gameShell.gq-fs:not(.gq-rot) #gameCanvas{
+  width:auto; height:100%; max-width:100%; aspect-ratio:16/9;
+}
+/* fallback iOS com telefone em pé: gira o shell inteiro 90° ("letterbox rotation") */
+#gameShell.gq-fs.gq-rot{
+  /* cancela o inset:0 de .gq-fs — aqui centralizamos manualmente
+     porque o box gira e width/height ficam trocados */
+  inset:auto; top:50%; left:50%; right:auto; bottom:auto;
+  width:100vh; width:100dvh; height:100vw; height:100dvw;
+  transform:translate(-50%,-50%) rotate(90deg);
+  transform-origin:center center;
+}
+#gameShell.gq-fs.gq-rot #gameCanvas{ width:100%; height:100%; aspect-ratio:16/9; }
+
+/* safe-area (notch/home indicator) só dentro do fullscreen */
+#gameShell.gq-fs .gq-fsbtn{
+  top:calc(10px + env(safe-area-inset-top, 0px));
+  right:calc(10px + env(safe-area-inset-right, 0px));
+}
+#gameShell.gq-fs .gq-dpad{
+  width:150px; height:150px;
+  grid-template-columns:50px 50px 50px; grid-template-rows:50px 50px 50px;
+  left:calc(14px + env(safe-area-inset-left, 0px));
+  bottom:calc(14px + env(safe-area-inset-bottom, 0px));
+}
+#gameShell.gq-fs .gq-abtn{ width:64px; height:64px; }
+#gameShell.gq-fs .gq-abtn--cam{ width:74px; height:74px; font-size:1.7rem; }
+#gameShell.gq-fs .gq-abtns{
+  right:calc(14px + env(safe-area-inset-right, 0px));
+  bottom:calc(16px + env(safe-area-inset-bottom, 0px));
+}
