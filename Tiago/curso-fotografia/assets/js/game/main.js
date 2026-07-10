@@ -6,6 +6,7 @@
 import { Engine } from "./engine.js";
 import { input } from "./input.js";
 import { MenuScene } from "./scenes.js";
+import { initFullscreen } from "./fullscreen.js";
 
 function boot() {
   const canvas = document.getElementById("gameCanvas");
@@ -22,6 +23,7 @@ function boot() {
 
   input.init();
   input.buildTouchUI(dom.touch);
+  initFullscreen(dom.shell);
 
   // só captura teclas quando o mouse/foco está no jogo
   let inside = false;
