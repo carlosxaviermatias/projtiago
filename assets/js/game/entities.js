@@ -5,8 +5,9 @@
    fica nos pés do personagem (sensação top-down correta).
    ============================================================ */
 
-import { TILE } from "./renderer.js";
-import { makePerson, makeProp, PEOPLE } from "./sprites.js";
+import { TILE } from "./renderer.js?v=3";
+import { makePerson, makeProp, PEOPLE } from "./sprites.js?v=3";
+import { sfx } from "./audio.js?v=3";
 
 const SPR = TILE; // sprites 16×16 × escala 3 = 48
 
@@ -54,7 +55,10 @@ export class Player extends Character {
       map.moveBox(b, dx, dy);
       this.setBox(b);
     }
+    const prev = this.frame;
     this.animate(dt, moving);
+    // um passo a cada ciclo de animação (~3 passos/s)
+    if (moving && this.frame === 1 && prev !== 1) sfx.play("step");
   }
 }
 

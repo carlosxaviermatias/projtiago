@@ -3,10 +3,11 @@
    Liga input + engine + cenas aos elementos da página jogo.html.
    ============================================================ */
 
-import { Engine } from "./engine.js";
-import { input } from "./input.js";
-import { MenuScene } from "./scenes.js";
-import { initFullscreen } from "./fullscreen.js";
+import { Engine } from "./engine.js?v=3";
+import { input } from "./input.js?v=3";
+import { MenuScene } from "./scenes.js?v=3";
+import { initFullscreen } from "./fullscreen.js?v=3";
+import { initSoundButton, unlockAudio } from "./audio.js?v=3";
 
 function boot() {
   const canvas = document.getElementById("gameCanvas");
@@ -24,6 +25,12 @@ function boot() {
   input.init();
   input.buildTouchUI(dom.touch);
   initFullscreen(dom.shell);
+  initSoundButton(dom.shell);
+
+  // destrava o áudio no 1º gesto do usuário (política de autoplay)
+  const unlock = () => { unlockAudio(); removeEventListener("pointerdown", unlock); removeEventListener("keydown", unlock); };
+  addEventListener("pointerdown", unlock);
+  addEventListener("keydown", unlock);
 
   // só captura teclas quando o mouse/foco está no jogo
   let inside = false;
