@@ -7,7 +7,7 @@
    Tudo é "assado" uma vez em canvases offscreen (renderer.bake).
    ============================================================ */
 
-import { bake, bakeTile, TILE } from "./renderer.js";
+import { bake, bakeTile, TILE } from "./renderer.js?v=3";
 
 /* ---------- template humano (16×16) ----------
    H cabelo · S pele · T camisa · P calça · B sapato · O contorno

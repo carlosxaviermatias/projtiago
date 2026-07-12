@@ -4,18 +4,19 @@
    Galeria, Loja e Estatísticas (painéis DOM sobre o canvas).
    ============================================================ */
 
-import { TILE, VIEW_W, VIEW_H, text } from "./renderer.js";
-import { input } from "./input.js";
-import { save } from "./save.js";
-import { TileMap } from "./tilemap.js";
-import { Player, NPC, Target } from "./entities.js";
-import { makeProp } from "./sprites.js";
-import { DialogueScene, toast } from "./dialogue.js";
-import { QuestLog } from "./quests.js";
-import { CameraScene } from "./photo.js";
-import { LEVELS, LEVEL_ORDER } from "./data/levels.js";
-import { EQUIPMENT, SLOT_NAMES } from "./data/equipment.js";
-import { UI, ACHIEVEMENTS, CRITERIA_INFO } from "./data/strings.js";
+import { TILE, VIEW_W, VIEW_H, text } from "./renderer.js?v=3";
+import { input } from "./input.js?v=3";
+import { save } from "./save.js?v=3";
+import { TileMap } from "./tilemap.js?v=3";
+import { Player, NPC, Target } from "./entities.js?v=3";
+import { makeProp } from "./sprites.js?v=3";
+import { DialogueScene, toast } from "./dialogue.js?v=3";
+import { QuestLog } from "./quests.js?v=3";
+import { CameraScene } from "./photo.js?v=3";
+import { LEVELS, LEVEL_ORDER } from "./data/levels.js?v=3";
+import { EQUIPMENT, SLOT_NAMES } from "./data/equipment.js?v=3";
+import { UI, ACHIEVEMENTS, CRITERIA_INFO } from "./data/strings.js?v=3";
+import { sfx } from "./audio.js?v=3";
 
 /* ============================================================
    MENU INICIAL
@@ -40,7 +41,7 @@ export class MenuScene {
         </div>
       </div>`;
     el.classList.add("open");
-    el.querySelector("#gqStart").onclick = () => engine.reset(new MapScene());
+    el.querySelector("#gqStart").onclick = () => { sfx.play("confirm"); engine.reset(new MapScene()); };
   }
   exit() { this.engine.dom.panel.classList.remove("open"); this.engine.dom.panel.innerHTML = ""; }
   update(dt) {
@@ -120,10 +121,10 @@ export class MapScene {
       </div>`;
     el.classList.add("open");
     el.querySelectorAll(".gq-lvcard:not(.locked)").forEach((b) =>
-      b.addEventListener("click", () => this.engine.reset(new FaseScene(b.dataset.id))));
-    el.querySelector("#gqShop").onclick = () => this.engine.push(new ShopScene());
-    el.querySelector("#gqGallery").onclick = () => this.engine.push(new GalleryScene());
-    el.querySelector("#gqStats").onclick = () => this.engine.push(new StatsScene());
+      b.addEventListener("click", () => { sfx.play("confirm"); this.engine.reset(new FaseScene(b.dataset.id)); }));
+    el.querySelector("#gqShop").onclick = () => { sfx.play("select"); this.engine.push(new ShopScene()); };
+    el.querySelector("#gqGallery").onclick = () => { sfx.play("select"); this.engine.push(new GalleryScene()); };
+    el.querySelector("#gqStats").onclick = () => { sfx.play("select"); this.engine.push(new StatsScene()); };
   }
 
   update() {}
@@ -366,11 +367,12 @@ export class ShopScene {
     el.querySelector("#gqBack").onclick = () => this.engine.pop();
     el.querySelectorAll("[data-buy]").forEach((b) => b.onclick = () => {
       const id = b.dataset.buy, it = EQUIPMENT[id];
-      if (d.coins < it.price) return;
+      if (d.coins < it.price) { sfx.play("deny"); return; }
       d.coins -= it.price;
       d.equipment.owned.push(id);
       d.equipment.equipped[it.type] = id;
       save.save();
+      sfx.play("coin");
       toast(this.engine, `🛒 Comprou <b>${it.name}</b>!`);
       if (d.equipment.owned.length >= 5 && save.unlock("colecionador")) toast(this.engine, "🏅 Conquista: <b>Colecionador</b>");
       this.render();
@@ -379,6 +381,7 @@ export class ShopScene {
       const id = b.dataset.equip;
       d.equipment.equipped[EQUIPMENT[id].type] = id;
       save.save();
+      sfx.play("select");
       this.render();
     });
   }

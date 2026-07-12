@@ -5,7 +5,8 @@
    e dispara um callback ao terminar.
    ============================================================ */
 
-import { input } from "./input.js";
+import { input } from "./input.js?v=3";
+import { sfx } from "./audio.js?v=3";
 
 export class DialogueScene {
   /**
@@ -35,6 +36,7 @@ export class DialogueScene {
   render() {
     const p = this.pages[this.i];
     const last = this.i === this.pages.length - 1;
+    sfx.play("dialog");
     this.el.innerHTML = `
       <div class="gq-dlg-box">
         <div class="gq-dlg-speaker">${p.speaker}</div>

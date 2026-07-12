@@ -8,13 +8,14 @@
      0 = perfeita · >0 clara · <0 escura
    ============================================================ */
 
-import { TILE, VIEW_W, VIEW_H } from "./renderer.js";
-import { input } from "./input.js";
-import { save } from "./save.js";
-import { combinedCaps, EQUIPMENT } from "./data/equipment.js";
-import { CRITERIA_INFO, STARS } from "./data/strings.js";
-import { toast } from "./dialogue.js";
-import { canvasPoint } from "./fullscreen.js";
+import { TILE, VIEW_W, VIEW_H } from "./renderer.js?v=3";
+import { input } from "./input.js?v=3";
+import { save } from "./save.js?v=3";
+import { combinedCaps, EQUIPMENT } from "./data/equipment.js?v=3";
+import { CRITERIA_INFO, STARS } from "./data/strings.js?v=3";
+import { toast } from "./dialogue.js?v=3";
+import { canvasPoint } from "./fullscreen.js?v=3";
+import { sfx } from "./audio.js?v=3";
 
 /* ---------- valores discretos dos controles ---------- */
 export const ISOS = [100, 200, 400, 800, 1600, 3200, 6400];
@@ -80,6 +81,7 @@ export class CameraScene {
   enter(engine) {
     this.engine = engine;
     engine.dom.camUI.classList.add("open");
+    sfx.play("camera");
     this.renderUI();
   }
   exit() {
@@ -131,6 +133,7 @@ export class CameraScene {
     if (c.key === "t") this.tI = clampI(this.tI + d, 0, TS.length - 1);
     if (c.key === "focus") this.focus = clampI(this.focus + d, 1, 16);
     if (c.key === "flash") this.flashOn = !this.flashOn;
+    sfx.play("move");
     this.renderUI();
   }
 
@@ -261,6 +264,7 @@ export class CameraScene {
   /* ---------- disparo ---------- */
   shoot() {
     this.flashAnim = 0.25;
+    sfx.play("shutter");
     const tg = this.targetInCrop();
     const result = evaluateShot(this, tg);
     // pequena espera p/ animação do flash aparecer
@@ -457,6 +461,9 @@ export class ResultScene {
 
     // registra estatísticas / conquistas / galeria / missão
     save.recordShot(r.target?.def.concept, r.score);
+    // som de resultado quando a foto não faz parte de uma missão ativa
+    // (missões tocam sons próprios abaixo)
+    if (!r.quest) sfx.play(r.stars.stars >= 4 ? "star" : "select");
     if (save.unlock("primeira_foto")) toast(engine, "🏅 Conquista: <b>Primeiro clique</b>");
     if (r.stars.stars === 5 && save.unlock("cinco_estrelas")) toast(engine, "🏅 Conquista: <b>Perfeccionista</b>");
     if (this.fase.level.ambientLight <= 5 && r.score >= 90 && save.unlock("mestre_luz")) toast(engine, "🏅 Conquista: <b>Mestre da luz</b>");
@@ -474,13 +481,17 @@ export class ResultScene {
       const qr = this.fase.quests.registerPhoto(r.target.def.id, r.score);
       if (qr && !qr.partial) {
         const rw = qr.quest.rewards || {};
+        sfx.play("quest");
+        if (qr.levelUps) setTimeout(() => sfx.play("levelup"), 650);
         questMsg = `<div class="gq-questdone">✅ Missão concluída: <b>${qr.quest.title}</b>
           <span>+${rw.xp || 0} XP${rw.coins ? ` · +${rw.coins} 🪙` : ""}${rw.item ? ` · item novo!` : ""}</span></div>`;
         if (qr.levelUps) toast(engine, `⬆️ Subiu para o nível <b>${save.data.level}</b>!`);
         this.fase.refreshQuestUI();
       } else if (qr && qr.partial) {
+        sfx.play("coin");
         questMsg = `<div class="gq-questdone">📌 Alvo registrado! Continue a missão <b>${qr.quest.title}</b>.</div>`;
       } else if (r.quest && r.score < r.quest.minScore) {
+        sfx.play("deny");
         questMsg = `<div class="gq-questdone warn">A missão pede nota ≥ <b>${r.quest.minScore}</b>. Ajuste e tente de novo!</div>`;
       }
     }
