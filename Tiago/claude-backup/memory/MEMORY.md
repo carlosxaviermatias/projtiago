@@ -2,6 +2,7 @@
 
 ## Projetos Ativos
 
+- [Caso Carlos Castilho](project_carlos_castilho.md) — Revisional + superendividamento; aposentado INSS com consignados abusivos (cartões RMC/RCC que não amortizam, seguro embutido, desconto associativo); pasta Desktop/KAKÁ - RENATA
 - [Projeto Jonathan](project_jonatan.md) — Site Dr. Jonatan (fonoaudiólogo) em /Jonatan Bandeira/site-jonatan/, repo tavaresmatias/jonatanbandeira; **GitHub sync ✅ implementado e testado (2026-06-08)**
 - [GitHub Sync Setup](github_sync_setup.md) — Feature completa: painel auto-commita edições de volta ao GitHub para não perder em deploy
 - [Projeto Painel](project_painel.md) — Sistema interno em Tiago/painel/, deploy TrueNAS SCALE, 4 fases
