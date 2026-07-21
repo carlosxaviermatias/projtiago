@@ -1,0 +1,76 @@
+/* ============================================================
+   Safári Fotográfico 3D · game3d.css
+   Complementa o game.css (reutilizado sem alterações).
+   Prefixo .g3- para o que é exclusivo do jogo 3D.
+   ============================================================ */
+
+/* canvas 3D não deve ser pixelado como o 2D */
+#gameShell.g3 #gameCanvas{ image-rendering:auto; cursor:crosshair; }
+
+/* flash do obturador */
+#g3Flash{ position:absolute; inset:0; background:#fff; opacity:0;
+  pointer-events:none; transition:opacity .05s; z-index:30; }
+
+/* ---------- viewfinder (modo câmera) ---------- */
+#g3Viewfinder{ position:absolute; inset:0; pointer-events:none; display:none; z-index:12; }
+#g3Viewfinder.open{ display:block; }
+#g3Viewfinder .g3-frame{
+  position:absolute; inset:4.5% 6%;
+  border:2.5px solid rgba(244,176,62,.95); border-radius:6px;
+  box-shadow:0 0 0 2000px rgba(5,6,10,.35);
+}
+#g3Viewfinder .g3-grid{ position:absolute; inset:4.5% 6%; }
+#g3Viewfinder .g3-grid i{ position:absolute; background:rgba(244,176,62,.55); }
+#g3Viewfinder .g3-grid i:nth-child(1){ left:33.33%; top:0; bottom:0; width:1.5px; }
+#g3Viewfinder .g3-grid i:nth-child(2){ left:66.66%; top:0; bottom:0; width:1.5px; }
+#g3Viewfinder .g3-grid i:nth-child(3){ top:33.33%; left:0; right:0; height:1.5px; }
+#g3Viewfinder .g3-grid i:nth-child(4){ top:66.66%; left:0; right:0; height:1.5px; }
+#g3Viewfinder .g3-rec{
+  position:absolute; top:6.5%; left:8%; width:9px; height:9px; border-radius:50%;
+  background:#e8736b; box-shadow:0 0 8px #e8736b;
+  animation:g3blink 1.2s infinite;
+}
+@keyframes g3blink{ 0%,60%{opacity:1} 61%,100%{opacity:.25} }
+.g3-focus{
+  position:absolute; top:6%; left:50%; transform:translateX(-50%);
+  background:rgba(14,15,19,.8); border:1px solid var(--line); border-radius:30px;
+  color:var(--text-soft); font-size:.78rem; font-weight:600; padding:5px 14px;
+  white-space:nowrap;
+}
+.g3-focus.ok{ color:var(--ok); border-color:rgba(88,192,139,.5); }
+.g3-focus.bad{ color:var(--warn); border-color:rgba(240,162,58,.4); }
+
+/* ---------- joystick touch ---------- */
+.g3-joy{
+  position:absolute; left:18px; bottom:20px; width:120px; height:120px;
+  border-radius:50%; background:rgba(14,15,19,.45);
+  border:2px solid rgba(244,176,62,.4);
+  pointer-events:auto; touch-action:none; z-index:15;
+}
+.g3-stick{
+  position:absolute; left:50%; top:50%; width:52px; height:52px;
+  margin:-26px 0 0 -26px; border-radius:50%;
+  background:rgba(244,176,62,.75); border:2px solid #fff3;
+  pointer-events:none;
+}
+#gameShell.gq-fs .g3-joy{
+  left:calc(20px + env(safe-area-inset-left, 0px));
+  bottom:calc(20px + env(safe-area-inset-bottom, 0px));
+}
+
+/* ---------- seleção de qualidade (intro) ---------- */
+.g3-qualrow{ display:flex; gap:10px; margin:6px 0 18px; flex-wrap:wrap; justify-content:center; }
+.g3-qualbtn{
+  background:var(--surface); border:1px solid var(--line); border-radius:12px;
+  color:#fff; font-family:var(--sans); font-weight:700; font-size:.85rem;
+  padding:10px 16px; cursor:pointer; display:flex; flex-direction:column; gap:2px;
+  min-width:118px; align-items:center; transition:.15s;
+}
+.g3-qualbtn small{ color:var(--text-mute); font-weight:500; font-size:.66rem; }
+.g3-qualbtn:hover{ border-color:var(--accent); }
+.g3-qualbtn.sel{ border-color:var(--accent); box-shadow:0 0 0 1px var(--accent);
+  background:rgba(244,176,62,.08); }
+.g3-qualbtn.sel small{ color:var(--accent-2); }
+
+/* aviso 3D na página */
+.g3-note{ text-align:center; color:var(--text-mute); font-size:.8rem; margin-top:10px; }
