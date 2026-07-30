@@ -3,6 +3,7 @@
 ## Projetos Ativos
 
 - [Caso Carlos Castilho](project_carlos_castilho.md) — Revisional + superendividamento; aposentado INSS com consignados abusivos (cartões RMC/RCC que não amortizam, seguro embutido, desconto associativo); pasta Desktop/KAKÁ - RENATA
+- [Embargo Giseli](project_embargo_giseli.md) — Embargos de terceiro (Fiat/Palio em inventário, contrato de gaveta/alienação fiduciária); protocolo organizado 00–11 em ~/Downloads/Giseli (gabriel)/; peça alinhada aos anexos (2026-07-23)
 - [Projeto Jonathan](project_jonatan.md) — Site Dr. Jonatan (fonoaudiólogo) em /Jonatan Bandeira/site-jonatan/, repo tavaresmatias/jonatanbandeira; **GitHub sync ✅ implementado e testado (2026-06-08)**
 - [GitHub Sync Setup](github_sync_setup.md) — Feature completa: painel auto-commita edições de volta ao GitHub para não perder em deploy
 - [Projeto Painel](project_painel.md) — Sistema interno em Tiago/painel/, deploy TrueNAS SCALE, 4 fases
@@ -11,6 +12,8 @@
 - [Curso Fotografia](project_curso_fotografia.md) — Site de estudos do curso "Fotografia Digital com Smartphone" (200h, SENAI/Firjan) em Tiago/curso-fotografia/; Tiago é o instrutor; site estático criado 2026-06-09
 - [CRM Advogado](project_crm_advogado.md) — Funil comercial; migração Python→Node.js **COMPLETA** (roadmap A→F) no ar em tiagotavares.adv.br/crm; ⚠️ LER [[crm_dois_sistemas]] PRIMEIRO
 - [CRM - DOIS Sistemas + Migração Node](crm_dois_sistemas.md) — ⚠️ leitura pra retomar o CRM Node em produção. **✅ ROADMAP A→F COMPLETO (2026-07-04)**: Postgres/Supabase (projeto `crm-tiago`) · funil+cadastro+docs+tags · propostas+assinatura (PDF/pdfkit+e-mail/nodemailer) · painel Início/Tarefas/Anotações · Contatos · Processos+DataJud/CNJ · Google Agenda+Contatos (OAuth) · sessão persistente+senha via env. Tudo deployado e verificado em produção. Senha painel `tiago2026`
+
+- [OneDrive: domínio órfão no Mac](project_onedrive_dominio_orfao.md) — ⚠️ 40 pastas invisíveis no Finder (inclui `01.CLIENTES`) por File Provider órfão de instalação antiga; **8,4 GB nunca sincronizados resgatados em ~/Documents/FORA-DO-ONEDRIVE** (cópia única!); reset da Microsoft NÃO resolve (2026-07-29)
 
 ## Referências Externas
 

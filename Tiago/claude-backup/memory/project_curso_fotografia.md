@@ -3,6 +3,16 @@
 Site de estudos para o curso **Fotografia Digital com Smartphone** (200h · SENAI/Firjan · SEEDUC).
 Tiago Tavares é o **instrutor**. Objetivo: alunos estudarem a base teórica em casa.
 
+## ✅ CONCLUÍDO E NO AR (2026-07-21): Safári Fotográfico 3D
+Jogo EXTRA em 3D 1ª pessoa (Three.js r160 local), **separado** do FotoQuest 2D (não mexer no 2D!).
+**Testado ao vivo no navegador** (WebGL só valida renderizando): mundo/movimento WASD/modo câmera
+(C)/exposição AO VIVO (ISO 200→3200 estourou a cena)/**captura da foto NÃO sai preta**/avaliação
+0–100 com feedback por critério citando módulos/galeria/touch — zero erros de console.
+**No ar:** `fotografia.tiagotavares.online/jogo3d.html` (auto-deploy pegou no push desta vez).
+Link "🦌 Safári 3D" no rodapé Explorar das 9 páginas + card de destaque no jogo.html.
+Arquivos em `assets/js/game3d/` (10 módulos + vendor/three), `assets/css/game3d.css`, `jogo3d.html`.
+Detalhes/estado em `Tiago/curso-fotografia/RETOMAR-JOGO-3D.md`.
+
 ## Local
 - `Tiago/curso-fotografia/` (dentro do repo git `Tiago/`)
 - Site estático puro: HTML + `assets/css/style.css` + `assets/js/main.js`. Sem build.
