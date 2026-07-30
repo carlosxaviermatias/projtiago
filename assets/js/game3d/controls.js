@@ -7,8 +7,8 @@
      (os deltas de arrasto são remapeados quando girado).
    ============================================================ */
 
-import { groundHeight, EYE, WORLD_SIZE } from "./world.js?v=2";
-import { sfx3d } from "./audio3d.js?v=2";
+import { groundHeight, EYE, WORLD_SIZE } from "./world.js?v=8";
+import { sfx3d } from "./audio3d.js?v=8";
 
 const KEYS = {
   w: "f", W: "f", ArrowUp: "f",
@@ -29,6 +29,11 @@ export class FirstPerson {
     this.stepT = 0;
     this.enabled = true;
     this.treeCircles = [];
+    this.moving = false;
+    /* vista: 1 = 3ª pessoa (explorando), 0 = 1ª pessoa (olhando pelo visor).
+       `view` persegue `viewTarget` para a troca ser suave, não um corte seco. */
+    this.view = 1;
+    this.viewTarget = 1;
 
     addEventListener("keydown", (e) => {
       const k = KEYS[e.key];
@@ -88,6 +93,9 @@ export class FirstPerson {
   setJoy(x, y) { this.joy.x = x; this.joy.y = y; }
 
   update(dt, speedMul = 1) {
+    // a vista persegue o alvo mesmo com os controles travados (ex.: painel aberto)
+    this.view += (this.viewTarget - this.view) * Math.min(1, dt * 9);
+    this.moving = false;
     if (!this.enabled) { this.apply(); return; }
     let mx = 0, mz = 0;
     if (this.held.has("f")) mz += 1;
@@ -111,6 +119,7 @@ export class FirstPerson {
         if (Math.hypot(nx - t.x, nz - t.z) < t.r + 0.5) { blocked = true; break; }
       }
       if (!blocked) { this.pos.x = nx; this.pos.z = nz; }
+      this.moving = true;
       this.stepT += dt;
       if (this.stepT > 0.42) { this.stepT = 0; sfx3d.play("step"); }
     }
@@ -118,10 +127,30 @@ export class FirstPerson {
   }
 
   apply() {
-    const y = groundHeight(this.pos.x, this.pos.z) + EYE;
-    this.cam.position.set(this.pos.x, y, this.pos.z);
     this.cam.rotation.order = "YXZ";
     this.cam.rotation.y = this.yaw;
     this.cam.rotation.x = this.pitch;
+
+    const eyeY = groundHeight(this.pos.x, this.pos.z) + EYE;
+    const t = this.view;
+    if (t < 0.002) {                       // 1ª pessoa: olho do fotógrafo
+      this.cam.position.set(this.pos.x, eyeY, this.pos.z);
+      return;
+    }
+    /* 3ª pessoa: a câmera ORBITA um ponto no peito do boneco, recuando pela
+       linha de visão. Assim o pivô cai no centro da tela e ele aparece
+       inteiro — só deslocar a câmera para trás jogava o boneco para baixo.
+       Com ordem YXZ, a frente é (-sin y·cos p, sin p, -cos y·cos p). */
+    const cp = Math.cos(this.pitch), sp = Math.sin(this.pitch);
+    const fx = -Math.sin(this.yaw) * cp, fy = sp, fz = -Math.cos(this.yaw) * cp;
+    const dist = 3.6 * t;
+    const peitoY = groundHeight(this.pos.x, this.pos.z) + 1.3;
+    const baseY = eyeY + (peitoY - eyeY) * t;   // olho → peito conforme afasta
+    const x = this.pos.x - fx * dist;
+    const z = this.pos.z - fz * dist;
+    let y = baseY - fy * dist;
+    const chao = groundHeight(x, z) + 0.5;   // não entra no morro
+    if (y < chao) y = chao;
+    this.cam.position.set(x, y, z);
   }
 }

@@ -1,0 +1,198 @@
+/* =========================================================
+   MODO APRESENTAÇÃO + ÍNDICE RECOLHÍVEL
+   Curso Fotografia Digital com Smartphone — Tiago Tavares
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   1) ÍNDICE LATERAL RECOLHÍVEL
+   --------------------------------------------------------- */
+.toc-head{ display:flex; align-items:center; justify-content:space-between; gap:8px; margin:0 0 12px; }
+.toc-head h5{ margin:0; }
+.toc-btn{
+  flex:none; display:grid; place-items:center; width:26px; height:26px;
+  background:transparent; border:1px solid var(--line); border-radius:7px;
+  color:var(--text-mute); cursor:pointer; padding:0; transition:.15s;
+}
+.toc-btn:hover{ color:var(--accent); border-color:var(--accent); }
+.toc-btn svg{ width:14px; height:14px; }
+
+/* estado recolhido: some com a coluna e o corpo ocupa tudo */
+.doc.toc-off{ grid-template-columns:minmax(0,1fr); gap:0; }
+.doc.toc-off .toc{ display:none; }
+.doc.toc-off .doc-body{ max-width:900px; margin:0 auto; }
+
+/* botão flutuante para trazer o índice de volta */
+.toc-reopen{
+  position:fixed; left:0; top:50%; transform:translateY(-50%);
+  display:none; align-items:center; gap:7px;
+  background:var(--surface); color:var(--text-soft);
+  border:1px solid var(--line); border-left:none;
+  border-radius:0 10px 10px 0; padding:11px 12px 11px 9px;
+  font:600 .78rem/1 var(--sans); letter-spacing:.04em; text-transform:uppercase;
+  cursor:pointer; z-index:60; box-shadow:var(--shadow-sm); transition:.18s;
+}
+.toc-reopen:hover{ color:var(--accent); border-color:var(--accent); padding-left:14px; }
+.toc-reopen svg{ width:14px; height:14px; }
+.doc.toc-off ~ .toc-reopen,
+body.toc-collapsed .toc-reopen{ display:flex; }
+@media(max-width:940px){
+  .toc-btn, .toc-reopen{ display:none !important; }
+  .doc.toc-off .toc{ display:block; }
+}
+
+/* botão "Apresentar" no topo do módulo */
+.pres-open-btn{
+  display:inline-flex; align-items:center; gap:9px;
+  background:linear-gradient(135deg,var(--accent),var(--accent-deep));
+  color:#1a1205; border:none; border-radius:30px;
+  padding:11px 20px; font:700 .88rem/1 var(--sans); letter-spacing:.01em;
+  cursor:pointer; box-shadow:var(--shadow-sm); transition:.18s;
+}
+.pres-open-btn:hover{ transform:translateY(-2px); filter:brightness(1.06); }
+.pres-open-btn svg{ width:17px; height:17px; }
+.pres-bar{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin:0 0 30px; }
+.pres-bar .hint{ font-size:.82rem; color:var(--text-mute); }
+.pres-bar kbd{
+  font:600 .74rem/1 var(--sans); background:var(--surface-2); color:var(--text-soft);
+  border:1px solid var(--line); border-bottom-width:2px; border-radius:5px; padding:3px 6px;
+}
+
+/* ---------------------------------------------------------
+   2) MODO APRESENTAÇÃO
+   --------------------------------------------------------- */
+html.pres-on{ font-size:clamp(16px, 0.62vw + 0.72vh, 23px); overflow:hidden; }
+html.pres-on body{ overflow:hidden; }
+
+.pres{
+  position:fixed; inset:0; z-index:9000; background:var(--bg);
+  display:none; flex-direction:column; font-family:var(--sans);
+}
+.pres.open{ display:flex; }
+
+/* --- barra superior --- */
+.pres-top{
+  flex:none; display:flex; align-items:center; gap:16px;
+  padding:12px 22px; border-bottom:1px solid var(--line-soft);
+  background:var(--bg-2); min-height:54px;
+}
+.pres-top .mod{ font-weight:700; font-size:.86rem; color:var(--accent); white-space:nowrap; }
+.pres-top .sec{
+  flex:1; min-width:0; font-size:.82rem; color:var(--text-mute);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  text-transform:uppercase; letter-spacing:.1em;
+}
+.pres-top .count{ font-size:.82rem; color:var(--text-soft); font-variant-numeric:tabular-nums; white-space:nowrap; }
+.pres-tools{ display:flex; gap:7px; }
+.pres-tools button{
+  display:grid; place-items:center; width:34px; height:34px;
+  background:var(--surface); border:1px solid var(--line); border-radius:9px;
+  color:var(--text-soft); cursor:pointer; padding:0; transition:.15s;
+}
+.pres-tools button:hover{ color:var(--accent); border-color:var(--accent); }
+.pres-tools button svg{ width:16px; height:16px; }
+
+/* --- palco --- */
+.pres-stage{ flex:1; overflow:auto; position:relative; scroll-behavior:smooth; }
+.pres-center{ min-height:100%; display:flex; align-items:center; justify-content:center; padding:3vh 5vw 5vh; }
+.pres-fit{ width:min(1180px,100%); position:relative; }
+.pres-fit.scaled{ overflow:visible; }
+.pres-fit.scaled .pres-slide{ position:absolute; left:50%; top:0; transform-origin:top center; }
+.pres-slide{ width:100%; }
+.pres-slide .eyebrow{ margin-bottom:.4em; }
+.pres-slide > :first-child{ margin-top:0; }
+.pres-slide h2{ font-size:2.5rem; line-height:1.12; margin:0 0 .5em; }
+.pres-slide h3{ font-size:1.85rem; line-height:1.2; margin:0 0 .55em; }
+.pres-slide h4{ font-size:1.25rem; }
+.pres-slide p, .pres-slide li{ font-size:1.12rem; line-height:1.62; }
+.pres-slide ul, .pres-slide ol{ padding-left:1.3em; }
+.pres-slide li{ margin-bottom:.5em; }
+.pres-slide figure{ margin:1.1em 0; }
+.pres-slide figure img{ max-height:58vh; width:auto; max-width:100%; margin:0 auto; display:block; object-fit:contain; }
+.pres-slide .fig-2 img{ max-height:46vh; }
+.pres-slide figcaption{ text-align:center; }
+.pres-slide .diagram{ padding:20px; }
+.pres-slide .diagram svg{ max-height:52vh; }
+/* ilustrações dentro de cards não podem dominar o slide */
+.pres-slide .part-ilu{ max-height:19vh; }
+.pres-slide .part-ilu svg{ max-height:19vh; }
+.pres-slide .card svg{ max-height:24vh; }
+.pres-slide .card img{ max-height:26vh; width:auto; }
+.pres-slide table{ font-size:.98rem; }
+/* clones nunca ficam invisíveis pelo reveal */
+.pres-slide .reveal{ opacity:1 !important; transform:none !important; }
+
+/* animação de troca de slide (no wrapper, para não brigar com o auto-ajuste) */
+.pres-fit{ animation:presIn .28s ease both; }
+.pres.rev .pres-fit{ animation-name:presInRev; }
+@keyframes presIn{ from{ opacity:0; transform:translateX(26px);} to{ opacity:1; transform:none;} }
+@keyframes presInRev{ from{ opacity:0; transform:translateX(-26px);} to{ opacity:1; transform:none;} }
+@media (prefers-reduced-motion:reduce){ .pres-fit{ animation:none; } }
+
+/* --- setas laterais --- */
+.pres-nav{
+  position:absolute; top:0; bottom:0; width:9vw; min-width:60px; max-width:110px;
+  display:grid; place-items:center; border:none; background:transparent;
+  color:var(--text-mute); cursor:pointer; opacity:0; transition:.2s; z-index:3;
+}
+.pres-nav:hover{ opacity:1; color:var(--accent); background:linear-gradient(var(--dir),rgba(0,0,0,.22),transparent); }
+.pres-nav[disabled]{ pointer-events:none; }
+.pres-prev{ left:0; --dir:90deg; }
+.pres-next{ right:0; --dir:270deg; }
+.pres-nav svg{ width:36px; height:36px; }
+.pres:hover .pres-nav{ opacity:.42; }
+
+/* --- barra inferior de progresso --- */
+.pres-foot{ flex:none; height:5px; background:var(--line-soft); }
+.pres-foot i{ display:block; height:100%; background:linear-gradient(90deg,var(--accent-deep),var(--accent)); transition:width .25s; }
+
+/* --- tela preta (tecla B) --- */
+.pres.blackout .pres-stage, .pres.blackout .pres-nav{ visibility:hidden; }
+.pres.blackout{ background:#000; }
+.pres.blackout .pres-top, .pres.blackout .pres-foot{ opacity:.25; }
+
+/* --- índice de slides (tecla O) --- */
+.pres-index{
+  position:absolute; inset:0; z-index:5; background:var(--bg-2);
+  overflow:auto; padding:26px 5vw 40px; display:none;
+}
+.pres.index-on .pres-index{ display:block; }
+.pres-index h4{ font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; color:var(--text-mute); margin:0 0 18px; }
+.pres-index ol{ list-style:none; margin:0; padding:0; display:grid; gap:8px;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); }
+.pres-index button{
+  width:100%; text-align:left; display:flex; gap:11px; align-items:baseline;
+  background:var(--surface); border:1px solid var(--line); border-radius:10px;
+  padding:11px 14px; color:var(--text-soft); font:500 .95rem/1.35 var(--sans);
+  cursor:pointer; transition:.15s;
+}
+.pres-index button:hover{ border-color:var(--accent); color:var(--text); }
+.pres-index button.cur{ border-color:var(--accent); color:var(--accent); background:var(--surface-2); }
+.pres-index button.lv3{ padding-left:30px; font-size:.88rem; opacity:.86; }
+.pres-index .n{ font-variant-numeric:tabular-nums; color:var(--text-mute); font-size:.8rem; flex:none; }
+
+/* --- ajuda (tecla ?) --- */
+.pres-help{
+  position:absolute; right:22px; bottom:22px; z-index:6; display:none;
+  background:var(--surface); border:1px solid var(--line); border-radius:12px;
+  padding:16px 18px; box-shadow:var(--shadow); max-width:330px;
+}
+.pres.help-on .pres-help{ display:block; }
+.pres-help h4{ margin:0 0 10px; font-size:.76rem; letter-spacing:.13em; text-transform:uppercase; color:var(--text-mute); }
+.pres-help dl{ margin:0; display:grid; grid-template-columns:auto 1fr; gap:7px 12px; align-items:center; }
+.pres-help dt{ text-align:right; }
+.pres-help dd{ margin:0; font-size:.85rem; color:var(--text-soft); }
+.pres-help kbd{
+  font:600 .72rem/1 var(--sans); background:var(--surface-2); color:var(--text);
+  border:1px solid var(--line); border-bottom-width:2px; border-radius:5px; padding:3px 6px;
+}
+
+/* --- celular / tablet --- */
+@media(max-width:700px){
+  .pres-top{ padding:10px 12px; gap:10px; }
+  .pres-top .sec{ display:none; }
+  .pres-center{ padding:2vh 5vw 4vh; }
+  .pres-slide h2{ font-size:1.9rem; }
+  .pres-slide h3{ font-size:1.45rem; }
+  .pres-nav{ opacity:.3; width:16vw; }
+  .pres-help{ left:12px; right:12px; bottom:12px; max-width:none; }
+}
