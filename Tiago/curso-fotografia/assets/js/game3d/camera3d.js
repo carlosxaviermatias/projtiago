@@ -6,11 +6,11 @@
    revelação da foto com efeitos + avaliação.
    ============================================================ */
 
-import * as THREE from "./vendor/three.module.min.js";
+import * as THREE from "./vendor/three.module.min.js?v=2";
 import {
   ISOS, FS, TS, LENSES, SCENE_EV, exposureStops, evaluate, CRITERIA_INFO,
-} from "./evaluate.js";
-import { sfx3d } from "./audio3d.js";
+} from "./evaluate.js?v=2";
+import { sfx3d } from "./audio3d.js?v=2";
 
 const BASE_FOV = 70;
 
@@ -159,7 +159,11 @@ export class CameraMode {
   /** captura o frame WebGL e aplica os efeitos de revelação */
   developPhoto(r) {
     const src = this.g.renderer.domElement;
-    const W = 640, H = 360;
+    /* A foto sai na MESMA proporção da tela (o enquadramento que o aluno
+       viu na grade dos terços é exatamente o que ele fotografou), em vez
+       de forçar 16:9 — que esticaria a imagem na tela cheia do celular. */
+    const W = 640;
+    const H = Math.max(1, Math.round(W * (src.height / src.width)));
     const cv = document.createElement("canvas");
     cv.width = W; cv.height = H;
     const c = cv.getContext("2d");
@@ -188,8 +192,8 @@ export class CameraMode {
     c.fillStyle = g; c.fillRect(0, 0, W, H);
 
     const th = document.createElement("canvas");
-    th.width = 200; th.height = 112;
-    th.getContext("2d").drawImage(cv, 0, 0, 200, 112);
+    th.width = 200; th.height = Math.max(1, Math.round(200 * (H / W)));
+    th.getContext("2d").drawImage(cv, 0, 0, th.width, th.height);
     return { dataUrl: cv.toDataURL("image/jpeg", 0.85), thumb: th.toDataURL("image/jpeg", 0.55) };
   }
 

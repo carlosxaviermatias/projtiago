@@ -5,15 +5,15 @@
    FotoQuest 2D (página, save e módulos próprios).
    ============================================================ */
 
-import * as THREE from "./vendor/three.module.min.js";
-import { PRESETS, getQuality, cycleQuality } from "./quality.js";
-import { buildWorld } from "./world.js";
-import { spawnTargets } from "./targets.js";
-import { FirstPerson } from "./controls.js";
-import { CameraMode, showResult } from "./camera3d.js";
-import { MISSIONS, missionStatus, registerPhoto, save3d } from "./missions.js";
-import { sfx3d, unlockAudio3d } from "./audio3d.js";
-import { fs3, initFullscreen3d } from "./fullscreen3d.js";
+import * as THREE from "./vendor/three.module.min.js?v=2";
+import { PRESETS, getQuality, cycleQuality } from "./quality.js?v=2";
+import { buildWorld } from "./world.js?v=2";
+import { spawnTargets } from "./targets.js?v=2";
+import { FirstPerson } from "./controls.js?v=2";
+import { CameraMode, showResult } from "./camera3d.js?v=2";
+import { MISSIONS, missionStatus, registerPhoto, save3d } from "./missions.js?v=2";
+import { sfx3d, unlockAudio3d } from "./audio3d.js?v=2";
+import { fs3, initFullscreen3d } from "./fullscreen3d.js?v=2";
 
 /* ---------- input mínimo (teclado) ---------- */
 const KEY2ACT = { c: "CAM", C: "CAM", " ": "SHOOT", Tab: "TAB", z: "MINUS", Z: "MINUS", x: "PLUS", X: "PLUS", Escape: "ESC", q: "QUEST", Q: "QUEST" };
@@ -52,6 +52,20 @@ function boot() {
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(70, 16 / 9, 0.3, q.far);
+
+  /* Ajusta o buffer do WebGL ao tamanho REAL do canvas na tela.
+     Sem isto o mundo estica quando a proporção da tela não é 16:9
+     (é o caso da tela cheia horizontal do celular). O `false` evita
+     que o Three escreva width/height inline — quem manda é o CSS. */
+  function resize3d() {
+    const w = canvas.clientWidth || 960;
+    const h = canvas.clientHeight || 540;
+    if (w === resize3d.w && h === resize3d.h) return;
+    resize3d.w = w; resize3d.h = h;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
   const { treePositions } = buildWorld(scene, q);
   const targets = spawnTargets(scene);
 
@@ -259,7 +273,7 @@ function boot() {
   if (matchMedia("(pointer: coarse)").matches) document.body.classList.add("gq-touch");
   addEventListener("touchstart", () => document.body.classList.add("gq-touch"), { once: true, passive: true });
   buildTouch();
-  initFullscreen3d(shell, () => { /* CSS cuida do resto */ });
+  initFullscreen3d(shell, resize3d);   // entrar/sair da tela cheia re-dimensiona o 3D
   shell.addEventListener("pointerdown", unlockAudio3d, { once: true });
 
   /* ---------- loop ---------- */
@@ -277,9 +291,13 @@ function boot() {
     } else {
       controls.enabled = false;
       queue.length = 0;
+      // quem apaga o flash é cam.update(), que não roda pausado — e tirar
+      // foto PAUSA o jogo. Sem isto o clarão branco fica sobre o resultado.
+      if (cam.flash > 0) cam.flash = Math.max(0, cam.flash - dt);
     }
     for (const t of targets) t.update(dt);
     dom.flash.style.opacity = cam.flash > 0 ? Math.min(1, cam.flash * 4) : 0;
+    resize3d();                      // barato: só age quando o tamanho muda
     renderer.render(scene, camera);
     requestAnimationFrame(loop);
   }

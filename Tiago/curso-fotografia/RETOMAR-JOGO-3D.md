@@ -68,9 +68,12 @@ NÃO tocar em nada de `assets/js/game/` (FotoQuest 2D) nem em `jogo.html`. O 3D 
    "Explorar" das 9 páginas (glossario, index, jogo, mestres, modulo-1..5), logo após o FotoQuest,
    mesmo padrão do próprio `jogo3d.html`. **Ainda opcional:** um card/destaque em `jogo.html`
    apontando pro 3D (decidir com o Tiago).
-4. **Deploy** — PENDENTE (aguardando OK do Tiago). Fluxo: commit no `main` → atualizar branch
-   `fotografia-deploy` (worktree + `rsync --delete` + push) → conferir/`Reimplantar` no hPanel GIT →
-   testar no ar `https://fotografia.tiagotavares.online/jogo3d.html` (idealmente num celular real).
+4. ✅ **Deploy — PUSH FEITO (2026-07-21)**. Commit no `main` (`c7b4bc1`) + branch
+   `fotografia-deploy` atualizada e enviada (`d7bc904`) via worktree + `rsync --delete` + push.
+   Confirmado no remoto: jogo3d.html, game3d.css, os 10 módulos ES e o `vendor/three.module.min.js`.
+   ✅ **NO AR e testado (2026-07-21)**: `https://fotografia.tiagotavares.online/jogo3d.html` renderiza
+   o mundo 3D, zero erros no console, todos os assets carregam. **A Hostinger auto-publica no push**
+   (GIT auto-deploy) — NÃO precisou de "Reimplantar" manual no hPanel. Falta só testar num celular real.
 
 ## Pontos de atenção
 - **Imports do game3d são "bare"** (sem `?v=`). É jogo NOVO, então na 1ª publicação tá ok. Se

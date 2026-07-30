@@ -261,6 +261,14 @@ body.gq-fs-on{ overflow:hidden; }
 body.gq-touch .gq-fsbtn{ display:flex; }
 .gq-fsbtn:hover{ border-color:var(--accent); }
 .gq-fsbtn.on{ border-color:var(--accent-deep); color:var(--accent-2); }
+/* Loja/galeria/perfil/missões são telas MODAIS, mas os controles flutuantes
+   (tela cheia, d-pad, som) ficam por cima de todas as camadas e roubavam o
+   toque do que está atrás — o ✕ de fechar, no mesmo canto superior direito,
+   era o caso mais grave. Enquanto uma dessas telas estiver aberta eles saem
+   do caminho e voltam sozinhos ao fechar. Vale p/ o 2D e p/ o 3D. */
+#gameShell:has(.gq-sheet) .gq-fsbtn,
+#gameShell:has(.gq-sheet) #gameTouch,
+#gameShell:has(.gq-sheet) .gq-sndbtn{ display:none; }
 
 /* fullscreen ativo: shell cobre a viewport inteira */
 #gameShell.gq-fs{
