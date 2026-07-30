@@ -4,19 +4,19 @@
    Galeria, Loja e Estatísticas (painéis DOM sobre o canvas).
    ============================================================ */
 
-import { TILE, VIEW_W, VIEW_H, text } from "./renderer.js?v=3";
-import { input } from "./input.js?v=3";
-import { save } from "./save.js?v=3";
-import { TileMap } from "./tilemap.js?v=3";
-import { Player, NPC, Target } from "./entities.js?v=3";
-import { makeProp } from "./sprites.js?v=3";
-import { DialogueScene, toast } from "./dialogue.js?v=3";
-import { QuestLog } from "./quests.js?v=3";
-import { CameraScene } from "./photo.js?v=3";
-import { LEVELS, LEVEL_ORDER } from "./data/levels.js?v=3";
-import { EQUIPMENT, SLOT_NAMES } from "./data/equipment.js?v=3";
-import { UI, ACHIEVEMENTS, CRITERIA_INFO } from "./data/strings.js?v=3";
-import { sfx } from "./audio.js?v=3";
+import { TILE, VIEW_W, VIEW_H, text } from "./renderer.js?v=5";
+import { input } from "./input.js?v=5";
+import { save } from "./save.js?v=5";
+import { TileMap } from "./tilemap.js?v=5";
+import { Player, NPC, Target } from "./entities.js?v=5";
+import { makeProp } from "./sprites.js?v=5";
+import { DialogueScene, toast } from "./dialogue.js?v=5";
+import { QuestLog } from "./quests.js?v=5";
+import { CameraScene } from "./photo.js?v=5";
+import { LEVELS, LEVEL_ORDER } from "./data/levels.js?v=5";
+import { EQUIPMENT, SLOT_NAMES } from "./data/equipment.js?v=5";
+import { UI, ACHIEVEMENTS, CRITERIA_INFO } from "./data/strings.js?v=5";
+import { sfx } from "./audio.js?v=5";
 
 /* ============================================================
    MENU INICIAL

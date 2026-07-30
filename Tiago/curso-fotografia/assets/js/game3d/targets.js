@@ -6,8 +6,8 @@
    profundidade de campo, conceito do curso).
    ============================================================ */
 
-import * as THREE from "./vendor/three.module.min.js?v=8";
-import { groundHeight, LAKE } from "./world.js?v=8";
+import * as THREE from "./vendor/three.module.min.js?v=9";
+import { groundHeight, LAKE } from "./world.js?v=9";
 
 function lambert(color) { return new THREE.MeshLambertMaterial({ color }); }
 function box(w, h, d, color) { return new THREE.Mesh(new THREE.BoxGeometry(w, h, d), lambert(color)); }

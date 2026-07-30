@@ -6,11 +6,11 @@
    revelação da foto com efeitos + avaliação.
    ============================================================ */
 
-import * as THREE from "./vendor/three.module.min.js?v=8";
+import * as THREE from "./vendor/three.module.min.js?v=9";
 import {
   ISOS, FS, TS, LENSES, SCENE_EV, exposureStops, evaluate, CRITERIA_INFO,
-} from "./evaluate.js?v=8";
-import { sfx3d } from "./audio3d.js?v=8";
+} from "./evaluate.js?v=9";
+import { sfx3d } from "./audio3d.js?v=9";
 
 const BASE_FOV = 70;
 
@@ -245,6 +245,26 @@ export function showResult(dom, r, extraHtml, onClose, onAgain) {
       </div>
     </div>`;
   el.classList.add("open");
-  el.querySelector("#g3Ok").onclick = () => { el.classList.remove("open"); el.innerHTML = ""; onClose?.(); };
-  el.querySelector("#g3Again").onclick = () => { el.classList.remove("open"); el.innerHTML = ""; onAgain?.(); };
+
+  /* Fechar sem precisar mirar no botão: ESC (e Enter) valem como "Continuar".
+     O listener sai junto com a tela para não sobrar preso na página.
+     Obs.: na tela cheia NATIVA o ESC é capturado pelo navegador para sair
+     dela e não chega até aqui — é comportamento do próprio navegador. */
+  const fechar = (cb) => {
+    removeEventListener("keydown", aoTeclar, true);
+    el.classList.remove("open");
+    el.innerHTML = "";
+    cb?.();
+  };
+  function aoTeclar(e) {
+    if (e.key === "Escape" || e.key === "Enter") {
+      e.preventDefault();
+      e.stopPropagation();          // não deixa o jogo tratar o mesmo ESC
+      fechar(onClose);
+    }
+  }
+  addEventListener("keydown", aoTeclar, true);   // captura: chega antes do jogo
+
+  el.querySelector("#g3Ok").onclick = () => fechar(onClose);
+  el.querySelector("#g3Again").onclick = () => fechar(onAgain);
 }

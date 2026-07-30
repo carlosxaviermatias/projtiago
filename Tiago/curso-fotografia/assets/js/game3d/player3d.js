@@ -8,8 +8,8 @@
    fotografar), quando a vista passa a ser a do visor.
    ============================================================ */
 
-import * as THREE from "./vendor/three.module.min.js?v=8";
-import { groundHeight } from "./world.js?v=8";
+import * as THREE from "./vendor/three.module.min.js?v=9";
+import { groundHeight } from "./world.js?v=9";
 
 /* 1 "pixel" do Minecraft: 32 px de altura = 1,8 m */
 const U = 1.8 / 32;

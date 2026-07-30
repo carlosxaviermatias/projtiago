@@ -8,14 +8,14 @@
      0 = perfeita · >0 clara · <0 escura
    ============================================================ */
 
-import { TILE, VIEW_W, VIEW_H } from "./renderer.js?v=3";
-import { input } from "./input.js?v=3";
-import { save } from "./save.js?v=3";
-import { combinedCaps, EQUIPMENT } from "./data/equipment.js?v=3";
-import { CRITERIA_INFO, STARS } from "./data/strings.js?v=3";
-import { toast } from "./dialogue.js?v=3";
-import { canvasPoint } from "./fullscreen.js?v=3";
-import { sfx } from "./audio.js?v=3";
+import { TILE, VIEW_W, VIEW_H } from "./renderer.js?v=5";
+import { input } from "./input.js?v=5";
+import { save } from "./save.js?v=5";
+import { combinedCaps, EQUIPMENT } from "./data/equipment.js?v=5";
+import { CRITERIA_INFO, STARS } from "./data/strings.js?v=5";
+import { toast } from "./dialogue.js?v=5";
+import { canvasPoint } from "./fullscreen.js?v=5";
+import { sfx } from "./audio.js?v=5";
 
 /* ---------- valores discretos dos controles ---------- */
 export const ISOS = [100, 200, 400, 800, 1600, 3200, 6400];
@@ -529,14 +529,30 @@ export class ResultScene {
         </div>
       </div>`;
     el.classList.add("open");
-    el.querySelector("#gqOk").onclick = () => engine.pop();
-    el.querySelector("#gqAgain").onclick = () => {
+    const continuar = () => engine.pop();
+    const tentarDeNovo = () => {
       engine.pop();
       engine.push(new CameraScene(this.fase));
     };
+    el.querySelector("#gqOk").onclick = continuar;
+    el.querySelector("#gqAgain").onclick = tentarDeNovo;
+
+    /* ESC (e Enter) fecham como "Continuar", sem precisar mirar no botão.
+       Guardado em this._onKey para o exit() remover — senão o listener fica
+       preso na página e o próximo ESC fecharia uma tela que já saiu.
+       Obs.: na tela cheia NATIVA o navegador consome o ESC para sair dela. */
+    this._onKey = (e) => {
+      if (e.key === "Escape" || e.key === "Enter") {
+        e.preventDefault();
+        e.stopPropagation();
+        continuar();
+      }
+    };
+    addEventListener("keydown", this._onKey, true);
   }
 
   exit() {
+    if (this._onKey) { removeEventListener("keydown", this._onKey, true); this._onKey = null; }
     this.engine.dom.panel.classList.remove("open");
     this.engine.dom.panel.innerHTML = "";
   }

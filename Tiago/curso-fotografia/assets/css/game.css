@@ -258,7 +258,9 @@ body.gq-fs-on{ overflow:hidden; }
   font-size:.8rem; font-weight:700; font-family:var(--sans);
   padding:8px 14px; cursor:pointer; pointer-events:auto; touch-action:manipulation;
 }
-body.gq-touch .gq-fsbtn{ display:flex; }
+/* Antes só aparecia no celular (body.gq-touch). No computador o jogo ficava
+   preso ao tamanho da caixa, sem jeito de ampliar — agora vale para todos. */
+.gq-fsbtn{ display:flex; }
 .gq-fsbtn:hover{ border-color:var(--accent); }
 .gq-fsbtn.on{ border-color:var(--accent-deep); color:var(--accent-2); }
 /* Loja/galeria/perfil/missões são telas MODAIS, mas os controles flutuantes
