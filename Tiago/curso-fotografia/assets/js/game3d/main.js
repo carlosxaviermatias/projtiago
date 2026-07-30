@@ -5,15 +5,16 @@
    FotoQuest 2D (página, save e módulos próprios).
    ============================================================ */
 
-import * as THREE from "./vendor/three.module.min.js?v=2";
-import { PRESETS, getQuality, cycleQuality } from "./quality.js?v=2";
-import { buildWorld } from "./world.js?v=2";
-import { spawnTargets } from "./targets.js?v=2";
-import { FirstPerson } from "./controls.js?v=2";
-import { CameraMode, showResult } from "./camera3d.js?v=2";
-import { MISSIONS, missionStatus, registerPhoto, save3d } from "./missions.js?v=2";
-import { sfx3d, unlockAudio3d } from "./audio3d.js?v=2";
-import { fs3, initFullscreen3d } from "./fullscreen3d.js?v=2";
+import * as THREE from "./vendor/three.module.min.js?v=8";
+import { PRESETS, getQuality, cycleQuality } from "./quality.js?v=8";
+import { buildWorld } from "./world.js?v=8";
+import { spawnTargets } from "./targets.js?v=8";
+import { FirstPerson } from "./controls.js?v=8";
+import { Player3D } from "./player3d.js?v=8";
+import { CameraMode, showResult } from "./camera3d.js?v=8";
+import { MISSIONS, missionStatus, registerPhoto, save3d } from "./missions.js?v=8";
+import { sfx3d, unlockAudio3d } from "./audio3d.js?v=8";
+import { fs3, initFullscreen3d } from "./fullscreen3d.js?v=8";
 
 /* ---------- input mínimo (teclado) ---------- */
 const KEY2ACT = { c: "CAM", C: "CAM", " ": "SHOOT", Tab: "TAB", z: "MINUS", Z: "MINUS", x: "PLUS", X: "PLUS", Escape: "ESC", q: "QUEST", Q: "QUEST" };
@@ -71,6 +72,7 @@ function boot() {
 
   const controls = new FirstPerson(camera, canvas, fs3);
   controls.treeCircles = treePositions;
+  const player = new Player3D(scene);       // o fotógrafo (visível na 3ª pessoa)
 
   const game = { renderer, scene, camera, targets, controls, dom, onPhoto };
   const cam = new CameraMode(game);
@@ -295,6 +297,18 @@ function boot() {
       // foto PAUSA o jogo. Sem isto o clarão branco fica sobre o resultado.
       if (cam.flash > 0) cam.flash = Math.max(0, cam.flash - dt);
     }
+    /* Vista: 3ª pessoa explorando; ao erguer a câmera vai para a 1ª pessoa.
+       Na 1ª pessoa forçamos view=0 (sem transição) porque a avaliação mede
+       distância e enquadramento A PARTIR da câmera — no meio de uma
+       interpolação ela estaria metros atrás e a nota sairia errada. */
+    controls.viewTarget = cam.active ? 0 : 1;
+    if (cam.active) controls.view = 0;
+    player.update(dt, {
+      x: controls.pos.x, z: controls.pos.z, yaw: controls.yaw,
+      pitch: controls.pitch, andando: controls.moving,
+    });
+    player.setVisivel(controls.view > 0.2);   // sumiria dentro da lente
+
     for (const t of targets) t.update(dt);
     dom.flash.style.opacity = cam.flash > 0 ? Math.min(1, cam.flash * 4) : 0;
     resize3d();                      // barato: só age quando o tamanho muda

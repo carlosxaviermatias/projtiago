@@ -5,7 +5,7 @@
    Tudo procedural — nenhum modelo externo.
    ============================================================ */
 
-import * as THREE from "./vendor/three.module.min.js?v=2";
+import * as THREE from "./vendor/three.module.min.js?v=8";
 
 export const WORLD_SIZE = 380;        // lado do terreno (m)
 export const LAKE = { x: -70, z: -60, r: 42 };   // posição/raio do lago

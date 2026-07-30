@@ -6,11 +6,11 @@
    revelação da foto com efeitos + avaliação.
    ============================================================ */
 
-import * as THREE from "./vendor/three.module.min.js?v=2";
+import * as THREE from "./vendor/three.module.min.js?v=8";
 import {
   ISOS, FS, TS, LENSES, SCENE_EV, exposureStops, evaluate, CRITERIA_INFO,
-} from "./evaluate.js?v=2";
-import { sfx3d } from "./audio3d.js?v=2";
+} from "./evaluate.js?v=8";
+import { sfx3d } from "./audio3d.js?v=8";
 
 const BASE_FOV = 70;
 
