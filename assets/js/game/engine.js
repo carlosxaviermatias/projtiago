@@ -6,8 +6,8 @@
    visível (escurecida) mas pausada.
    ============================================================ */
 
-import { VIEW_W, VIEW_H } from "./renderer.js?v=3";
-import { input } from "./input.js?v=3";
+import { VIEW_W, VIEW_H } from "./renderer.js?v=5";
+import { input } from "./input.js?v=5";
 
 const STEP = 1 / 60;
 

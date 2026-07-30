@@ -208,12 +208,15 @@ code{ font-family:ui-monospace,"SF Mono",Menlo,monospace; background:var(--surfa
   border-bottom:1px solid var(--line-soft); }
 .site-header.scrolled{ background:rgba(14,15,19,.92); }
 .nav{ height:var(--header-h); display:flex; align-items:center; justify-content:space-between; gap:18px; }
-.brand{ display:flex; align-items:center; gap:11px; font-family:var(--serif); font-weight:600; font-size:1.06rem; color:#fff; }
+.brand{ display:flex; align-items:center; gap:11px; font-family:var(--serif); font-weight:600; font-size:1.06rem; color:#fff; white-space:nowrap; flex:none; }
 .brand:hover{ color:#fff; }
 .brand .lens{ width:30px; height:30px; flex:none; }
 .brand small{ display:block; font-family:var(--sans); font-weight:500; font-size:.66rem; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); margin-top:1px; }
-.nav-links{ display:flex; align-items:center; gap:4px; list-style:none; margin:0; padding:0; }
-.nav-links a{ color:var(--text-soft); font-size:.92rem; font-weight:500; padding:8px 13px; border-radius:9px; transition:.15s; }
+.nav-links{ display:flex; align-items:center; gap:4px; list-style:none; margin:0; padding:0; flex-wrap:nowrap; }
+.nav-links li{ flex:none; }
+/* nowrap: sem isto o item quebra em duas linhas quando o espaço aperta
+   (era o que picotava "Safári 3D" e jogava o botão para fora da tela) */
+.nav-links a{ color:var(--text-soft); font-size:.92rem; font-weight:500; padding:8px 13px; border-radius:9px; transition:.15s; white-space:nowrap; }
 .nav-links a:hover{ color:#fff; background:var(--surface); }
 .nav-links a.active{ color:var(--accent-2); }
 .nav-cta{ background:var(--accent); color:#1a1205 !important; font-weight:700 !important; }
@@ -223,6 +226,17 @@ code{ font-family:ui-monospace,"SF Mono",Menlo,monospace; background:var(--surfa
 .burger.open span:nth-child(1){ transform:translateY(5px) rotate(45deg); }
 .burger.open span:nth-child(2){ opacity:0; }
 .burger.open span:nth-child(3){ transform:translateY(-5px) rotate(-45deg); }
+
+/* Faixa apertada (notebook ~900–1200px): são 7 itens + marca + botão.
+   Em vez de esconder os jogos, comprime o espaçamento para tudo caber
+   numa linha só — o Tiago precisa dos DOIS jogos clicáveis na barra. */
+@media(min-width:901px) and (max-width:1200px){
+  .nav{ gap:10px; }
+  .nav-links{ gap:1px; }
+  .nav-links a{ padding:8px 8px; font-size:.86rem; }
+  .brand{ font-size:1rem; gap:8px; }
+  .brand small{ display:none; }        /* "curso de fotografia" sai; a marca fica */
+}
 
 @media(max-width:900px){
   .burger{ display:block; }

@@ -5,16 +5,16 @@
    FotoQuest 2D (página, save e módulos próprios).
    ============================================================ */
 
-import * as THREE from "./vendor/three.module.min.js?v=8";
-import { PRESETS, getQuality, cycleQuality } from "./quality.js?v=8";
-import { buildWorld } from "./world.js?v=8";
-import { spawnTargets } from "./targets.js?v=8";
-import { FirstPerson } from "./controls.js?v=8";
-import { Player3D } from "./player3d.js?v=8";
-import { CameraMode, showResult } from "./camera3d.js?v=8";
-import { MISSIONS, missionStatus, registerPhoto, save3d } from "./missions.js?v=8";
-import { sfx3d, unlockAudio3d } from "./audio3d.js?v=8";
-import { fs3, initFullscreen3d } from "./fullscreen3d.js?v=8";
+import * as THREE from "./vendor/three.module.min.js?v=9";
+import { PRESETS, getQuality, cycleQuality } from "./quality.js?v=9";
+import { buildWorld } from "./world.js?v=9";
+import { spawnTargets } from "./targets.js?v=9";
+import { FirstPerson } from "./controls.js?v=9";
+import { Player3D } from "./player3d.js?v=9";
+import { CameraMode, showResult } from "./camera3d.js?v=9";
+import { MISSIONS, missionStatus, registerPhoto, save3d } from "./missions.js?v=9";
+import { sfx3d, unlockAudio3d } from "./audio3d.js?v=9";
+import { fs3, initFullscreen3d } from "./fullscreen3d.js?v=9";
 
 /* ---------- input mínimo (teclado) ---------- */
 const KEY2ACT = { c: "CAM", C: "CAM", " ": "SHOOT", Tab: "TAB", z: "MINUS", Z: "MINUS", x: "PLUS", X: "PLUS", Escape: "ESC", q: "QUEST", Q: "QUEST" };

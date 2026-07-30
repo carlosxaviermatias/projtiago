@@ -3,11 +3,11 @@
    Liga input + engine + cenas aos elementos da página jogo.html.
    ============================================================ */
 
-import { Engine } from "./engine.js?v=3";
-import { input } from "./input.js?v=3";
-import { MenuScene } from "./scenes.js?v=3";
-import { initFullscreen } from "./fullscreen.js?v=3";
-import { initSoundButton, unlockAudio } from "./audio.js?v=3";
+import { Engine } from "./engine.js?v=5";
+import { input } from "./input.js?v=5";
+import { MenuScene } from "./scenes.js?v=5";
+import { initFullscreen } from "./fullscreen.js?v=5";
+import { initSoundButton, unlockAudio } from "./audio.js?v=5";
 
 function boot() {
   const canvas = document.getElementById("gameCanvas");
