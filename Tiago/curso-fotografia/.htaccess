@@ -1,0 +1,41 @@
+# ============================================================
+# Curso de Fotografia · cache
+#
+# Problema que isto resolve: sem um cabeçalho explícito, o navegador
+# aplica cache heurístico nas páginas e continua servindo o HTML
+# antigo depois de um deploy. Como o HTML é quem aponta para
+# "main.js?v=N", a página velha carrega os arquivos velhos — e dá a
+# impressão de que a publicação não aconteceu.
+#
+# A regra é simples:
+#   · HTML  → sempre revalida (é o índice que aponta para o resto)
+#   · resto → cache longo (são versionados com ?v=N; cada mudança
+#             vira uma URL nova, então cache agressivo é seguro)
+#
+# "no-cache" não impede o navegador de guardar a página: obriga a
+# revalidar antes de usar. Se nada mudou, o servidor responde 304
+# (sem corpo) — continua rápido.
+#
+# ⚠️ Ao mexer em CSS/JS, INCREMENTAR o ?v=N (regra já do projeto).
+# Com o cache longo abaixo, esquecer disso deixa o aluno com o
+# arquivo velho por até 30 dias.
+# ============================================================
+
+<IfModule mod_headers.c>
+  # páginas: sempre confirmar se há versão nova
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+
+  # assets versionados: podem ficar guardados
+  <FilesMatch "\.(css|js|mjs|woff2?|ttf|jpe?g|png|gif|svg|webp|ico)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+</IfModule>
+
+# compressão (economiza banda do aluno no celular)
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain
+  AddOutputFilterByType DEFLATE application/javascript application/json
+  AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>

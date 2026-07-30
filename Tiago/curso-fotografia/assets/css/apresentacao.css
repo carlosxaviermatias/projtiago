@@ -141,6 +141,20 @@ html.pres-on body{ overflow:hidden; }
 .pres-nav svg{ width:36px; height:36px; }
 .pres:hover .pres-nav{ opacity:.42; }
 
+/* --- aviso de "tem mais conteúdo abaixo" --- */
+.pres-more{
+  position:absolute; left:50%; bottom:10px; transform:translateX(-50%);
+  display:none; align-items:center; gap:6px; pointer-events:none; z-index:2;
+  background:var(--surface); border:1px solid var(--line); border-radius:30px;
+  padding:6px 14px 6px 10px; color:var(--text-mute);
+  font:600 .74rem/1 var(--sans); letter-spacing:.05em; text-transform:uppercase;
+  box-shadow:var(--shadow-sm); animation:presBob 1.8s ease-in-out infinite;
+}
+.pres-more svg{ width:14px; height:14px; }
+.pres.more:not(.scrolled):not(.blackout):not(.index-on) .pres-more{ display:flex; }
+@keyframes presBob{ 0%,100%{ transform:translate(-50%,0); } 50%{ transform:translate(-50%,4px); } }
+@media (prefers-reduced-motion:reduce){ .pres-more{ animation:none; } }
+
 /* --- barra inferior de progresso --- */
 .pres-foot{ flex:none; height:5px; background:var(--line-soft); }
 .pres-foot i{ display:block; height:100%; background:linear-gradient(90deg,var(--accent-deep),var(--accent)); transition:width .25s; }
