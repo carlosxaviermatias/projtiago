@@ -75,6 +75,30 @@ NÃO tocar em nada de `assets/js/game/` (FotoQuest 2D) nem em `jogo.html`. O 3D 
    o mundo 3D, zero erros no console, todos os assets carregam. **A Hostinger auto-publica no push**
    (GIT auto-deploy) — NÃO precisou de "Reimplantar" manual no hPanel. Falta só testar num celular real.
 
+## Responsividade mobile (2026-07-21) — FEITO e no ar
+**Bug principal corrigido:** o renderer/câmera eram fixos em 16:9, então na **tela cheia
+horizontal do celular** (ex.: canvas 812×375 = 2.16) o mundo 3D **esticava**. Agora
+`resize3d()` em `main.js` ajusta `renderer.setSize` + `camera.aspect` ao tamanho real do
+canvas (chamado no loop — só age quando muda — e no callback do fullscreen).
+- A **foto** agora sai na proporção da tela (`developPhoto` usa a razão do buffer), então o
+  que se vê na grade dos terços é o que sai na foto. Thumb também acompanha.
+- **Bug do flash:** quem zerava `cam.flash` era `cam.update()`, que não roda pausado — e
+  fotografar **pausa**. O clarão branco ficava sobre a tela de resultado. Corrigido no `else`
+  do loop.
+- **CSS por CONTAINER QUERIES** (`container-type:inline-size` no `#gameShell.g3`): medem o
+  SHELL, não a janela — essencial porque na tela cheia deitada o shell é girado 90° e uma
+  media query de viewport enxergaria "celular em pé". Breakpoints 620px e 430px.
+  ⚠️ Não usar `@container (max-height:)`: exigiria `container-type:size`, que colapsa a
+  altura do shell. Para painéis usei `%` (o `#gamePanel` é `inset:0`).
+- Em pé o quadro passou de 16:9 (185px, injogável) para **4:5** — só possível porque a câmera
+  agora adapta o aspect.
+- Painéis ganharam fundo próprio (o texto sumia sobre a campina) e o HUD sai da frente.
+- **game.css (compartilhado!)**: +8 linhas ADITIVAS — em loja/galeria/perfil/missões os
+  controles flutuantes (tela cheia, d-pad, som) roubavam o toque do **✕ de fechar** (mesmo
+  canto). Regra `#gameShell:has(.gq-sheet)` os esconde. **Corrige o 2D e o 3D.** Foi um bug
+  reportado pelo Tiago no jogo 2D.
+- Cache: `game.css?v=4`, `game3d.css?v=2`, imports do game3d todos com `?v=2`.
+
 ## Pontos de atenção
 - **Imports do game3d são "bare"** (sem `?v=`). É jogo NOVO, então na 1ª publicação tá ok. Se
   no futuro editar um sub-módulo do 3D, lembrar do problema de cache de ES modules (ou versionar
