@@ -7,8 +7,8 @@
      (os deltas de arrasto são remapeados quando girado).
    ============================================================ */
 
-import { groundHeight, EYE, WORLD_SIZE } from "./world.js";
-import { sfx3d } from "./audio3d.js";
+import { groundHeight, EYE, WORLD_SIZE } from "./world.js?v=2";
+import { sfx3d } from "./audio3d.js?v=2";
 
 const KEYS = {
   w: "f", W: "f", ArrowUp: "f",

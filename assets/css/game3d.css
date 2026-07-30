@@ -74,3 +74,121 @@
 
 /* aviso 3D na página */
 .g3-note{ text-align:center; color:var(--text-mute); font-size:.8rem; margin-top:10px; }
+
+/* ============================================================
+   RESPONSIVIDADE (celular) — tudo escopado em .g3 para NÃO
+   afetar o FotoQuest 2D, que divide o game.css com este jogo.
+   Usamos CONTAINER QUERIES: elas medem o próprio #gameShell, e
+   não a janela. Isso é essencial porque na tela cheia deitada o
+   shell é girado 90° — a largura dele é a ALTURA da janela, e
+   uma media query de viewport enxergaria "celular em pé".
+   ============================================================ */
+#gameShell.g3{ container-type:inline-size; }
+
+/* ---------- canvas ---------- */
+/* Em pé no celular, 16:9 deixa o jogo com ~185px de altura (injogável).
+   Como a câmera 3D agora acompanha a proporção real (resize3d no main.js),
+   podemos dar mais altura ao quadro sem distorcer nada. */
+@media (orientation:portrait){
+  body.gq-touch #gameShell.g3 #gameCanvas{ aspect-ratio:4/5; max-height:62vh; }
+}
+/* Na tela cheia o canvas PREENCHE a tela (sem tarja preta do 16:9 fixo). */
+#gameShell.g3.gq-fs #gameCanvas{
+  width:100%; height:100%; max-width:none; aspect-ratio:auto;
+}
+
+/* ---------- barra de controles da câmera ---------- */
+/* Nunca pode vazar para fora do quadro: quebra em duas linhas se faltar espaço. */
+#gameShell.g3 .gq-cam-row{
+  max-width:calc(100% - 12px); flex-wrap:wrap; justify-content:center; row-gap:6px;
+}
+#gameShell.g3 .gq-chips{ flex-wrap:wrap; justify-content:center; }
+/* dica de teclado (TAB/Z/X/ESPAÇO) não faz sentido no toque */
+body.gq-touch #gameShell.g3 .gq-cam-help{ display:none; }
+/* a dica do HUD cobriria os controles no modo câmera */
+#gameShell.g3:has(#gameCamUI.open) .gq-hud-hint{ display:none; }
+
+/* ---------- HUD x botão de tela cheia ---------- */
+/* Os dois moram no canto superior direito e se sobrepõem. O botão só
+   existe no toque (game.css), então resolvemos no escopo do toque —
+   vale tanto em pé quanto deitado, e não afeta o desktop. */
+body.gq-touch #gameShell.g3 .gq-fsbtn span{ display:none; }   /* só o ícone ⛶ */
+body.gq-touch #gameShell.g3 .gq-fsbtn{ padding:8px 11px; }
+body.gq-touch #gameShell.g3 .gq-hud-top{ padding-right:56px; }
+/* fotografando, o alvo/foco é o que importa: a missão segue no 🎯 do HUD */
+body.gq-touch #gameShell.g3:has(#gameCamUI.open) .gq-hud-quests{ display:none; }
+
+/* ---------- quadro estreito (celular em pé / tela pequena) ---------- */
+@container (max-width: 620px){
+  /* largura explícita: sem isto o flex encolhe até o conteúdo e empilha
+     em 4 linhas altas em vez de espalhar em 2 */
+  #gameShell.g3 .gq-cam-row{ bottom:12px; gap:5px; width:calc(100% - 12px); }
+  #gameShell.g3 .gq-chips{ flex:1 1 100%; }
+  #gameShell.g3 .gq-chip{ min-width:46px; padding:4px 7px; }
+  #gameShell.g3 .gq-chip span{ font-size:.5rem; letter-spacing:.04em; }
+  #gameShell.g3 .gq-chip b{ font-size:.72rem; }
+  #gameShell.g3 .gq-chipnav,
+  #gameShell.g3 .gq-camclose{ width:30px; height:34px; font-size:1rem; }
+  #gameShell.g3 .gq-shutter{ width:46px; height:46px; font-size:1.1rem; border-width:3px; }
+
+  #gameShell.g3 .g3-joy{ width:92px; height:92px; left:12px; bottom:12px; }
+  #gameShell.g3 .g3-stick{ width:40px; height:40px; margin:-20px 0 0 -20px; }
+
+  #gameShell.g3 .gq-hud-title{ font-size:.82rem; }
+  #gameShell.g3 .gq-hud-btn{ font-size:.9rem; padding:3px 7px; }
+  #gameShell.g3 .gq-coins{ font-size:.72rem; padding:3px 9px; }
+  #gameShell.g3 .gq-hud-right{ gap:6px; }
+  #gameShell.g3 .gq-hud-quests{ top:38px; max-width:76%; }
+  #gameShell.g3 .gq-quest-pill{ font-size:.72rem; padding:5px 10px; }
+  #gameShell.g3 .gq-hud-hint{ font-size:.68rem; padding:4px 10px; max-width:92%;
+    white-space:normal; text-align:center; }
+  #gameShell.g3 .gq-coins{ white-space:nowrap; }   /* "300 XP" numa linha só */
+  /* no estreito o indicador de alvo (centralizado) bate nos botões do HUD:
+     desce ele para logo abaixo da barra superior */
+  #gameShell.g3 .g3-focus{ font-size:.68rem; padding:4px 10px; max-width:80%;
+    top:44px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  /* viewfinder: margens menores aproveitam melhor a tela pequena */
+  #gameShell.g3 #g3Viewfinder .g3-frame,
+  #gameShell.g3 #g3Viewfinder .g3-grid{ inset:3% 3.5%; }
+}
+
+/* ---------- quadro bem estreito ---------- */
+@container (max-width: 430px){
+  #gameShell.g3 .gq-chip{ min-width:40px; padding:3px 5px; }
+  #gameShell.g3 .gq-chip b{ font-size:.68rem; }
+  #gameShell.g3 .gq-chips{ gap:4px; }
+  #gameShell.g3 .gq-shutter{ width:42px; height:42px; }
+  #gameShell.g3 .g3-joy{ width:82px; height:82px; }
+  #gameShell.g3 .g3-stick{ width:36px; height:36px; margin:-18px 0 0 -18px; }
+  /* o nome do jogo já está no título da página — no estreito ele só
+     empurra os botões e briga com a missão */
+  #gameShell.g3 .gq-hud-title{ display:none; }
+  #gameShell.g3 .gq-menu h2{ font-size:1.8rem; }
+  #gameShell.g3 .gq-logo{ font-size:2.4rem; }
+  #gameShell.g3 .gq-menu{ padding:14px; }
+  #gameShell.g3 .gq-menu-desc{ font-size:.82rem; margin-bottom:1em; }
+  #gameShell.g3 .gq-menu-keys{ display:none; }   /* teclas: só no desktop */
+}
+
+/* ---------- painéis sobre o mundo 3D ---------- */
+/* O #gamePanel é transparente (game.css). No 2D o cenário atrás é chapado e
+   dá pra ler; sobre a campina 3D o texto some. Fundo próprio + HUD fora
+   enquanto um painel está aberto (o botão de tela cheia continua acessível,
+   pois ele é filho do shell, não do HUD). */
+#gameShell.g3 #gamePanel.open{
+  background:rgba(8,9,14,.93); backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px);
+}
+#gameShell.g3:has(#gamePanel.open) #gameHud{ display:none; }
+/* joystick e 📷 ficam por cima do painel (são irmãos posteriores no DOM) */
+#gameShell.g3:has(#gamePanel.open) #gameTouch{ display:none; }
+
+/* ---------- painéis (missões/galeria) na altura do quadro ---------- */
+/* O limite fixo de 380px do game.css estoura num celular deitado (altura
+   útil ~375px). Como #gamePanel é inset:0, uma % aqui resolve contra a
+   altura real do quadro — sem precisar de container query de altura
+   (que exigiria container-type:size e colapsaria o shell). */
+#gameShell.g3 .gq-sheet{
+  max-height:calc(100% - 16px); margin:8px auto;
+  display:flex; flex-direction:column;
+}
+#gameShell.g3 .gq-sheet-body{ max-height:none; flex:1; min-height:0; }
