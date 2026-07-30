@@ -23,7 +23,8 @@
     expand: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>',
     close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
     help: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
-    play: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>'
+    play: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>',
+    down: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>'
   };
 
   /* =======================================================
@@ -150,6 +151,7 @@
       '<button type="button" class="pres-nav pres-next" title="Próximo">' + ICO.right + "</button>" +
       '<div class="pres-center"><div class="pres-fit"><div class="pres-slide"></div></div></div>' +
       '<div class="pres-index"><h4>Slides deste módulo</h4><ol></ol></div>' +
+      '<div class="pres-more" aria-hidden="true">' + ICO.down + "<span>role para ver mais</span></div>" +
       '<div class="pres-help"><h4>Atalhos</h4><dl>' +
         "<dt><kbd>→</kbd> <kbd>espaço</kbd></dt><dd>Próximo slide</dd>" +
         "<dt><kbd>←</kbd></dt><dd>Slide anterior</dd>" +
@@ -240,6 +242,10 @@
     // se ainda sobra conteúdo, avisa que dá para rolar
     pres.classList.toggle("more", stage.scrollHeight - stage.clientHeight > 12);
   }
+
+  stage.addEventListener("scroll", function () {
+    pres.classList.toggle("scrolled", stage.scrollTop > 8);
+  }, { passive: true });
 
   var fitTimer;
   function scheduleFit() { clearTimeout(fitTimer); fitTimer = setTimeout(fit, 30); }
@@ -362,7 +368,7 @@
     }
 
     var k = e.key;
-    if (k === "Escape") {
+    if (k === "Escape" || k === "Esc") {
       e.preventDefault();
       if (pres.classList.contains("index-on")) pres.classList.remove("index-on");
       else if (pres.classList.contains("help-on")) pres.classList.remove("help-on");
@@ -370,12 +376,13 @@
       else close();
       return;
     }
-    if (k === "ArrowRight" || k === "PageDown" || k === " " || k === "Spacebar" || k === "Enter" || k === "n") {
+    // "Right"/"Left"/"Up"/"Down" = nomes antigos, usados por alguns apresentadores remotos
+    if (k === "ArrowRight" || k === "Right" || k === "PageDown" || k === " " || k === "Spacebar" || k === "Enter" || k === "n") {
       e.preventDefault(); next(); return;
     }
-    if (k === "ArrowLeft" || k === "PageUp" || k === "Backspace") { e.preventDefault(); prev(); return; }
-    if (k === "ArrowDown") { e.preventDefault(); stage.scrollBy({ top: stage.clientHeight * 0.45 }); return; }
-    if (k === "ArrowUp") { e.preventDefault(); stage.scrollBy({ top: -stage.clientHeight * 0.45 }); return; }
+    if (k === "ArrowLeft" || k === "Left" || k === "PageUp" || k === "Backspace") { e.preventDefault(); prev(); return; }
+    if (k === "ArrowDown" || k === "Down") { e.preventDefault(); stage.scrollBy({ top: stage.clientHeight * 0.45 }); return; }
+    if (k === "ArrowUp" || k === "Up") { e.preventDefault(); stage.scrollBy({ top: -stage.clientHeight * 0.45 }); return; }
     if (k === "Home") { e.preventDefault(); go(0); return; }
     if (k === "End") { e.preventDefault(); go(slides.length - 1); return; }
     if (k === "b" || k === "B" || k === ".") { e.preventDefault(); pres.classList.toggle("blackout"); return; }
