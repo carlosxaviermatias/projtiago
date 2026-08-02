@@ -13,6 +13,47 @@ Link "🦌 Safári 3D" no rodapé Explorar das 9 páginas + card de destaque no 
 Arquivos em `assets/js/game3d/` (10 módulos + vendor/three), `assets/css/game3d.css`, `jogo3d.html`.
 Detalhes/estado em `Tiago/curso-fotografia/RETOMAR-JOGO-3D.md`.
 
+## Safári 3D: fotógrafo voxel em 3ª pessoa (2026-07-30)
+- `assets/js/game3d/player3d.js`: boneco estilo Minecraft com as proporções reais (cabeça 8×8×8,
+  tronco 8×12×4, membros 4×12×4; U = 1,8m/32), colete de safári, câmera na mão direita
+  (corpo+lente+anel âmbar+flash), animação de caminhada e respiração parado.
+- **3ª pessoa explorando → 1ª pessoa ao fotografar** (escolha do Tiago). A câmera ORBITA um pivô
+  no peito (`controls.js apply()`); só deslocar para trás jogava o boneco pro rodapé da tela.
+- **Cuidado que importa:** ao entrar no modo câmera, `view` vai a 0 SEM interpolar. A avaliação
+  mede distância/enquadramento a partir da câmera — no meio de uma transição ela estaria 3,6 m
+  atrás e a nota sairia errada. Verificado: alvo a 89 m antes e depois da mudança.
+- Braço direito afastado (`rotation.z=0.42`) senão a câmera fica escondida atrás do tronco na
+  vista padrão. Materiais com `emissive` leve: de costas pro sol ele viraria silhueta preta.
+- **Armadilha de teste:** com a aba OCULTA o `requestAnimationFrame` congela — medições de
+  posição/transição dão valores parados e o boneco aparece "gigante" (transição no meio). Forçar
+  quadros com screenshot antes de medir. Não é bug do jogo.
+
+## Feedback do Tiago: "parece que não fez o deploy" (2026-07-30)
+Ele disse isso com o deploy JÁ no ar (hPanel "Atual", assets novos servidos). O que faltava era
+**DESCOBRIBILIDADE**: o Safári 3D só existia no rodapé e num card dentro do jogo.html — o **menu
+do topo** só tinha "🎮 Jogo" (2D). Navegando (ainda mais pelo hambúrguer do celular) ele só achava
+o 2D e concluiu que não tinha subido. **Lição: publicar ≠ estar visível.** Ao lançar uma página
+nova, colocá-la no NAV das páginas, não só no rodapé. Corrigido: "🦌 Safári 3D" no menu das 10.
+
+## Responsividade mobile dos jogos (2026-07-21)
+- **Three.js: SEMPRE amarrar renderer+camera.aspect ao tamanho real do canvas.** O Safári 3D
+  nascia fixo em 16:9 e o mundo ESTICAVA na tela cheia horizontal do celular. `resize3d()`
+  no loop (só age quando muda) resolveu. Foto e thumb passaram a sair na proporção da tela.
+- **CONTAINER QUERIES > media queries em jogo com tela cheia girada:** na estratégia de
+  fullscreen do projeto o shell gira 90°, então a largura dele é a ALTURA da janela — media
+  query de viewport erra. `container-type:inline-size` no shell acerta nos dois casos.
+  ⚠️ `@container (max-height:)` exige `container-type:size`, que COLAPSA a altura do shell —
+  para altura, usar `%` contra o `#gamePanel` (que é `inset:0`).
+- **Bug clássico de overlay:** controles flutuantes (tela cheia, d-pad, som) ficam por cima de
+  TODAS as camadas e roubam o toque do que está atrás — no caso, o ✕ de fechar das telas
+  (mesmo canto superior direito). Regra `#gameShell:has(.gq-sheet){display:none}` no game.css
+  resolveu p/ os DOIS jogos. Reportado pelo Tiago no 2D.
+- **Efeito preso por pausa:** o flash do obturador era zerado em `cam.update()`, que não roda
+  pausado — e fotografar pausa. Ficava um clarão branco sobre o resultado. Ao criar efeitos
+  temporizados, conferir quem os decai quando o jogo pausa.
+- Regra de ouro mantida: mudança no game.css (compartilhado) foi ADITIVA (8 linhas), nada
+  existente alterado; tudo do 3D fica escopado em `.g3`.
+
 ## Local
 - `Tiago/curso-fotografia/` (dentro do repo git `Tiago/`)
 - Site estático puro: HTML + `assets/css/style.css` + `assets/js/main.js`. Sem build.
