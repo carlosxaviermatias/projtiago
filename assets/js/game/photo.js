@@ -8,14 +8,14 @@
      0 = perfeita · >0 clara · <0 escura
    ============================================================ */
 
-import { TILE, VIEW_W, VIEW_H } from "./renderer.js?v=5";
-import { input } from "./input.js?v=5";
-import { save } from "./save.js?v=5";
-import { combinedCaps, EQUIPMENT } from "./data/equipment.js?v=5";
-import { CRITERIA_INFO, STARS } from "./data/strings.js?v=5";
-import { toast } from "./dialogue.js?v=5";
-import { canvasPoint } from "./fullscreen.js?v=5";
-import { sfx } from "./audio.js?v=5";
+import { TILE, VIEW_W, VIEW_H } from "./renderer.js?v=6";
+import { input } from "./input.js?v=6";
+import { save } from "./save.js?v=6";
+import { combinedCaps, EQUIPMENT } from "./data/equipment.js?v=6";
+import { CRITERIA_INFO, STARS } from "./data/strings.js?v=6";
+import { toast } from "./dialogue.js?v=6";
+import { canvasPoint } from "./fullscreen.js?v=6";
+import { sfx } from "./audio.js?v=6";
 
 /* ---------- valores discretos dos controles ---------- */
 export const ISOS = [100, 200, 400, 800, 1600, 3200, 6400];
@@ -29,6 +29,94 @@ export const TS = [                                  // segundos + rótulo
 
 export function exposureStops(sceneEV, iso, f, t) {
   return sceneEV + Math.log2(iso / 100) - Math.log2((f * f) / t);
+}
+
+/* ============================================================
+   Critérios que dependem SÓ dos ajustes (ISO/f/velocidade).
+   Ficam aqui fora para que o gabarito (idealSettings) use
+   exatamente a mesma conta da avaliação — se um dia a régua
+   mudar, os dois mudam juntos.
+   ============================================================ */
+
+/** exposição: 0–30 pontos a partir do erro em stops */
+function expPointsFor(stops, tol) {
+  const err = Math.max(0, Math.abs(stops) - tol);
+  return Math.round(30 * Math.max(0, 1 - err / 2.5));
+}
+
+/** velocidade mínima que o assunto exige para não borrar */
+function motionNeed(target) {
+  return target?.def.motion === "fast" ? 1 / 500
+    : target?.def.motion === "slow" ? 1 / 125 : Infinity;
+}
+
+/** movimento/tremida: 0–20 pontos */
+function movementFor(target, s, caps) {
+  const CI = CRITERIA_INFO;
+  const shake = s.t > 1 / 30 + 1e-9 && !caps.steady;
+  const need = motionNeed(target);
+  let pts = 20, msg = CI.movimento.good;
+  if (target?.def.wantsLongExposure) {
+    // rastros de luz: aqui o "erro" vira arte — exige tripé + velocidade lenta
+    if (caps.steady && s.t >= 0.25) { pts = 20; msg = CI.movimento.trailGood; }
+    else { pts = caps.steady ? 8 : 3; msg = CI.movimento.trailNeed; }
+  } else {
+    if (s.t > need + 1e-9) { pts = Math.max(0, Math.round(20 * (need / s.t))); msg = CI.movimento.blur; }
+    if (shake) { pts = Math.min(pts, 5); msg = CI.movimento.shake; }
+    if (!target || (target.def.motion || "still") === "still") {
+      if (!shake) { pts = 20; msg = "Assunto parado, câmera firme — nitidez garantida."; }
+    }
+  }
+  return { pts, msg, shake, need };
+}
+
+/** abertura x profundidade de campo desejada (parte "de ajuste" dos 15 pts) */
+function dofFor(target, f) {
+  const want = target?.def.wantsShallowDOF ? "shallow" : target?.def.wantsDeepDOF ? "deep" : "any";
+  const got = f <= 2.9 ? "shallow" : f >= 8 ? "deep" : "mid";
+  const ok = want === "any" || want === got;
+  return { pts: ok ? 15 : 8, ok, want, got };
+}
+
+/** penalidade de ruído por ISO alto (a câmera melhor tolera mais) */
+function noiseFor(iso, caps) {
+  const thresh = 1600 * Math.pow(2, caps.noiseBonus || 0);
+  if (iso < thresh) return 0;
+  return iso >= thresh * 2 ? 8 : 4;
+}
+
+/* ============================================================
+   Gabarito: a melhor combinação ISO/f/velocidade para a cena.
+   Testa todas as combinações permitidas pelo equipamento atual
+   (≈500 no pior caso) e devolve a de maior pontuação — por isso
+   o gabarito acompanha a evolução da câmera e da lente.
+   ============================================================ */
+export function idealSettings(cam, target) {
+  const caps = cam.caps;
+  const tol = cam.fase.level.expTolerance ?? 0.5;
+  const sceneEV = cam.sceneEVFor(target);
+  const maxIsoI = Math.max(0, ISOS.indexOf(Math.min(caps.isoMax, 6400)));
+  const minFI = Math.max(0, FS.findIndex((f) => f >= caps.fMin));
+  const want = dofFor(target, 5.6).want;
+
+  let best = null;
+  for (let i = 0; i <= maxIsoI; i++) {
+    for (let fi = minFI; fi < FS.length; fi++) {
+      for (let ti = 0; ti < TS.length; ti++) {
+        const s = { iso: ISOS[i], f: FS[fi], t: TS[ti].v, tLabel: TS[ti].label };
+        const stops = exposureStops(sceneEV, s.iso, s.f, s.t);
+        let pts = expPointsFor(stops, tol)
+          + movementFor(target, s, caps).pts
+          + dofFor(target, s.f).pts
+          - noiseFor(s.iso, caps);
+        // desempates didáticos (frações: só decidem empates exatos)
+        if (want === "any" && s.f >= 4 && s.f <= 8) pts += 0.4;
+        if (!target?.def.wantsLongExposure && s.t <= 1 / 60 && s.t >= 1 / 250) pts += 0.3;
+        if (!best || pts > best.pts) best = { ...s, pts, isoI: i, fI: fi, tI: ti, stops };
+      }
+    }
+  }
+  return best;
 }
 
 /* ============================================================
@@ -54,6 +142,17 @@ export class CameraScene {
     this.flashOn = false;
     this.sel = 0;                              // controle selecionado
     this.flashAnim = 0;
+
+    // fotômetro: aparece quando o jogador já tem os controles completos
+    // (ISO + abertura + velocidade, da fase 2 em diante). A precisão da
+    // leitura vem da câmera equipada — 1 simples, 2 em pontos, 3 spot 1/3.
+    this.meterLevel = this.locked ? 0 : (this.caps.meter || 1);
+
+    // gabarito: só depois de passar a fase (todas as missões concluídas)
+    this.gabAvailable = fase.quests.allDone;
+    this.gabOn = false;
+    this._gabT = 0;
+
     this.clampSettings();
   }
 
@@ -101,15 +200,18 @@ export class CameraScene {
         <div class="gq-chips">${chips}</div>
         <button class="gq-chipnav" id="gqPlus">＋</button>
         <button class="gq-shutter" id="gqShutter" aria-label="Fotografar">📷</button>
+        ${this.gabAvailable ? `<button class="gq-camgab ${this.gabOn ? "on" : ""}" id="gqGabBtn" aria-label="Gabarito da cena">🎯</button>` : ""}
         <button class="gq-camclose" id="gqCamClose" aria-label="Sair da câmera">✕</button>
       </div>
-      <div class="gq-cam-help">${this.locked ? "Mova o retículo (setas/arrastar) · " : "TAB seleciona · Z/X ajustam · "}ESPAÇO fotografa · ESC sai</div>`;
+      ${this.gabAvailable && this.gabOn ? `<div class="gq-gab" id="gqGab">${this.gabaritoHTML()}</div>` : ""}
+      <div class="gq-cam-help">${this.locked ? "Mova o retículo (setas/arrastar) · " : "TAB seleciona · Z/X ajustam · "}ESPAÇO fotografa${this.gabAvailable ? " · G gabarito" : ""} · ESC sai</div>`;
     el.querySelectorAll(".gq-chip").forEach((b) =>
       b.addEventListener("pointerdown", (e) => { e.preventDefault(); this.sel = +b.dataset.i; this.renderUI(); }));
     el.querySelector("#gqMinus").addEventListener("pointerdown", (e) => { e.preventDefault(); this.adjust(-1); });
     el.querySelector("#gqPlus").addEventListener("pointerdown", (e) => { e.preventDefault(); this.adjust(1); });
     el.querySelector("#gqShutter").addEventListener("pointerdown", (e) => { e.preventDefault(); this.shoot(); });
     el.querySelector("#gqCamClose").addEventListener("pointerdown", (e) => { e.preventDefault(); this.engine.pop(); });
+    el.querySelector("#gqGabBtn")?.addEventListener("pointerdown", (e) => { e.preventDefault(); this.toggleGab(); });
 
     // arrastar no canvas move o retículo (touch/mouse) — canvasPoint() já
     // resolve a conversão corretamente mesmo com o jogo rotacionado (fullscreen mobile)
@@ -137,6 +239,60 @@ export class CameraScene {
     this.renderUI();
   }
 
+  /* ---------- gabarito (só com a fase concluída) ---------- */
+  toggleGab() {
+    if (!this.gabAvailable) { sfx.play("deny"); return; }
+    this.gabOn = !this.gabOn;
+    this._gabT = 0;
+    sfx.play("select");
+    this.renderUI();
+  }
+
+  /** conteúdo do painel: o ideal para o que está no visor agora */
+  gabaritoHTML() {
+    const tg = this.targetInCrop();
+    const s = this.settings;
+    const rows = [];
+
+    if (!this.locked) {
+      const best = idealSettings(this, tg);
+      const cmp = (ideal, atual) => ideal > atual ? `<i class="up">↑ aumente</i>`
+        : ideal < atual ? `<i class="down">↓ diminua</i>` : `<i class="eq">✔ no ponto</i>`;
+      rows.push(`<div class="gq-gab-row"><span>ISO</span><b>${best.iso}</b>${cmp(best.isoI, this.isoI)}</div>`);
+      rows.push(`<div class="gq-gab-row"><span>Abertura</span><b>f/${best.f}</b>${cmp(best.fI, this.fI)}</div>`);
+      rows.push(`<div class="gq-gab-row"><span>Velocidade</span><b>${best.tLabel}</b>${cmp(best.tI, this.tI)}</div>`);
+    }
+
+    if (tg) {
+      const dist = Math.hypot(tg.cx - this.fase.player.cx, tg.cy - this.fase.player.cy) / TILE;
+      const foco = Math.round(dist);
+      rows.push(`<div class="gq-gab-row"><span>Foco</span><b>${foco} tl</b>${
+        this.focus === foco ? `<i class="eq">✔ no ponto</i>`
+          : `<i class="${foco > this.focus ? "up" : "down"}">${foco > this.focus ? "↑ aumente" : "↓ diminua"}</i>`}</div>`);
+      const [dMin, dMax] = tg.def.idealDistance || [2, 9];
+      const eff = dist / this.caps.reach;
+      const distTip = eff > dMax ? "aproxime-se do assunto (ou use tele)"
+        : eff < dMin ? "afaste-se um pouco do assunto"
+          : "distância do assunto está boa";
+      rows.push(`<div class="gq-gab-tip">📏 ${distTip}</div>`);
+      rows.push(`<div class="gq-gab-tip">▦ Componha o assunto num cruzamento da grade dos terços</div>`);
+    } else {
+      rows.push(`<div class="gq-gab-tip">🎯 Nenhum assunto no quadro — enquadre um alvo para ver o gabarito completo.</div>`);
+    }
+
+    if (save.ownsItem("flash") && !this.locked) {
+      rows.push(`<div class="gq-gab-tip">⚡ Calculado com o flash <b>${s.flash ? "ligado" : "desligado"}</b>.</div>`);
+    }
+
+    return `<div class="gq-gab-head">🎯 Gabarito${tg ? ` · ${tg.def.name}` : ""}</div>${rows.join("")}
+      <div class="gq-gab-foot">Ideal para o equipamento que você tem agora.</div>`;
+  }
+
+  refreshGab() {
+    const el = this.engine?.dom.camUI.querySelector("#gqGab");
+    if (el) el.innerHTML = this.gabaritoHTML();
+  }
+
   clampReticle() {
     const m = this.fase.map;
     const hw = this.cropW / 2, hh = this.cropH / 2;
@@ -159,9 +315,16 @@ export class CameraScene {
     if (input.pressed("TAB")) { this.sel = (this.sel + 1) % this.controls.length; this.renderUI(); }
     if (input.pressed("MINUS")) this.adjust(-1);
     if (input.pressed("PLUS")) this.adjust(1);
+    if (input.pressed("GAB") && this.gabAvailable) this.toggleGab();
     if (input.pressed("SHOOT") || input.pressed("A")) this.shoot();
     if (input.pressed("B") || input.pressed("CAM")) this.engine.pop();
     if (this.flashAnim > 0) this.flashAnim -= dt;
+
+    // o gabarito acompanha o retículo: atualiza algumas vezes por segundo
+    if (this.gabOn) {
+      this._gabT -= dt;
+      if (this._gabT <= 0) { this._gabT = 0.3; this.refreshGab(); }
+    }
   }
 
   get settings() {
@@ -255,10 +418,85 @@ export class CameraScene {
     ctx.beginPath(); ctx.arc(rx + 12, ry + 12, 4, 0, 7); ctx.fill();
     ctx.restore();
 
+    if (this.meterLevel > 0) this.drawMeter(ctx, stops, tg);
+
     if (this.flashAnim > 0) {
       ctx.fillStyle = `rgba(255,255,255,${this.flashAnim * 4})`;
       ctx.fillRect(0, 0, VIEW_W, VIEW_H);
     }
+  }
+
+  /* ---------- fotômetro ----------
+     Nível 1 (celular): só diz escuro / ok / claro.
+     Nível 2 (semipro): régua −3…+3 EV em pontos inteiros.
+     Nível 3 (pro):     régua de 1/3 de ponto, leitura spot no assunto. */
+  drawMeter(ctx, stops, tg) {
+    const lvl = this.meterLevel;
+    const tol = this.fase.level.expTolerance ?? 0.5;
+    const ok = Math.abs(stops) <= tol;
+    const W = 200, H = lvl === 1 ? 32 : 44;
+    const x = Math.round(VIEW_W / 2 - W / 2), y = 8;
+
+    ctx.save();
+    ctx.textBaseline = "middle";
+    roundRect(ctx, x, y, W, H, 8);
+    ctx.fillStyle = "rgba(14,15,19,.85)"; ctx.fill();
+    ctx.strokeStyle = "rgba(255,255,255,.14)"; ctx.lineWidth = 1; ctx.stroke();
+
+    ctx.textAlign = "left";
+    ctx.font = "700 8px Inter, sans-serif";
+    ctx.fillStyle = "rgba(255,255,255,.45)";
+    ctx.fillText(lvl === 3 && tg ? "FOTÔMETRO · SPOT" : "FOTÔMETRO", x + 10, y + 10);
+
+    if (lvl === 1) {
+      // leitura grosseira: três lâmpadas
+      const segs = [["escuro", stops < -tol, "#e8736b"], ["ok", ok, "#58c08b"], ["claro", stops > tol, "#fff"]];
+      const sw = (W - 20) / 3;
+      segs.forEach(([label, on, color], i) => {
+        const sx = x + 10 + i * sw;
+        roundRect(ctx, sx + 2, y + 16, sw - 4, 12, 4);
+        ctx.fillStyle = on ? color : "rgba(255,255,255,.08)"; ctx.fill();
+        ctx.textAlign = "center";
+        ctx.font = "700 8px Inter, sans-serif";
+        ctx.fillStyle = on ? "#0e0f13" : "rgba(255,255,255,.5)";
+        ctx.fillText(String(label).toUpperCase(), sx + sw / 2, y + 22);
+      });
+      ctx.restore();
+      return;
+    }
+
+    // régua graduada
+    const step = lvl >= 3 ? 1 / 3 : 1;
+    const snapped = Math.max(-3, Math.min(3, Math.round(stops / step) * step));
+    const bx = x + 16, bw = W - 32, by = y + 28;
+    ctx.strokeStyle = "rgba(255,255,255,.28)";
+    line(ctx, bx, by, bx + bw, by);
+    const nTicks = lvl >= 3 ? 18 : 6;
+    for (let i = 0; i <= nTicks; i++) {
+      const s = -3 + (6 * i) / nTicks;
+      const px = bx + ((s + 3) / 6) * bw;
+      const major = Math.abs(s - Math.round(s)) < 1e-6;
+      ctx.strokeStyle = major ? "rgba(255,255,255,.45)" : "rgba(255,255,255,.2)";
+      line(ctx, px, by - (major ? 4 : 2), px, by + (major ? 4 : 2));
+    }
+    // zero destacado
+    ctx.strokeStyle = "rgba(88,192,139,.8)";
+    line(ctx, bx + bw / 2, by - 7, bx + bw / 2, by + 7);
+
+    // agulha
+    const mx = bx + ((snapped + 3) / 6) * bw;
+    ctx.fillStyle = ok ? "#58c08b" : "#f4b03e";
+    ctx.beginPath();
+    ctx.moveTo(mx, by - 6); ctx.lineTo(mx - 5, by - 13); ctx.lineTo(mx + 5, by - 13);
+    ctx.closePath(); ctx.fill();
+
+    // leitura numérica
+    const val = (snapped >= 0 ? "+" : "−") + Math.abs(snapped).toFixed(lvl >= 3 ? 1 : 0);
+    ctx.textAlign = "right";
+    ctx.font = "700 10px Inter, sans-serif";
+    ctx.fillStyle = ok ? "#58c08b" : stops > 0 ? "#fff" : "#e8736b";
+    ctx.fillText(`${val} EV ${ok ? "✔" : stops > 0 ? "claro" : "escuro"}`, x + W - 10, y + 10);
+    ctx.restore();
   }
 
   /* ---------- disparo ---------- */
@@ -277,6 +515,17 @@ export class CameraScene {
 
 function clampI(v, a, b) { return Math.max(a, Math.min(b, v)); }
 function line(ctx, x1, y1, x2, y2) { ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke(); }
+/** retângulo arredondado com fallback p/ navegadores sem ctx.roundRect */
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  if (ctx.roundRect) { ctx.roundRect(x, y, w, h, r); return; }
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
 
 /* ============================================================
    Avaliação pedagógica + revelação da foto
@@ -295,8 +544,7 @@ function evaluateShot(cam, target) {
   /* exposição (30) */
   const stops = exposureStops(cam.sceneEVFor(target), s.iso, s.f, s.t);
   const tol = level.expTolerance ?? 0.5;
-  const err = Math.max(0, Math.abs(stops) - tol);
-  const expPts = Math.round(30 * Math.max(0, 1 - err / 2.5));
+  const expPts = expPointsFor(stops, tol);
   const CI = CRITERIA_INFO;
   breakdown.push({
     key: "exposicao", pts: expPts, max: 30, ok: expPts >= 22,
@@ -305,21 +553,8 @@ function evaluateShot(cam, target) {
   score += expPts;
 
   /* movimento (20) */
-  const shake = s.t > 1 / 30 + 1e-9 && !caps.steady;
-  let movPts = 20;
-  const need = target?.def.motion === "fast" ? 1 / 500 : target?.def.motion === "slow" ? 1 / 125 : Infinity;
-  let movMsg = CI.movimento.good;
-  if (target?.def.wantsLongExposure) {
-    // rastros de luz: aqui o "erro" vira arte — exige tripé + velocidade lenta
-    if (caps.steady && s.t >= 0.25) { movPts = 20; movMsg = CI.movimento.trailGood; }
-    else { movPts = caps.steady ? 8 : 3; movMsg = CI.movimento.trailNeed; }
-  } else {
-    if (s.t > need + 1e-9) { movPts = Math.max(0, Math.round(20 * (need / s.t))); movMsg = CI.movimento.blur; }
-    if (shake) { movPts = Math.min(movPts, 5); movMsg = CI.movimento.shake; }
-    if (!target || (target.def.motion || "still") === "still") {
-      if (!shake) { movPts = 20; movMsg = "Assunto parado, câmera firme — nitidez garantida."; }
-    }
-  }
+  const mov = movementFor(target, s, caps);
+  const { pts: movPts, msg: movMsg, shake, need } = mov;
   breakdown.push({ key: "movimento", pts: movPts, max: 20, ok: movPts >= 15, msg: movMsg });
   score += movPts;
 
@@ -341,11 +576,9 @@ function evaluateShot(cam, target) {
   const focusErr = target ? Math.abs(dist - s.focus) : 9;
   const focusOk = focusErr <= 1.5;
   if (focusOk) {
-    const want = target?.def.wantsShallowDOF ? "shallow" : target?.def.wantsDeepDOF ? "deep" : "any";
-    const got = s.f <= 2.9 ? "shallow" : s.f >= 8 ? "deep" : "mid";
-    const dofOk = want === "any" || want === got;
-    dofPts = dofOk ? 15 : 8;
-    dofMsg = dofOk ? CI.profundidade.good : CI.profundidade.dof;
+    const d = dofFor(target, s.f);
+    dofPts = d.pts;
+    dofMsg = d.ok ? CI.profundidade.good : CI.profundidade.dof;
   } else dofPts = Math.max(0, Math.round(6 - focusErr));
   breakdown.push({ key: "profundidade", pts: dofPts, max: 15, ok: dofPts >= 12, msg: dofMsg });
   score += dofPts;
@@ -363,10 +596,8 @@ function evaluateShot(cam, target) {
   score += lensPts;
 
   /* ruído de ISO alto (penalidade, fase 8 em diante) */
-  const noiseThresh = 1600 * Math.pow(2, caps.noiseBonus || 0);
-  let noise = 0;
-  if (s.iso >= noiseThresh) {
-    noise = s.iso >= noiseThresh * 2 ? 8 : 4;
+  const noise = noiseFor(s.iso, caps);
+  if (noise > 0) {
     score -= noise;
     breakdown.push({ key: "ruido", pts: -noise, max: 0, ok: false, msg: CI.ruido.warn });
   }

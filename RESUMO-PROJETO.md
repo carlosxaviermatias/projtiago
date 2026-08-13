@@ -2,7 +2,8 @@
 
 > Documento de referência para retomar o projeto em novas conversas.
 > Instrutor: **Tiago Tavares** · Curso 200h (SENAI/Firjan/SEEDUC) · público adolescente.
-> **No ar:** https://fotografia.tiagotavares.online
+> **No ar:** https://fotografia.tiagotavares.online (será desativado em breve) e
+> https://fotografia.tiagotavares.com.br (cópia, mesmo branch `fotografia-deploy` — vai virar o endereço definitivo)
 
 ---
 
@@ -54,8 +55,10 @@ RPG 2D educacional em **Canvas 2D vanilla + ES modules** (sem libs, sem build), 
 
 ## 5. Deploy (IMPORTANTE)
 - Hostinger, plano Business (mesma conta do `jonatan.tiagotavares.online` — **não afetar o Jonatan**).
-- Subdomínio `fotografia.tiagotavares.online` (site PHP/HTML) via **Hostinger GIT**:
-  repo `tavaresmatias/projtiago`, branch **`fotografia-deploy`** (órfão, site na raiz), dir `public_html`.
+- Dois subdomínios apontando pro **mesmo branch de deploy** via **Hostinger GIT**:
+  `fotografia.tiagotavares.online` (será desativado em breve) e `fotografia.tiagotavares.com.br`
+  (cópia que vai virar o endereço definitivo) — repo `tavaresmatias/projtiago`, branch
+  **`fotografia-deploy`** (órfão, site na raiz), dir `public_html` (de cada subdomínio).
 - **Fluxo de atualização:** editar em `curso-fotografia/` → commit no `main` → atualizar o branch
   `fotografia-deploy` (worktree + `rsync --delete` + push) → conferir/`Reimplantar` no hPanel (GIT).
   O auto-deploy às vezes dispara sozinho, às vezes não — **sempre conferir o commit em hPanel→GIT**.
