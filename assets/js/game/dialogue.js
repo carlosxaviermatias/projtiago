@@ -5,8 +5,8 @@
    e dispara um callback ao terminar.
    ============================================================ */
 
-import { input } from "./input.js?v=6";
-import { sfx } from "./audio.js?v=6";
+import { input } from "./input.js?v=7";
+import { sfx } from "./audio.js?v=7";
 
 export class DialogueScene {
   /**

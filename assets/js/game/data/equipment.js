@@ -13,13 +13,13 @@ export const EQUIPMENT = {
   },
   cam_semi: {
     type: "camera", name: "Semiprofissional", icon: "📷", price: 350,
-    desc: "Sensor maior: ISO até 3200 com menos ruído · fotômetro com escala em pontos (EV).",
-    caps: { isoMax: 3200, noiseBonus: 1, meter: 2 },
+    desc: "Sensor maior: ISO até 3200 com menos ruído · fotômetro em pontos (EV) · tem visor ótico (tecla V).",
+    caps: { isoMax: 3200, noiseBonus: 1, meter: 2, viewfinder: true },
   },
   cam_pro: {
     type: "camera", name: "Profissional Full-Frame", icon: "🎥", price: 900,
-    desc: "O sonho: ISO 6400 utilizável, disparo silencioso e fotômetro spot de 1/3 de ponto.",
-    caps: { isoMax: 6400, noiseBonus: 2, silent: true, meter: 3 },
+    desc: "O sonho: ISO 6400 utilizável, disparo silencioso, fotômetro spot de 1/3 e visor de pentaprisma.",
+    caps: { isoMax: 6400, noiseBonus: 2, silent: true, meter: 3, viewfinder: true },
   },
 
   /* ---------- lentes ---------- */
@@ -61,7 +61,7 @@ export const SLOT_NAMES = { camera: "Câmera", lens: "Lente", flash: "Flash", tr
 
 /** Junta as capacidades do conjunto equipado. */
 export function combinedCaps(equipped) {
-  const caps = { isoMax: 800, fMin: 3.5, reach: 1, zoom: 1, evBonus: 0, steady: false, noiseBonus: 0, meter: 1 };
+  const caps = { isoMax: 800, fMin: 3.5, reach: 1, zoom: 1, evBonus: 0, steady: false, noiseBonus: 0, meter: 1, viewfinder: false };
   for (const slot of ["camera", "lens", "flash", "tripod"]) {
     const it = EQUIPMENT[equipped[slot]];
     if (it) Object.assign(caps, it.caps);
@@ -72,6 +72,7 @@ export function combinedCaps(equipped) {
   caps.isoMax = EQUIPMENT[equipped.camera]?.caps.isoMax || 800;
   caps.noiseBonus = EQUIPMENT[equipped.camera]?.caps.noiseBonus || 0;
   caps.meter = EQUIPMENT[equipped.camera]?.caps.meter || 1;   // precisão do fotômetro
+  caps.viewfinder = !!EQUIPMENT[equipped.camera]?.caps.viewfinder;  // visor ótico (celular não tem)
   caps.fMin = EQUIPMENT[equipped.lens]?.caps.fMin ?? 3.5;
   caps.reach = EQUIPMENT[equipped.lens]?.caps.reach ?? 1;
   caps.zoom = EQUIPMENT[equipped.lens]?.caps.zoom ?? 1;

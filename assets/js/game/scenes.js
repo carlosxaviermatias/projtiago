@@ -4,19 +4,19 @@
    Galeria, Loja e Estatísticas (painéis DOM sobre o canvas).
    ============================================================ */
 
-import { TILE, VIEW_W, VIEW_H, text } from "./renderer.js?v=6";
-import { input } from "./input.js?v=6";
-import { save } from "./save.js?v=6";
-import { TileMap } from "./tilemap.js?v=6";
-import { Player, NPC, Target } from "./entities.js?v=6";
-import { makeProp } from "./sprites.js?v=6";
-import { DialogueScene, toast } from "./dialogue.js?v=6";
-import { QuestLog } from "./quests.js?v=6";
-import { CameraScene } from "./photo.js?v=6";
-import { LEVELS, LEVEL_ORDER } from "./data/levels.js?v=6";
-import { EQUIPMENT, SLOT_NAMES } from "./data/equipment.js?v=6";
-import { UI, ACHIEVEMENTS, CRITERIA_INFO } from "./data/strings.js?v=6";
-import { sfx } from "./audio.js?v=6";
+import { TILE, VIEW_W, VIEW_H, text } from "./renderer.js?v=7";
+import { input } from "./input.js?v=7";
+import { save } from "./save.js?v=7";
+import { TileMap } from "./tilemap.js?v=7";
+import { Player, NPC, Target } from "./entities.js?v=7";
+import { makeProp } from "./sprites.js?v=7";
+import { DialogueScene, toast } from "./dialogue.js?v=7";
+import { QuestLog } from "./quests.js?v=7";
+import { CameraScene } from "./photo.js?v=7";
+import { LEVELS, LEVEL_ORDER } from "./data/levels.js?v=7";
+import { EQUIPMENT, SLOT_NAMES } from "./data/equipment.js?v=7";
+import { UI, ACHIEVEMENTS, CRITERIA_INFO } from "./data/strings.js?v=7";
+import { sfx } from "./audio.js?v=7";
 
 /* ============================================================
    MENU INICIAL
@@ -32,7 +32,7 @@ export class MenuScene {
         <div class="gq-logo">📷</div>
         <h2>${UI.title}</h2>
         <p class="gq-menu-sub">${UI.subtitle}</p>
-        <p class="gq-menu-desc">Explore 10 cenários, converse com mestres, aceite missões e
+        <p class="gq-menu-desc">Explore 20 cenários, converse com mestres, aceite missões e
           fotografe aplicando o que você aprende no curso: exposição, composição, foco e muito mais.</p>
         <button class="btn btn--primary" id="gqStart">${hasSave ? "▶ Continuar jornada" : "▶ Começar a jornada"}</button>
         <div class="gq-menu-keys">
@@ -79,6 +79,21 @@ export class MapScene {
     const prevXP = d.level > 1 ? save.xpForLevel(d.level - 1) : 0;
     const nextXP = save.xpForLevel(d.level);
     const pct = Math.min(100, Math.round(((d.xp - prevXP) / (nextXP - prevXP)) * 100));
+
+    // Conserta a corrente de desbloqueios ao abrir o mapa. Sem isto, quem já
+    // tinha terminado a última fase ANTES de novas fases existirem nunca
+    // receberia a seguinte — o desbloqueio só acontecia no instante em que a
+    // missão era concluída, e esse instante já passou.
+    let reparou = false;
+    for (const id of LEVEL_ORDER) {
+      const L = LEVELS[id], st = save.levelState(id);
+      const done = L.quests.every((q) => st.questsDone.includes(q.id));
+      if (done && L.unlocks && !save.levelState(L.unlocks).unlocked) {
+        save.levelState(L.unlocks).unlocked = true;
+        reparou = true;
+      }
+    }
+    if (reparou) save.save();
 
     const cards = LEVEL_ORDER.map((id, i) => {
       const L = LEVELS[id];
@@ -156,12 +171,66 @@ export class FaseScene {
         const def = this.level.targets.find((t) => t.id === s.id);
         if (def) this.targets.push(new Target(def, s.tx, s.ty));
       }
-      if (s.type === "prop") this.props.push({ x: s.tx * TILE, y: s.ty * TILE, img: makeProp(s.sprite) });
+      if (s.type === "prop") this.props.push({
+        x: s.tx * TILE, y: s.ty * TILE, img: makeProp(s.sprite),
+        movable: !!s.movable, name: s.name,
+        light: s.light || 0, lightRange: s.lightRange || 5,   // refletor/softbox
+      });
       if (s.type === "exit") this.exits.push({ x: s.tx * TILE, y: s.ty * TILE });
     }
     this.camX = 0; this.camY = 0;
     this.hintNPC = null;
     this.leaving = false;
+    this.carrying = null;    // objeto que o fotógrafo está carregando p/ compor a cena
+  }
+
+  /* ---------- compor a cena movendo objetos ----------
+     A nota de composição já vem da posição do assunto dentro do quadro;
+     poder arrastar o assunto fecha o ciclo — o aluno arruma a cena e vê
+     a nota reagir. Só vale para quem foi marcado com movable na fase. */
+  movableNear() {
+    const cands = [
+      ...this.targets.filter((t) => t.def.movable && t.fled <= 0),
+      ...this.props.filter((p) => p.movable),
+    ];
+    let best = null, bd = 68;
+    for (const e of cands) {
+      const ex = e.cx ?? e.x + TILE / 2, ey = e.cy ?? e.y + TILE / 2;
+      const d = Math.hypot(ex - this.player.cx, ey - this.player.cy);
+      if (d < bd) { bd = d; best = e; }
+    }
+    return best;
+  }
+
+  pickUp(obj) {
+    this.carrying = obj;
+    obj.carried = true;
+    sfx.play("select");
+  }
+
+  dropCarried() {
+    const o = this.carrying;
+    // encaixa no tile mais próximo; se estiver ocupado, fica no tile do fotógrafo
+    let tx = Math.round(o.x / TILE), ty = Math.round(o.y / TILE);
+    if (this.map.isSolidPx(tx * TILE + TILE / 2, ty * TILE + TILE / 2)) {
+      tx = Math.round(this.player.x / TILE); ty = Math.round(this.player.y / TILE);
+    }
+    o.x = tx * TILE; o.y = ty * TILE;
+    // alvos que andam passam a circular em volta do novo lugar
+    if (o.homeX !== undefined) { o.homeX = o.x; o.homeY = o.y; }
+    o.carried = false;
+    this.carrying = null;
+    sfx.play("confirm");
+  }
+
+  /** objeto carregado acompanha o fotógrafo, à frente dele */
+  updateCarried() {
+    const o = this.carrying;
+    if (!o) return;
+    const off = { down: [0, TILE * 0.68], up: [0, -TILE * 0.58],
+      left: [-TILE * 0.72, 0], right: [TILE * 0.72, 0] }[this.player.dir] || [0, TILE * 0.68];
+    o.x = this.player.x + off[0];
+    o.y = this.player.y + off[1] - 6;
   }
 
   enter(engine) {
@@ -250,15 +319,26 @@ export class FaseScene {
       const d = Math.hypot(n.cx - this.player.cx, n.cy - this.player.cy);
       if (d < best) { best = d; this.hintNPC = n; }
     }
+    // objeto ao alcance da mão (só nas fases que têm objetos móveis)
+    const movel = this.carrying ? null : this.movableNear();
+    this.updateCarried();
+
     const hint = this.engine.dom.hud.querySelector("#gqHudHint");
     if (hint) {
       hint.textContent = this.hintNPC
         ? `${UI.talkHint} com ${this.hintNPC.def.name}`
-        : `${UI.camHint} · ${UI.talkHint}`;
+        : this.carrying ? `E · soltar ${this.carrying.def?.name || this.carrying.name || "objeto"}`
+          : movel ? `E · mover ${movel.def?.name || movel.name || "objeto"}`
+            : `${UI.camHint} · ${UI.talkHint}`;
     }
 
-    if (input.pressed("A") && this.hintNPC) this.talkTo(this.hintNPC);
-    else if (input.pressed("CAM")) this.engine.push(new CameraScene(this));
+    if (input.pressed("A")) {
+      // Conversar vem primeiro: quem está de mãos ocupadas ainda precisa poder
+      // pegar missão. Para soltar o objeto basta dar um passo para o lado.
+      if (this.hintNPC) this.talkTo(this.hintNPC);
+      else if (this.carrying) this.dropCarried();
+      else if (movel) this.pickUp(movel);
+    } else if (input.pressed("CAM")) this.engine.push(new CameraScene(this));
     if (input.pressed("B")) this.engine.reset(new MapScene());
 
     // saída da fase
@@ -459,7 +539,7 @@ export class StatsScene {
             <div class="gq-stat-card"><b>${d.level}</b><span>nível</span></div>
             <div class="gq-stat-card"><b>${s.fotos}</b><span>fotos</span></div>
             <div class="gq-stat-card"><b>${media}</b><span>nota média</span></div>
-            <div class="gq-stat-card"><b>${fasesDone}/10</b><span>fases</span></div>
+            <div class="gq-stat-card"><b>${fasesDone}/${LEVEL_ORDER.length}</b><span>fases</span></div>
           </div>
           <h3>Desempenho por conceito</h3>
           ${conceitos}

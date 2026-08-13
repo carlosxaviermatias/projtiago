@@ -5,9 +5,9 @@
    fica nos pés do personagem (sensação top-down correta).
    ============================================================ */
 
-import { TILE } from "./renderer.js?v=6";
-import { makePerson, makeProp, PEOPLE } from "./sprites.js?v=6";
-import { sfx } from "./audio.js?v=6";
+import { TILE } from "./renderer.js?v=7";
+import { makePerson, makeProp, PEOPLE } from "./sprites.js?v=7";
+import { sfx } from "./audio.js?v=7";
 
 const SPR = TILE; // sprites 16×16 × escala 3 = 48
 
@@ -131,6 +131,7 @@ export class Target {
   get cy() { return this.y + TILE / 2; }
 
   update(dt, map, player) {
+    if (this.carried) return;            // nas mãos do fotógrafo: quem manda é ele
     // alvo arisco: foge e some por uns segundos
     if (this.def.shy && player) {
       const d = Math.hypot(player.cx - this.cx, player.cy - this.cy) / TILE;

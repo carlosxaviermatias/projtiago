@@ -41,6 +41,19 @@ export const CRITERIA_INFO = {
     label: "Ruído", icon: "🌫️", module: "Módulo 2 · Fotografia noturna",
     warn: "ISO muito alto gerou ruído — equilibre com abertura/velocidade quando puder.",
   },
+
+  /* Os de baixo NÃO são critérios de nota: são os `concept` dos alvos, usados
+     no perfil ("Desempenho por conceito"). Sem eles a tela mostrava a chave
+     crua com um 📌 genérico. */
+  velocidade:  { label: "Velocidade", icon: "⏱️", module: "Módulo 1 · Velocidade do obturador" },
+  iso:         { label: "ISO & ruído", icon: "🎚️", module: "Módulo 1 · Triângulo da exposição" },
+  lentes:      { label: "Lentes", icon: "🔭", module: "Módulo 1 · Tipos de objetivas" },
+  iluminacao:  { label: "Iluminação", icon: "💡", module: "Módulo 2 · Luz natural e artificial" },
+  noturna:     { label: "Fotografia noturna", icon: "🌙", module: "Módulo 2 · Fotografia noturna" },
+  composicao:  { label: "Direção de cena", icon: "🎬", module: "Módulo 1 · Composição" },
+  edicao:      { label: "Edição", icon: "🖥️", module: "Módulo 3 · Edição de imagem" },
+  negocio:     { label: "Cliente & mercado", icon: "🤝", module: "Módulo 4 · Empreendedorismo" },
+  projeto:     { label: "Projeto fotográfico", icon: "🖼️", module: "Módulo 5 · Projeto final" },
 };
 
 export const STARS = [
@@ -55,10 +68,10 @@ export const ACHIEVEMENTS = {
   primeira_foto:  { icon: "📸", name: "Primeiro clique",     desc: "Tirou sua primeira foto" },
   cinco_estrelas: { icon: "🌟", name: "Perfeccionista",      desc: "Tirou uma foto 5 estrelas" },
   estudio_ok:     { icon: "🎓", name: "Formado no estúdio",  desc: "Completou o tutorial" },
-  meia_jornada:   { icon: "🧭", name: "Meio caminho",        desc: "Completou 5 fases" },
+  meia_jornada:   { icon: "🧭", name: "Meio caminho",        desc: "Completou as 10 primeiras fases" },
   colecionador:   { icon: "🎒", name: "Colecionador",        desc: "Comprou 3 equipamentos" },
   mestre_luz:     { icon: "💡", name: "Mestre da luz",       desc: "Nota 90+ numa foto noturna" },
-  formado:        { icon: "🏆", name: "Fotógrafo formado",   desc: "Completou as 10 fases" },
+  formado:        { icon: "🏆", name: "Fotógrafo formado",   desc: "Completou as 20 fases" },
 };
 
 export const UI = {
