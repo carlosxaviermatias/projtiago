@@ -201,6 +201,28 @@
   color:var(--text-mute); font-size:.68rem; background:rgba(14,15,19,.75);
   padding:3px 12px; border-radius:20px; white-space:nowrap; pointer-events:none; }
 
+/* ---------- gabarito (liberado após concluir a fase) ---------- */
+.gq-camgab{ background:rgba(14,15,19,.9); border:1px solid var(--line); color:#fff;
+  border-radius:10px; width:36px; height:40px; font-size:1rem; cursor:pointer; }
+.gq-camgab:hover{ border-color:var(--accent); }
+.gq-camgab.on{ border-color:var(--accent); box-shadow:0 0 0 1px var(--accent); background:rgba(244,176,62,.18); }
+.gq-gab{ position:absolute; left:12px; top:52px; width:210px; pointer-events:auto;
+  background:rgba(14,15,19,.92); border:1px solid var(--line); border-radius:12px;
+  padding:9px 11px; font-size:.7rem; color:var(--text-soft); }
+.gq-gab-head{ color:var(--accent); font-weight:800; font-size:.72rem; margin-bottom:6px;
+  border-bottom:1px solid var(--line); padding-bottom:5px; }
+.gq-gab-row{ display:flex; align-items:center; gap:6px; padding:2px 0; }
+.gq-gab-row span{ flex:1; }
+.gq-gab-row b{ color:#fff; font-variant-numeric:tabular-nums; }
+.gq-gab-row i{ font-style:normal; font-size:.62rem; min-width:62px; text-align:right; }
+.gq-gab-row i.eq{ color:var(--ok); }
+.gq-gab-row i.up, .gq-gab-row i.down{ color:var(--accent-2); }
+.gq-gab-tip{ margin-top:5px; font-size:.64rem; line-height:1.4; color:var(--text-mute); }
+.gq-gab-foot{ margin-top:7px; padding-top:5px; border-top:1px solid var(--line);
+  font-size:.6rem; color:var(--text-mute); }
+@media(max-width:600px){ .gq-gab{ width:168px; padding:7px 9px; font-size:.64rem; }
+  .gq-gab-row i{ min-width:52px; font-size:.56rem; } }
+
 /* ---------- controles touch ---------- */
 body.gq-touch #gameTouch{ display:block; }
 #gameTouch{ pointer-events:none; }

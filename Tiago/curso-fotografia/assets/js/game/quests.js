@@ -6,7 +6,7 @@
    moedas, itens e conquistas.
    ============================================================ */
 
-import { save } from "./save.js?v=5";
+import { save } from "./save.js?v=6";
 
 export class QuestLog {
   constructor(level) {
