@@ -34,11 +34,25 @@ Variáveis e componentes em `assets/css/style.css`; comportamento em `assets/js/
 RPG 2D educacional em **Canvas 2D vanilla + ES modules** (sem libs, sem build), **pixel art procedural**
 (sem assets externos). ~3.500 linhas em `assets/js/game/` (15 módulos) + `assets/css/game.css`.
 
-- **10 fases** (estúdio→parque→centro→praia→floresta→evento→casamento→show→trilha→cidade à noite),
-  cada uma amarrada a conceitos do curso (exposição, terços, DOF, lentes, luz, noturna).
+- **20 fases**: 1–10 (estúdio→parque→centro→praia→floresta→evento→casamento→show→trilha→cidade à noite)
+  e 11–20 (hora dourada→estúdio profissional→luz de janela→mesa do chef→arquitetura→macro→esporte→
+  edição/P&B→ensaio do cliente→exposição final), cada uma amarrada a conceitos do curso.
 - **Sistema de fotografia** = coração: viewfinder com grade dos terços, controles ISO/abertura/velocidade/
   lente/foco (limitados pelo equipamento), preview de exposição ao vivo, **nota 0–100** com feedback por
   critério que **cita o módulo do curso a revisar**.
+- **Fotômetro** no visor (da fase 2 em diante, quando os controles estão liberados). A precisão é
+  capacidade da câmera: celular = escuro/ok/claro · semipro = régua em pontos · full-frame = 1/3 + spot.
+- **Gabarito** (botão 🎯 / tecla G) só depois de concluir a fase: mostra ISO/abertura/velocidade/foco
+  ideais para o equipamento atual. É calculado testando as combinações permitidas com as MESMAS funções
+  de pontuação do avaliador (`expPointsFor`/`movementFor`/`dofFor`/`noiseFor`), para nunca divergirem.
+- **Visor ótico** (tecla V): o recorte ocupa a tela com a moldura da reflex — ocular, marcas de
+  enquadramento, pontos de AF, fotômetro e barra de ajustes. É capacidade da câmera (semipro e
+  full-frame), não da fase, e desenha pelo mesmo caminho que revela a foto: o que se vê é o que sai.
+- **Direção de cena** (tecla E): alvos/props com `movable: true` são pegos e soltos. Como a nota de
+  composição vem da posição do assunto no quadro, arrumar a cena passa a valer nota. Props com `light: N`
+  (softbox/refletor) iluminam o assunto conforme a distância — mover a luz muda a exposição de verdade.
+  ⚠️ Objeto móvel **não pode ser `solid`**: a grade de colisão é assada no início da fase e ficaria
+  travando o lugar antigo depois de movido.
 - NPCs, diálogos, missões, **progressão** (XP/nível/moedas/conquistas), **loja** de equipamentos,
   **galeria** de fotos (thumbnails) e **estatísticas** — tudo salvo em **localStorage**.
 - Controles **WASD/setas + touch** (d-pad na tela). Data-driven: fases/NPCs/missões/equipamentos em
@@ -49,9 +63,12 @@ RPG 2D educacional em **Canvas 2D vanilla + ES modules** (sem libs, sem build), 
 - `engine.js` (loop + pilha de cenas), `scenes.js` (menu/mapa/fase/loja/galeria/perfil),
   `photo.js` (câmera + avaliação), `tilemap.js`, `entities.js`, `input.js`, `dialogue.js`,
   `quests.js`, `save.js`, `renderer.js`, `sprites.js`.
-- `data/levels.js` (as 10 fases), `data/equipment.js`, `data/strings.js` (feedback pedagógico).
+- `data/levels.js` (as 20 fases), `data/equipment.js`, `data/strings.js` (feedback pedagógico).
 - **Adicionar fase:** copiar o formato de uma fase em `levels.js` (mapa em strings + legenda + NPCs +
-  alvos + missões). Validador de mapas em `scratchpad/validate-levels.mjs`.
+  alvos + missões). **Sempre rodar `node tools/validate-levels.mjs`**: ele pega largura de linha errada,
+  caractere fora da legenda, fase sem saída, missão apontando para alvo inexistente e afins — erros que
+  só apareceriam jogando. (Ficava no scratchpad e se perdeu uma vez; agora mora no repositório.)
+- ⚠️ `tools/` é de desenvolvimento: manter fora do site com `--exclude 'tools'` no rsync do deploy.
 
 ## 5. Deploy (IMPORTANTE)
 - Hostinger, plano Business (mesma conta do `jonatan.tiagotavares.online` — **não afetar o Jonatan**).
@@ -63,7 +80,9 @@ RPG 2D educacional em **Canvas 2D vanilla + ES modules** (sem libs, sem build), 
   `fotografia-deploy` (worktree + `rsync --delete` + push) → conferir/`Reimplantar` no hPanel (GIT).
   O auto-deploy às vezes dispara sozinho, às vezes não — **sempre conferir o commit em hPanel→GIT**.
 - **Cache-busting:** ao mexer em `style.css`/`main.js`, **incrementar `?v=N`** em todas as páginas
-  (hoje: `style.css?v=5`, `main.js?v=3`; jogo em `game.css?v=1`, `game/main.js?v=1`).
+  (hoje: `style.css?v=6`, `main.js?v=3`; jogo em `game.css?v=7`, `game/main.js?v=7`).
+  No jogo, os módulos ES importam uns aos outros com `?v=N` — bumpar **todos** de uma vez:
+  `sed -i '' 's/?v=7"/?v=8"/g' assets/js/game/*.js assets/js/game/data/*.js` + as duas tags no `jogo.html`.
 - Verificação só funciona via navegador Chrome (curl/DNS do sandbox retorna 000).
 
 ## 6. Ideias futuras (não feitas)
