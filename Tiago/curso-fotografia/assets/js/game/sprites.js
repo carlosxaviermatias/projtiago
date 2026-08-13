@@ -7,7 +7,7 @@
    Tudo é "assado" uma vez em canvases offscreen (renderer.bake).
    ============================================================ */
 
-import { bake, bakeTile, TILE } from "./renderer.js?v=6";
+import { bake, bakeTile, TILE } from "./renderer.js?v=7";
 
 /* ---------- template humano (16×16) ----------
    H cabelo · S pele · T camisa · P calça · B sapato · O contorno
@@ -324,6 +324,61 @@ const PROPS = {
       "...CCCCCCCCCC...", "..CCCCCCCCCCCC..", "..CCDLLLLDCCCC..", "..CCLLLLLLCCCC..",
       "..CCLLLLLLCCAC..", "..CCLLLLLLCCCC..", "..CCDLLLLDCCCC..", "..CCCCCCCCCCCC..",
       "...CCCCCCCCCC...", "................", "................", "................",
+    ],
+  },
+  /* ---------- fases 11–20 ---------- */
+  plate: {
+    pal: { P: "#e0dcd2", W: "#f6f3ee", F: "#e8a05a", G: "#6f9a4a" },
+    rows: [
+      "................", "................", "................", "....PPPPPPPP....",
+      "...PPWWWWWWPP...", "..PPWWFFFFWWPP..", "..PWWFFGGFFWWP..", "..PWWFFGGFFWWP..",
+      "..PPWWFFFFWWPP..", "...PPWWWWWWPP...", "....PPPPPPPP....", "................",
+      "................", "................", "................", "................",
+    ],
+  },
+  mug: {
+    pal: { M: "#f6f3ee", C: "#6b4a32", H: "#e0dcd2" },
+    rows: [
+      "................", "................", "................", "................",
+      ".....MMMMMM.....", "....MMMMMMMM....", "....MMCCCCMM.HH.", "....MMCCCCMMHHH.",
+      "....MMCCCCMM.HH.", "....MMMMMMMM....", ".....MMMMMM.....", "......MMMM......",
+      "................", "................", "................", "................",
+    ],
+  },
+  ball: {
+    pal: { W: "#f6f3ee", K: "#22242c" },
+    rows: [
+      "................", "................", "................", "................",
+      "......WWWW......", "....WWKKKKWW....", "...WWKKWWKKWW...", "...WKKWWWWKKW...",
+      "...WKKWWWWKKW...", "...WWKKWWKKWW...", "....WWKKKKWW....", "......WWWW......",
+      "................", "................", "................", "................",
+    ],
+  },
+  monitor: {
+    pal: { K: "#2b2e38", S: "#5aa6e8", A: "#f4b03e" },
+    rows: [
+      "................", "................", "..KKKKKKKKKKKK..", "..KSSSSSSSSSSK..",
+      "..KSAAAASSSSSK..", "..KSAAAASSSSSK..", "..KSSSSSSSSSSK..", "..KSSSSSSSSSSK..",
+      "..KKKKKKKKKKKK..", "......KKKK......", "......KKKK......", "....KKKKKKKK....",
+      "................", "................", "................", "................",
+    ],
+  },
+  frameArt: {
+    pal: { C: "#c9962f", W: "#f6f3ee", S: "#8a8f9c", A: "#3d5a80" },
+    rows: [
+      "................", "..CCCCCCCCCCCC..", "..CWWWWWWWWWWC..", "..CWSSSSSSSSWC..",
+      "..CWSAAAAAASWC..", "..CWSAAAAAASWC..", "..CWSAAAAAASWC..", "..CWSSSSSSSSWC..",
+      "..CWWWWWWWWWWC..", "..CCCCCCCCCCCC..", "................", "................",
+      "................", "................", "................", "................",
+    ],
+  },
+  mushroom: {
+    pal: { R: "#c0453d", W: "#f6f3ee", S: "#e8e0cf", G: "#4e7a3a" },
+    rows: [
+      "................", "................", "................", ".....RRRRRR.....",
+      "....RRWRRWRR....", "...RRRRRRRRRR...", "...RRRRRRRRRR...", "....RRRRRRRR....",
+      "......SSSS......", "......SSSS......", "......SSSS......", ".....SSSSSS.....",
+      "....GGGGGGGG....", "................", "................", "................",
     ],
   },
 };

@@ -19,6 +19,7 @@ const KEYMAP = {
   Tab: "TAB",
   z: "MINUS", Z: "MINUS", x: "PLUS", X: "PLUS", // ajustes no modo câmera
   g: "GAB", G: "GAB",                           // gabarito (fase concluída)
+  v: "VF", V: "VF",                             // alterna visor ótico / tela
 };
 
 class Input {

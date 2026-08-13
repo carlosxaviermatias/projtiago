@@ -8,14 +8,14 @@
      0 = perfeita · >0 clara · <0 escura
    ============================================================ */
 
-import { TILE, VIEW_W, VIEW_H } from "./renderer.js?v=6";
-import { input } from "./input.js?v=6";
-import { save } from "./save.js?v=6";
-import { combinedCaps, EQUIPMENT } from "./data/equipment.js?v=6";
-import { CRITERIA_INFO, STARS } from "./data/strings.js?v=6";
-import { toast } from "./dialogue.js?v=6";
-import { canvasPoint } from "./fullscreen.js?v=6";
-import { sfx } from "./audio.js?v=6";
+import { TILE, VIEW_W, VIEW_H } from "./renderer.js?v=7";
+import { input } from "./input.js?v=7";
+import { save } from "./save.js?v=7";
+import { combinedCaps, EQUIPMENT } from "./data/equipment.js?v=7";
+import { CRITERIA_INFO, STARS } from "./data/strings.js?v=7";
+import { toast } from "./dialogue.js?v=7";
+import { canvasPoint } from "./fullscreen.js?v=7";
+import { sfx } from "./audio.js?v=7";
 
 /* ---------- valores discretos dos controles ---------- */
 export const ISOS = [100, 200, 400, 800, 1600, 3200, 6400];
@@ -153,6 +153,11 @@ export class CameraScene {
     this.gabOn = false;
     this._gabT = 0;
 
+    // visor ótico: câmeras de verdade têm, celular não (compõe pela tela).
+    // Ligado por padrão em quem tem — é assim que se fotografa com reflex.
+    this.vfAvailable = !!this.caps.viewfinder;
+    this.vfOn = this.vfAvailable;
+
     this.clampSettings();
   }
 
@@ -182,8 +187,14 @@ export class CameraScene {
     engine.dom.camUI.classList.add("open");
     sfx.play("camera");
     this.renderUI();
+    this.bindDrag();
   }
   exit() {
+    const cv = this.engine.canvas;
+    cv.removeEventListener("pointerdown", this._drag);
+    cv.removeEventListener("pointermove", this._drag);
+    removeEventListener("pointerup", this._dragEnd);
+    removeEventListener("pointercancel", this._dragEnd);
     this.engine.dom.camUI.classList.remove("open");
     this.engine.dom.camUI.innerHTML = "";
   }
@@ -200,11 +211,12 @@ export class CameraScene {
         <div class="gq-chips">${chips}</div>
         <button class="gq-chipnav" id="gqPlus">＋</button>
         <button class="gq-shutter" id="gqShutter" aria-label="Fotografar">📷</button>
+        ${this.vfAvailable ? `<button class="gq-camgab ${this.vfOn ? "on" : ""}" id="gqVfBtn" aria-label="Alternar visor ótico e tela">${this.vfOn ? "🔎" : "📱"}</button>` : ""}
         ${this.gabAvailable ? `<button class="gq-camgab ${this.gabOn ? "on" : ""}" id="gqGabBtn" aria-label="Gabarito da cena">🎯</button>` : ""}
         <button class="gq-camclose" id="gqCamClose" aria-label="Sair da câmera">✕</button>
       </div>
       ${this.gabAvailable && this.gabOn ? `<div class="gq-gab" id="gqGab">${this.gabaritoHTML()}</div>` : ""}
-      <div class="gq-cam-help">${this.locked ? "Mova o retículo (setas/arrastar) · " : "TAB seleciona · Z/X ajustam · "}ESPAÇO fotografa${this.gabAvailable ? " · G gabarito" : ""} · ESC sai</div>`;
+      <div class="gq-cam-help">${this.locked ? "Mova o retículo (setas/arrastar) · " : "TAB seleciona · Z/X ajustam · "}ESPAÇO fotografa${this.vfAvailable ? " · V visor" : ""}${this.gabAvailable ? " · G gabarito" : ""} · ESC sai</div>`;
     el.querySelectorAll(".gq-chip").forEach((b) =>
       b.addEventListener("pointerdown", (e) => { e.preventDefault(); this.sel = +b.dataset.i; this.renderUI(); }));
     el.querySelector("#gqMinus").addEventListener("pointerdown", (e) => { e.preventDefault(); this.adjust(-1); });
@@ -212,19 +224,38 @@ export class CameraScene {
     el.querySelector("#gqShutter").addEventListener("pointerdown", (e) => { e.preventDefault(); this.shoot(); });
     el.querySelector("#gqCamClose").addEventListener("pointerdown", (e) => { e.preventDefault(); this.engine.pop(); });
     el.querySelector("#gqGabBtn")?.addEventListener("pointerdown", (e) => { e.preventDefault(); this.toggleGab(); });
+    el.querySelector("#gqVfBtn")?.addEventListener("pointerdown", (e) => { e.preventDefault(); this.toggleVf(); });
 
-    // arrastar no canvas move o retículo (touch/mouse) — canvasPoint() já
-    // resolve a conversão corretamente mesmo com o jogo rotacionado (fullscreen mobile)
+  }
+
+  /* arrastar no canvas move o retículo (touch/mouse) — canvasPoint() já
+     resolve a conversão corretamente mesmo com o jogo rotacionado (fullscreen
+     mobile). Ligado UMA vez ao entrar: ficava dentro do renderUI(), que roda a
+     cada ajuste de chip, empilhando um par de listeners por toque. */
+  bindDrag() {
     const cv = this.engine.canvas;
     this._drag = (e) => {
       if (e.buttons === 0 && e.type === "pointermove") return;
       const { x: sx, y: sy } = canvasPoint(e, cv);
-      this.cx = this.fase.camX + sx;
-      this.cy = this.fase.camY + sy;
+      if (this.vfOn) {
+        // no visor a tela INTEIRA é o quadro, então não dá para "tocar onde
+        // quero enquadrar": arrastar move a câmera junto com o dedo.
+        if (e.type === "pointerdown" || !this._last) { this._last = { sx, sy }; return; }
+        const { sc } = this.vfRect;
+        this.cx -= (sx - this._last.sx) / sc;
+        this.cy -= (sy - this._last.sy) / sc;
+        this._last = { sx, sy };
+      } else {
+        this.cx = this.fase.camX + sx;
+        this.cy = this.fase.camY + sy;
+      }
       this.clampReticle();
     };
+    this._dragEnd = () => { this._last = null; };
     cv.addEventListener("pointerdown", this._drag);
     cv.addEventListener("pointermove", this._drag);
+    addEventListener("pointerup", this._dragEnd);
+    addEventListener("pointercancel", this._dragEnd);
   }
 
   adjust(d) {
@@ -236,6 +267,22 @@ export class CameraScene {
     if (c.key === "focus") this.focus = clampI(this.focus + d, 1, 16);
     if (c.key === "flash") this.flashOn = !this.flashOn;
     sfx.play("move");
+    this.renderUI();
+  }
+
+  /* ---------- visor ótico ---------- */
+  /** retângulo do quadro do visor na tela (desenho e arrasto usam o mesmo) */
+  get vfRect() {
+    // o quadro precisa caber ACIMA da fileira de chips (que é DOM, no rodapé),
+    // senão a barra de informações do visor fica escondida atrás dos botões
+    const dw = 648, dh = Math.round((dw * this.cropH) / this.cropW);
+    return { dx: Math.round((VIEW_W - dw) / 2), dy: 20, dw, dh, sc: dw / this.cropW };
+  }
+
+  toggleVf() {
+    if (!this.vfAvailable) { sfx.play("deny"); return; }
+    this.vfOn = !this.vfOn;
+    sfx.play("camera");
     this.renderUI();
   }
 
@@ -316,6 +363,7 @@ export class CameraScene {
     if (input.pressed("MINUS")) this.adjust(-1);
     if (input.pressed("PLUS")) this.adjust(1);
     if (input.pressed("GAB") && this.gabAvailable) this.toggleGab();
+    if (input.pressed("VF") && this.vfAvailable) this.toggleVf();
     if (input.pressed("SHOOT") || input.pressed("A")) this.shoot();
     if (input.pressed("B") || input.pressed("CAM")) this.engine.pop();
     if (this.flashAnim > 0) this.flashAnim -= dt;
@@ -342,6 +390,17 @@ export class CameraScene {
     const lv = this.fase.level;
     let ev = lv.ambientLight + (target?.def.lightMod || 0);
     if (this.flashOn && save.ownsItem("flash")) ev += this.caps.evBonus || 2;
+    // Luzes de cena (softbox, refletor): quanto mais perto do assunto, mais luz.
+    // Como o aluno pode ARRASTAR esses objetos, aproximar a luz clareia o
+    // assunto de verdade — a lição de iluminação vira gesto, não texto.
+    if (target) {
+      for (const p of this.fase.props) {
+        if (!p.light) continue;
+        const alcance = p.lightRange || 5;
+        const d = Math.hypot(p.x - target.x, p.y - target.y) / TILE;
+        if (d < alcance) ev += p.light * (1 - d / alcance);
+      }
+    }
     return ev;
   }
 
@@ -358,8 +417,25 @@ export class CameraScene {
     return inside[0];
   }
 
-  /* ---------- desenho do viewfinder ---------- */
+  /* ---------- desenho ----------
+     Duas apresentações da MESMA cena: pela tela (celular, o recorte
+     claro sobre o mundo escurecido) ou pelo visor ótico (o recorte
+     ocupando a tela, com a moldura da reflex em volta). */
   draw(ctx) {
+    const tg = this.targetInCrop();
+    const stops = exposureStops(this.sceneEVFor(tg), this.settings.iso, this.settings.f, this.settings.t);
+
+    if (this.vfOn) this.drawViewfinder(ctx, tg, stops);
+    else this.drawLiveView(ctx, tg, stops);
+
+    if (this.flashAnim > 0) {
+      ctx.fillStyle = `rgba(255,255,255,${this.flashAnim * 4})`;
+      ctx.fillRect(0, 0, VIEW_W, VIEW_H);
+    }
+  }
+
+  /* ---------- pela tela (como no celular) ---------- */
+  drawLiveView(ctx, tg, stops) {
     const f = this.fase;
     // recentra a câmera do jogo no retículo (suave)
     f.camX += ((this.cx - VIEW_W / 2) - f.camX) * 0.2;
@@ -380,8 +456,6 @@ export class CameraScene {
     ctx.fill("evenodd");
 
     // preview de exposição dentro do recorte
-    const tg = this.targetInCrop();
-    const stops = exposureStops(this.sceneEVFor(tg), this.settings.iso, this.settings.f, this.settings.t);
     if (Math.abs(stops) > 0.4) {
       ctx.fillStyle = stops > 0
         ? `rgba(255,255,255,${Math.min(0.85, (stops - 0.4) * 0.28)})`
@@ -419,23 +493,125 @@ export class CameraScene {
     ctx.restore();
 
     if (this.meterLevel > 0) this.drawMeter(ctx, stops, tg);
+  }
 
-    if (this.flashAnim > 0) {
-      ctx.fillStyle = `rgba(255,255,255,${this.flashAnim * 4})`;
-      ctx.fillRect(0, 0, VIEW_W, VIEW_H);
+  /* ---------- pelo visor ótico (reflex) ----------
+     O recorte vira a tela inteira. Desenhamos a cena pelo MESMO caminho
+     que revela a foto (renderWorld com forPhoto), então o que aparece no
+     visor é literalmente o que sai na foto — inclusive sem o fotógrafo
+     no quadro. Em volta, a moldura da câmera: ocular, marcas de
+     enquadramento, pontos de foco e a barra de informações. */
+  drawViewfinder(ctx, tg, stops) {
+    const f = this.fase;
+    const { dx, dy, dw, dh } = this.vfRect;
+    const l = this.cx - this.cropW / 2, t = this.cy - this.cropH / 2;
+
+    // corpo da câmera (você está com o olho na ocular)
+    ctx.fillStyle = "#07080c";
+    ctx.fillRect(0, 0, VIEW_W, VIEW_H);
+
+    // a cena, recortada pelo quadro do visor
+    ctx.save();
+    ctx.beginPath(); ctx.rect(dx, dy, dw, dh); ctx.clip();
+    ctx.translate(dx, dy);
+    ctx.scale(dw / this.cropW, dh / this.cropH);
+    ctx.translate(-l, -t);
+    f.renderWorld(ctx, 0, 0, true);
+    ctx.restore();
+
+    ctx.save();
+    ctx.beginPath(); ctx.rect(dx, dy, dw, dh); ctx.clip();
+
+    // preview de exposição
+    if (Math.abs(stops) > 0.4) {
+      ctx.fillStyle = stops > 0
+        ? `rgba(255,255,255,${Math.min(0.85, (stops - 0.4) * 0.28)})`
+        : `rgba(0,0,10,${Math.min(0.85, (-stops - 0.4) * 0.28)})`;
+      ctx.fillRect(dx, dy, dw, dh);
     }
+
+    // grade dos terços
+    ctx.strokeStyle = "rgba(244,176,62,.45)";
+    ctx.lineWidth = 1.5;
+    for (let i = 1; i <= 2; i++) {
+      line(ctx, dx + (dw * i) / 3, dy, dx + (dw * i) / 3, dy + dh);
+      line(ctx, dx, dy + (dh * i) / 3, dx + dw, dy + (dh * i) / 3);
+    }
+
+    // pontos de AF (9, como numa reflex de entrada); acende o que cobre o alvo
+    const sc = dw / this.cropW;
+    const inFocus = tg && Math.abs(Math.hypot(tg.cx - f.player.cx, tg.cy - f.player.cy) / TILE - this.settings.focus) <= 1.5;
+    for (let gy = 0; gy < 3; gy++) {
+      for (let gx = 0; gx < 3; gx++) {
+        const px = dx + dw * (gx + 1) / 4, py = dy + dh * (gy + 1) / 4;
+        let on = false;
+        if (tg) {
+          const tx = dx + (tg.cx - l) * sc, ty = dy + (tg.cy - t) * sc;
+          on = Math.abs(tx - px) < dw / 8 && Math.abs(ty - py) < dh / 8;
+        }
+        ctx.strokeStyle = on ? (inFocus ? "#58c08b" : "#e8736b") : "rgba(255,255,255,.35)";
+        ctx.lineWidth = on ? 2 : 1;
+        ctx.strokeRect(px - 9, py - 6, 18, 12);
+      }
+    }
+
+    // vinheta da ocular: o círculo escuro nas quinas denuncia que é um visor
+    const vig = ctx.createRadialGradient(dx + dw / 2, dy + dh / 2, dh * 0.52, dx + dw / 2, dy + dh / 2, dh * 1.02);
+    vig.addColorStop(0, "rgba(0,0,0,0)");
+    vig.addColorStop(1, "rgba(0,0,0,.55)");
+    ctx.fillStyle = vig; ctx.fillRect(dx, dy, dw, dh);
+    ctx.restore();
+
+    // marcas de enquadramento nos cantos
+    ctx.strokeStyle = "#f4b03e"; ctx.lineWidth = 2.5;
+    const m = 18;
+    for (const [cx0, cy0, sx, sy] of [[dx, dy, 1, 1], [dx + dw, dy, -1, 1], [dx, dy + dh, 1, -1], [dx + dw, dy + dh, -1, -1]]) {
+      line(ctx, cx0, cy0, cx0 + sx * m, cy0);
+      line(ctx, cx0, cy0, cx0, cy0 + sy * m);
+    }
+
+    // fotômetro dentro do visor, na barra de baixo (como numa câmera de verdade)
+    if (this.meterLevel > 0) this.drawMeter(ctx, stops, tg, { y: dy + dh - (this.meterLevel === 1 ? 40 : 52) });
+
+    // barra de informações abaixo do quadro
+    const s = this.settings;
+    ctx.save();
+    ctx.textBaseline = "middle";
+    ctx.font = "700 15px Inter, sans-serif";
+    ctx.textAlign = "left";
+    ctx.fillStyle = "#fff";
+    const by = dy + dh + 22;
+    ctx.fillText(`${s.tLabel}`, dx + 6, by);
+    ctx.fillText(`F${s.f}`, dx + 78, by);
+    ctx.fillText(`ISO ${s.iso}`, dx + 146, by);
+    ctx.fillStyle = inFocus ? "#58c08b" : "rgba(255,255,255,.3)";
+    ctx.beginPath(); ctx.arc(dx + 250, by, 5, 0, 7); ctx.fill();
+    ctx.font = "600 11px Inter, sans-serif";
+    ctx.fillStyle = inFocus ? "#58c08b" : "rgba(255,255,255,.35)";
+    ctx.fillText(inFocus ? "foco confirmado" : "sem foco", dx + 262, by + 1);
+    if (s.flash) {
+      ctx.fillStyle = "#f4b03e";
+      ctx.font = "700 15px Inter, sans-serif";
+      ctx.fillText("⚡", dx + dw - 96, by);
+    }
+    ctx.textAlign = "right";
+    ctx.fillStyle = "rgba(255,255,255,.45)";
+    ctx.font = "600 11px Inter, sans-serif";
+    ctx.fillText("V · voltar p/ tela", dx + dw - 6, by + 1);
+    ctx.restore();
   }
 
   /* ---------- fotômetro ----------
      Nível 1 (celular): só diz escuro / ok / claro.
      Nível 2 (semipro): régua −3…+3 EV em pontos inteiros.
      Nível 3 (pro):     régua de 1/3 de ponto, leitura spot no assunto. */
-  drawMeter(ctx, stops, tg) {
+  drawMeter(ctx, stops, tg, opts = {}) {
     const lvl = this.meterLevel;
     const tol = this.fase.level.expTolerance ?? 0.5;
     const ok = Math.abs(stops) <= tol;
     const W = 200, H = lvl === 1 ? 32 : 44;
-    const x = Math.round(VIEW_W / 2 - W / 2), y = 8;
+    const x = opts.x ?? Math.round(VIEW_W / 2 - W / 2);
+    const y = opts.y ?? 8;
 
     ctx.save();
     ctx.textBaseline = "middle";
