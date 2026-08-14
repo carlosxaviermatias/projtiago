@@ -5,9 +5,9 @@
    fica nos pés do personagem (sensação top-down correta).
    ============================================================ */
 
-import { TILE } from "./renderer.js?v=7";
-import { makePerson, makeProp, PEOPLE } from "./sprites.js?v=7";
-import { sfx } from "./audio.js?v=7";
+import { TILE } from "./renderer.js?v=8";
+import { makePerson, makeProp, PEOPLE } from "./sprites.js?v=8";
+import { sfx } from "./audio.js?v=8";
 
 const SPR = TILE; // sprites 16×16 × escala 3 = 48
 

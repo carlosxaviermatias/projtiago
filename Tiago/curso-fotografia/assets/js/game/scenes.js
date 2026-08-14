@@ -4,19 +4,19 @@
    Galeria, Loja e Estatísticas (painéis DOM sobre o canvas).
    ============================================================ */
 
-import { TILE, VIEW_W, VIEW_H, text } from "./renderer.js?v=7";
-import { input } from "./input.js?v=7";
-import { save } from "./save.js?v=7";
-import { TileMap } from "./tilemap.js?v=7";
-import { Player, NPC, Target } from "./entities.js?v=7";
-import { makeProp } from "./sprites.js?v=7";
-import { DialogueScene, toast } from "./dialogue.js?v=7";
-import { QuestLog } from "./quests.js?v=7";
-import { CameraScene } from "./photo.js?v=7";
-import { LEVELS, LEVEL_ORDER } from "./data/levels.js?v=7";
-import { EQUIPMENT, SLOT_NAMES } from "./data/equipment.js?v=7";
-import { UI, ACHIEVEMENTS, CRITERIA_INFO } from "./data/strings.js?v=7";
-import { sfx } from "./audio.js?v=7";
+import { TILE, VIEW_W, VIEW_H, text } from "./renderer.js?v=8";
+import { input } from "./input.js?v=8";
+import { save, slugNome } from "./save.js?v=8";
+import { TileMap } from "./tilemap.js?v=8";
+import { Player, NPC, Target } from "./entities.js?v=8";
+import { makeProp } from "./sprites.js?v=8";
+import { DialogueScene, toast } from "./dialogue.js?v=8";
+import { QuestLog } from "./quests.js?v=8";
+import { CameraScene } from "./photo.js?v=8";
+import { LEVELS, LEVEL_ORDER } from "./data/levels.js?v=8";
+import { EQUIPMENT, SLOT_NAMES } from "./data/equipment.js?v=8";
+import { UI, ACHIEVEMENTS, CRITERIA_INFO } from "./data/strings.js?v=8";
+import { sfx } from "./audio.js?v=8";
 
 /* ============================================================
    MENU INICIAL
@@ -26,7 +26,7 @@ export class MenuScene {
     this.engine = engine;
     this.t = 0;
     const el = engine.dom.panel;
-    const hasSave = save.data.stats.fotos > 0 || save.data.xp > 0;
+    const logado = !!save.slug;
     el.innerHTML = `
       <div class="gq-menu">
         <div class="gq-logo">📷</div>
@@ -34,19 +34,28 @@ export class MenuScene {
         <p class="gq-menu-sub">${UI.subtitle}</p>
         <p class="gq-menu-desc">Explore 20 cenários, converse com mestres, aceite missões e
           fotografe aplicando o que você aprende no curso: exposição, composição, foco e muito mais.</p>
-        <button class="btn btn--primary" id="gqStart">${hasSave ? "▶ Continuar jornada" : "▶ Começar a jornada"}</button>
+        <button class="btn btn--primary" id="gqStart">${logado ? `▶ Continuar como ${save.nome}` : "▶ Entrar e jogar"}</button>
+        ${logado ? `<button class="btn btn--ghost gq-sm" id="gqTrocar">Não sou eu — trocar de aluno</button>` : ""}
         <div class="gq-menu-keys">
           <span><b>WASD/setas</b> andar</span><span><b>E</b> falar</span>
           <span><b>C</b> câmera</span><span><b>ESPAÇO</b> foto</span>
         </div>
       </div>`;
     el.classList.add("open");
-    el.querySelector("#gqStart").onclick = () => { sfx.play("confirm"); engine.reset(new MapScene()); };
+    el.querySelector("#gqStart").onclick = () => {
+      sfx.play("confirm");
+      engine.reset(logado ? new MapScene() : new LoginScene());
+    };
+    el.querySelector("#gqTrocar")?.addEventListener("click", () => {
+      sfx.play("select"); save.sair(); engine.reset(new LoginScene());
+    });
   }
   exit() { this.engine.dom.panel.classList.remove("open"); this.engine.dom.panel.innerHTML = ""; }
   update(dt) {
     this.t += dt;
-    if (input.pressed("A") || input.pressed("SHOOT")) this.engine.reset(new MapScene());
+    // sem aluno escolhido, o atalho de teclado também passa pela entrada
+    if (input.pressed("A") || input.pressed("SHOOT"))
+      this.engine.reset(save.slug ? new MapScene() : new LoginScene());
   }
   draw(ctx) {
     ctx.fillStyle = "#0e0f13";
@@ -59,6 +68,109 @@ export class MenuScene {
       ctx.arc(160 + i * 320, 270 + 80 * Math.sin(this.t * 0.35 + i), 170, 0, 7);
       ctx.fill();
     }
+  }
+}
+
+/* ============================================================
+   ENTRADA DO ALUNO
+   Só o nome, sem senha (decisão do Tiago). Como nome sozinho não
+   distingue quem volta de um xará novo, um nome já existente não é
+   bloqueado: mostramos o progresso encontrado e perguntamos se é
+   ele — bloquear trancaria o dono para fora do próprio save.
+   ============================================================ */
+export class LoginScene {
+  enter(engine) {
+    this.engine = engine;
+    this.confirmando = null;
+    this.render();
+  }
+  exit() { this.engine.dom.panel.classList.remove("open"); this.engine.dom.panel.innerHTML = ""; }
+
+  render() {
+    const el = this.engine.dom.panel;
+    const perfis = save.listarPerfis();
+
+    if (this.confirmando) {
+      const p = this.confirmando;
+      el.innerHTML = `
+        <div class="gq-menu gq-login">
+          <div class="gq-logo">🤔</div>
+          <h2>Esse nome já está em uso</h2>
+          <p class="gq-menu-desc">Já existe um <b>${p.nome}</b> aqui, com
+            <b>nível ${p.nivel}</b> e <b>${p.fotos} foto${p.fotos === 1 ? "" : "s"}</b>.</p>
+          <p class="gq-menu-desc">Se for você, é só continuar. Se for outra pessoa com o mesmo
+            nome, escolha um nome diferente (por exemplo, <b>${p.nome} S.</b>) para não misturar o progresso.</p>
+          <button class="btn btn--primary" id="gqSouEu">Sou eu, continuar</button>
+          <button class="btn btn--ghost gq-sm" id="gqOutro">Usar outro nome</button>
+        </div>`;
+      el.classList.add("open");
+      el.querySelector("#gqSouEu").onclick = () => this.entrar(p.nome, true);
+      el.querySelector("#gqOutro").onclick = () => { this.confirmando = null; sfx.play("select"); this.render(); };
+      return;
+    }
+
+    const lista = perfis.length
+      ? `<div class="gq-login-perfis">
+           <span class="gq-login-label">Já jogou aqui? Toque no seu nome:</span>
+           ${perfis.map((p) => `<button class="gq-login-perfil" data-nome="${p.nome}">
+             <b>${p.nome}</b><small>nível ${p.nivel} · ${p.fotos} foto${p.fotos === 1 ? "" : "s"}</small>
+           </button>`).join("")}
+         </div>`
+      : "";
+
+    el.innerHTML = `
+      <div class="gq-menu gq-login">
+        <div class="gq-logo">📷</div>
+        <h2>Quem vai fotografar?</h2>
+        <p class="gq-menu-desc">Digite seu nome para o jogo guardar seu progresso.
+          Sem senha, sem cadastro — só o nome mesmo.</p>
+        <form class="gq-login-form" id="gqForm">
+          <input id="gqNome" type="text" maxlength="24" autocomplete="off"
+                 placeholder="Seu nome" aria-label="Seu nome">
+          <button class="btn btn--primary" type="submit">Entrar</button>
+        </form>
+        <div class="gq-login-erro" id="gqErro"></div>
+        ${lista}
+      </div>`;
+    el.classList.add("open");
+
+    const form = el.querySelector("#gqForm");
+    form.onsubmit = (e) => { e.preventDefault(); this.tentar(el.querySelector("#gqNome").value); };
+    el.querySelectorAll(".gq-login-perfil").forEach((b) =>
+      b.onclick = () => this.entrar(b.dataset.nome, true));
+    setTimeout(() => el.querySelector("#gqNome")?.focus(), 60);
+  }
+
+  tentar(nome) {
+    const slug = slugNome(nome);
+    const erro = this.engine.dom.panel.querySelector("#gqErro");
+    if (!slug) {
+      sfx.play("deny");
+      if (erro) erro.textContent = "Escreva um nome com pelo menos uma letra ou número.";
+      return;
+    }
+    if (save.perfilExiste(slug)) {
+      const p = save.listarPerfis().find((x) => x.slug === slug);
+      sfx.play("select");
+      this.confirmando = p;
+      this.render();
+      return;
+    }
+    this.entrar(nome);
+  }
+
+  entrar(nome, jaExistia = false) {
+    save.entrar(nome);
+    sfx.play("confirm");
+    if (save.isProf) toast(this.engine, "🎓 <b>Modo professor</b>: todas as fases abertas e moedas infinitas.", 3600);
+    else if (!jaExistia) toast(this.engine, `👋 Boa jornada, <b>${save.nome}</b>!`);
+    this.engine.reset(new MapScene());
+  }
+
+  update() {}
+  draw(ctx) {
+    ctx.fillStyle = "#0e0f13";
+    ctx.fillRect(0, 0, VIEW_W, VIEW_H);
   }
 }
 
@@ -117,16 +229,16 @@ export class MapScene {
       <div class="gq-map">
         <div class="gq-map-head">
           <div class="gq-player-badge">
-            <span class="gq-avatar">🤳</span>
+            <span class="gq-avatar">${save.isProf ? "🎓" : "🤳"}</span>
             <div>
-              <b>Nível ${d.level}</b>
+              <b>${save.nome || "Fotógrafo"} · Nível ${d.level}</b>
               <div class="gq-xpbar"><i style="width:${pct}%"></i></div>
-              <small>${d.xp - prevXP}/${nextXP - prevXP} XP</small>
+              <small>${d.xp - prevXP}/${nextXP - prevXP} XP · <button class="gq-trocar" id="gqTrocaAluno">trocar de aluno</button></small>
             </div>
           </div>
-          <h2>${UI.mapTitle}</h2>
+          <h2>${UI.mapTitle}${save.isProf ? ` <span class="gq-tagprof">modo professor</span>` : ""}</h2>
           <div class="gq-map-actions">
-            <span class="gq-coins">🪙 ${d.coins}</span>
+            <span class="gq-coins">🪙 ${save.coinsLabel}</span>
             <button class="btn btn--ghost gq-sm" id="gqShop">🛒 Loja</button>
             <button class="btn btn--ghost gq-sm" id="gqGallery">🖼️ Fotos</button>
             <button class="btn btn--ghost gq-sm" id="gqStats">📊 Perfil</button>
@@ -137,6 +249,9 @@ export class MapScene {
     el.classList.add("open");
     el.querySelectorAll(".gq-lvcard:not(.locked)").forEach((b) =>
       b.addEventListener("click", () => { sfx.play("confirm"); this.engine.reset(new FaseScene(b.dataset.id)); }));
+    el.querySelector("#gqTrocaAluno").onclick = () => {
+      sfx.play("select"); save.sair(); this.engine.reset(new LoginScene());
+    };
     el.querySelector("#gqShop").onclick = () => { sfx.play("select"); this.engine.push(new ShopScene()); };
     el.querySelector("#gqGallery").onclick = () => { sfx.play("select"); this.engine.push(new GalleryScene()); };
     el.querySelector("#gqStats").onclick = () => { sfx.play("select"); this.engine.push(new StatsScene()); };
@@ -252,7 +367,7 @@ export class FaseScene {
       <div class="gq-hud-top">
         <span class="gq-hud-title">${this.level.emoji} ${this.level.nome}</span>
         <span class="gq-hud-right">
-          <span class="gq-coins">🪙 <b id="gqHudCoins">${save.data.coins}</b></span>
+          <span class="gq-coins">🪙 <b id="gqHudCoins">${save.coinsLabel}</b></span>
           <button class="gq-hud-btn" id="gqHudMap" title="Voltar ao mapa">🗺️</button>
         </span>
       </div>
@@ -280,7 +395,7 @@ export class FaseScene {
     }
     box.innerHTML = html;
     const coins = this.engine.dom.hud.querySelector("#gqHudCoins");
-    if (coins) coins.textContent = save.data.coins;
+    if (coins) coins.textContent = save.coinsLabel;
   }
 
   updateBadges() {
@@ -427,7 +542,7 @@ export class ShopScene {
       let btn;
       if (equipped) btn = `<button class="btn gq-sm" disabled>✔ Equipado</button>`;
       else if (owned) btn = `<button class="btn btn--ghost gq-sm" data-equip="${id}">Equipar</button>`;
-      else btn = `<button class="btn btn--primary gq-sm" data-buy="${id}" ${d.coins < it.price ? "disabled" : ""}>🪙 ${it.price}</button>`;
+      else btn = `<button class="btn btn--primary gq-sm" data-buy="${id}" ${!save.isProf && d.coins < it.price ? "disabled" : ""}>🪙 ${it.price}</button>`;
       return `
         <div class="gq-shop-row ${equipped ? "eq" : ""}">
           <span class="gq-shop-ic">${it.icon}</span>
@@ -439,7 +554,7 @@ export class ShopScene {
     el.innerHTML = `
       <div class="gq-sheet">
         <div class="gq-sheet-head"><h2>${UI.shopTitle}</h2>
-          <span class="gq-coins">🪙 ${d.coins}</span>
+          <span class="gq-coins">🪙 ${save.coinsLabel}</span>
           <button class="gq-close" id="gqBack">✕</button></div>
         <div class="gq-sheet-body">${rows}</div>
       </div>`;
@@ -447,8 +562,7 @@ export class ShopScene {
     el.querySelector("#gqBack").onclick = () => this.engine.pop();
     el.querySelectorAll("[data-buy]").forEach((b) => b.onclick = () => {
       const id = b.dataset.buy, it = EQUIPMENT[id];
-      if (d.coins < it.price) { sfx.play("deny"); return; }
-      d.coins -= it.price;
+      if (!save.gastar(it.price)) { sfx.play("deny"); return; }
       d.equipment.owned.push(id);
       d.equipment.equipped[it.type] = id;
       save.save();

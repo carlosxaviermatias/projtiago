@@ -12,7 +12,7 @@
    canvas que funciona também com o jogo rotacionado.
    ============================================================ */
 
-import { VIEW_W, VIEW_H } from "./renderer.js?v=7";
+import { VIEW_W, VIEW_H } from "./renderer.js?v=8";
 
 export const fs = { active: false, rotated: false, mode: null };
 

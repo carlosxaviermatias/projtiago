@@ -34,6 +34,11 @@ class Input {
   init() {
     addEventListener("keydown", (e) => {
       if (!this.enabled) return;
+      // Digitando num campo (tela de entrada do aluno) o teclado é do campo,
+      // não do jogo — senão letras como A, S, E e G viravam comando e o nome
+      // saía faltando pedaço.
+      const alvo = e.target;
+      if (alvo && (alvo.tagName === "INPUT" || alvo.tagName === "TEXTAREA" || alvo.isContentEditable)) return;
       const a = KEYMAP[e.key];
       if (!a) return;
       // não roubar Tab/setas/espaço da página quando o jogo está ativo
