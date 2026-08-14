@@ -178,6 +178,27 @@
 .gq-crit.ok .gq-crit-mark{ color:var(--ok); } .gq-crit.bad .gq-crit-mark{ color:var(--rose); }
 .gq-result-btns{ display:flex; gap:10px; flex-wrap:wrap; }
 
+/* ---------- entrada do aluno ---------- */
+.gq-login-form{ display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin:4px 0 2px; }
+.gq-login-form input{ background:rgba(14,15,19,.9); border:1px solid var(--line); border-radius:10px;
+  color:#fff; padding:10px 14px; font-size:1rem; font-family:inherit; min-width:220px; text-align:center; }
+.gq-login-form input:focus{ outline:none; border-color:var(--accent); box-shadow:0 0 0 2px rgba(244,176,62,.25); }
+.gq-login-erro{ color:var(--rose); font-size:.78rem; min-height:1.1em; }
+.gq-login-perfis{ display:flex; flex-direction:column; gap:6px; align-items:center; margin-top:14px;
+  padding-top:14px; border-top:1px solid var(--line); width:100%; max-width:420px; }
+.gq-login-label{ color:var(--text-mute); font-size:.74rem; }
+.gq-login-perfil{ background:rgba(14,15,19,.9); border:1px solid var(--line); border-radius:10px;
+  color:var(--text-soft); padding:7px 16px; cursor:pointer; min-width:200px;
+  display:flex; align-items:baseline; justify-content:center; gap:8px; font-family:inherit; }
+.gq-login-perfil:hover{ border-color:var(--accent); }
+.gq-login-perfil b{ color:#fff; font-size:.9rem; }
+.gq-login-perfil small{ color:var(--text-mute); font-size:.68rem; }
+.gq-trocar{ background:none; border:none; padding:0; color:var(--info); font:inherit;
+  font-size:.7rem; text-decoration:underline; cursor:pointer; }
+.gq-tagprof{ background:var(--accent); color:#14161f; font-size:.6rem; font-weight:800;
+  text-transform:uppercase; letter-spacing:.06em; padding:2px 8px; border-radius:20px;
+  vertical-align:middle; }
+
 /* ---------- modo câmera (chips) ---------- */
 #gameCamUI{ pointer-events:none; }
 .gq-cam-row{ position:absolute; left:50%; bottom:34px; transform:translateX(-50%);

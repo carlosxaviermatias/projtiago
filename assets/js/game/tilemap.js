@@ -5,8 +5,8 @@
    (rápido em celular); colisão é AABB contra a grade `solid`.
    ============================================================ */
 
-import { TILE } from "./renderer.js?v=7";
-import { bakeAllTiles } from "./sprites.js?v=7";
+import { TILE } from "./renderer.js?v=8";
+import { bakeAllTiles } from "./sprites.js?v=8";
 
 let tileImgs = null;
 

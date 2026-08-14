@@ -8,14 +8,14 @@
      0 = perfeita · >0 clara · <0 escura
    ============================================================ */
 
-import { TILE, VIEW_W, VIEW_H } from "./renderer.js?v=7";
-import { input } from "./input.js?v=7";
-import { save } from "./save.js?v=7";
-import { combinedCaps, EQUIPMENT } from "./data/equipment.js?v=7";
-import { CRITERIA_INFO, STARS } from "./data/strings.js?v=7";
-import { toast } from "./dialogue.js?v=7";
-import { canvasPoint } from "./fullscreen.js?v=7";
-import { sfx } from "./audio.js?v=7";
+import { TILE, VIEW_W, VIEW_H } from "./renderer.js?v=8";
+import { input } from "./input.js?v=8";
+import { save } from "./save.js?v=8";
+import { combinedCaps, EQUIPMENT } from "./data/equipment.js?v=8";
+import { CRITERIA_INFO, STARS } from "./data/strings.js?v=8";
+import { toast } from "./dialogue.js?v=8";
+import { canvasPoint } from "./fullscreen.js?v=8";
+import { sfx } from "./audio.js?v=8";
 
 /* ---------- valores discretos dos controles ---------- */
 export const ISOS = [100, 200, 400, 800, 1600, 3200, 6400];
