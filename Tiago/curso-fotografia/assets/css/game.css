@@ -4,6 +4,23 @@
    Prefixo .gq- para não colidir com o resto do site.
    ============================================================ */
 
+/* ---------- tema ----------
+   O jogo herda as variáveis do site, mas boa parte da UI dele tem cor fixa
+   escura (#fff no texto, painéis quase pretos). Com o site no tema CLARO isso
+   virava texto branco sobre cartão bege — ilegível. Como a arte do jogo é
+   escura de qualquer forma, o jogo fica sempre no escuro: redeclaramos as
+   variáveis dentro do shell, e tudo que já usa var(--…) acompanha. */
+#gameShell{
+  --bg:#0e0f13; --bg-2:#15171d; --surface:#1a1d25; --surface-2:#21242e;
+  --line:#2c303b; --line-soft:#23262f;
+  --text:#eef0f4; --text-soft:#b9bfca; --text-mute:#868d9a;
+  --accent:#f4b03e; --accent-2:#ffd17a; --accent-deep:#c9871f;
+  --teal:#5ec8c0; --rose:#e8736b;
+  --ok:#58c08b; --warn:#f0a23a; --info:#5aa6e8; --tip:#6fcf97;
+  --shadow:0 18px 50px -22px rgba(0,0,0,.7);
+  color:var(--text);
+}
+
 /* ---------- shell / canvas ---------- */
 #gameShell{
   position:relative; max-width:960px; margin:0 auto;
@@ -108,14 +125,32 @@
 .gq-lv-foot{ margin-top:auto; padding-top:5px; color:var(--text-soft); font-size:.66rem; }
 
 /* sheets (loja/galeria/stats) */
+/* A folha nunca pode passar da altura disponível: se passar, sobram DOIS
+   contêineres rolando (o painel e a lista dentro dele) e o gesto vai para um
+   ou para outro conforme onde o dedo cai — dava a impressão de que a loja
+   "às vezes não rola". Agora o cabeçalho fica fixo e só o corpo rola. */
 .gq-sheet{ max-width:640px; margin:14px auto; background:rgba(14,15,19,.97);
-  border:1px solid var(--line); border-radius:14px; overflow:hidden; }
+  border:1px solid var(--line); border-radius:14px; overflow:hidden;
+  display:flex; flex-direction:column; max-height:calc(100% - 28px); }
 .gq-sheet-head{ display:flex; align-items:center; gap:12px; padding:12px 16px;
   border-bottom:1px solid var(--line-soft); }
 .gq-sheet-head h2{ font-family:var(--serif); color:#fff; font-size:1.25rem; margin:0; flex:1; }
 .gq-close{ background:var(--surface-2); border:1px solid var(--line); color:#fff;
   border-radius:8px; padding:4px 11px; cursor:pointer; font-size:.95rem; }
-.gq-sheet-body{ padding:14px 16px 18px; max-height:380px; overflow-y:auto; }
+.gq-sheet-body{ padding:14px 16px 18px; flex:1; min-height:0; overflow-y:auto;
+  -webkit-overflow-scrolling:touch; overscroll-behavior:contain; }
+
+/* No celular em pé o shell tem uns 190px de altura (16:9 de 355px de largura),
+   e uma folha presa a ele mostraria três dedos de lista. Loja, galeria e perfil
+   passam a cobrir a tela — continuam com uma rolagem só. */
+@media (max-width:760px){
+  /* A animação de entrada da página (.reveal) deixa um transform no shell, e
+     transform em ancestral PRENDE position:fixed dentro dele — a folha voltava
+     a caber nos 190px. Enquanto ela está aberta, soltamos o shell. */
+  #gameShell:has(.gq-sheet){ transform:none; overflow:visible; }
+  #gamePanel:has(.gq-sheet){ position:fixed; inset:0; z-index:130; background:rgba(6,7,11,.95); }
+  .gq-sheet{ margin:10px auto; max-height:calc(100% - 20px); }
+}
 .gq-sheet-body h3{ font-family:var(--serif); color:#fff; font-size:1rem; margin:1.2em 0 .5em; }
 .gq-empty{ color:var(--text-mute); text-align:center; padding:20px 0; }
 
