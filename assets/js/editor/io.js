@@ -8,10 +8,10 @@
    pronta, no tamanho real.
    ============================================================ */
 
-import { state, newDoc, makeLayer, clearHistory, emit } from './state.js?v=2';
-import { addImage, getImage, loadFromFile, loadFromURL, ensureDataURL, restoreImage } from './assets.js?v=2';
-import { isRawFile } from './raw.js?v=2';
-import { renderResult, resultSize, invalidateAll } from './render.js?v=2';
+import { state, newDoc, makeLayer, clearHistory, emit } from './state.js?v=3';
+import { addImage, getImage, loadFromFile, loadFromURL, ensureDataURL, restoreImage } from './assets.js?v=3';
+import { isRawFile } from './raw.js?v=3';
+import { renderResult, resultSize, invalidateAll } from './render.js?v=3';
 
 export const SAMPLES = [
   { file: 'assets/img/deco/hora-dourada.jpg', name: 'Hora dourada', hint: 'Trabalhe a temperatura e a vinheta.' },
@@ -22,7 +22,12 @@ export const SAMPLES = [
   { file: 'assets/img/tecnica/profundidade-bokeh.jpg', name: 'Bokeh', hint: 'Desfoque e separação do fundo.' },
   { file: 'assets/img/tecnica/estudio-softbox.jpg', name: 'Estúdio', hint: 'Luz controlada: ajuste fino.' },
   { file: 'assets/img/segmentos/produtos.jpg', name: 'Produto', hint: 'Fundo limpo e nitidez.' },
-  { file: 'assets/img/obras/lange-mae-migrante.jpg', name: 'Mãe Migrante (Lange)', hint: 'Domínio público. Clarear/queimar como no laboratório.' }
+  { file: 'assets/img/obras/lange-mae-migrante.jpg', name: 'Mãe Migrante (Lange)', hint: 'Domínio público. Clarear/queimar como no laboratório.' },
+  {
+    file: 'assets/img/raw/DSC_0146.NEF', name: 'Arquivo RAW (NEF)', raw: true,
+    thumb: 'assets/img/raw/DSC_0146-thumb.jpg', peso: '17 MB',
+    hint: 'Foto original do professor, direto da Nikon D5300 — sem passar por JPG. Abre a prévia de 6000×4000 que está dentro do arquivo. Baixe no Wi-Fi.'
+  }
 ];
 
 export function docFromImage(assetId, name) {
@@ -43,8 +48,20 @@ export async function openFileAsDocument(file) {
   return r;                       // traz `raw` para a interface explicar o caso RAW
 }
 export async function openSample(sample) {
+  if (sample.raw) {
+    // RAW não pode ir por <img>: o navegador não decodifica. Baixamos os bytes
+    // e usamos o mesmo caminho de um arquivo escolhido pelo aluno, que procura
+    // a maior prévia embutida.
+    const resp = await fetch(sample.file);
+    if (!resp.ok) throw new Error('Não consegui baixar o arquivo de exemplo.');
+    const blob = await resp.blob();
+    const info = await loadFromFile(new File([blob], sample.file.split('/').pop(), { type: '' }));
+    docFromImage(info.id, sample.name);
+    return info;
+  }
   const { id } = await loadFromURL(sample.file, sample.name);
-  return docFromImage(id);
+  docFromImage(id);
+  return { id, raw: null };
 }
 export async function addFileAsLayer(file) {
   const r = await loadFromFile(file);

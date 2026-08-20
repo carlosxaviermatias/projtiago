@@ -5,7 +5,7 @@
    (JSON) no histórico e no salvamento automático.
    ============================================================ */
 
-import { isRawFile, largestPreview } from './raw.js?v=2';
+import { isRawFile, largestPreview } from './raw.js?v=3';
 
 const registry = new Map();
 let seq = 1;
