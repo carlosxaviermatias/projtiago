@@ -19,6 +19,10 @@
 # O .nef entra no cache longo: o exemplo em RAW tem 17 MB e nunca muda —
 # sem isso o aluno baixaria tudo de novo a cada visita.
 #
+# ⚠️ O (?i) NÃO é enfeite: FilesMatch diferencia maiúsculas, e a câmera grava
+# "DSC_0146.NEF" com a extensão em caixa alta — sem ele a regra não pega o
+# arquivo (nem pegaria uma foto .JPG vinda de outra câmera).
+#
 # ⚠️ Ao mexer em CSS/JS, INCREMENTAR o ?v=N (regra já do projeto).
 # Com o cache longo abaixo, esquecer disso deixa o aluno com o
 # arquivo velho por até 30 dias.
@@ -31,7 +35,7 @@
   </FilesMatch>
 
   # assets versionados: podem ficar guardados
-  <FilesMatch "\.(css|js|mjs|woff2?|ttf|jpe?g|png|gif|svg|webp|ico|nef)$">
+  <FilesMatch "(?i)\.(css|js|mjs|woff2?|ttf|jpe?g|png|gif|svg|webp|ico|nef)$">
     Header set Cache-Control "public, max-age=2592000"
   </FilesMatch>
 </IfModule>
