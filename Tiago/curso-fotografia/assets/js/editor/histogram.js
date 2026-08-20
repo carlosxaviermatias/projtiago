@@ -5,7 +5,7 @@
    a luminância, e acende os avisos de recorte nas pontas.
    ============================================================ */
 
-import { histogram } from './pipeline.js?v=1';
+import { histogram } from './pipeline.js?v=2';
 
 export function drawHistogram(canvas, imgData) {
   const ctx = canvas.getContext('2d');

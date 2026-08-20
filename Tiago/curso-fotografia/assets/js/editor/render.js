@@ -7,9 +7,9 @@
    escala não muda o resultado: o que o aluno vê é o que ele salva.
    ============================================================ */
 
-import { state, ADJ_DEFAULTS } from './state.js?v=1';
-import { getImage } from './assets.js?v=1';
-import { applyAdjustments, isNeutral } from './pipeline.js?v=1';
+import { state, ADJ_DEFAULTS } from './state.js?v=2';
+import { getImage } from './assets.js?v=2';
+import { applyAdjustments, isNeutral } from './pipeline.js?v=2';
 
 const cache = new WeakMap();       // camada → {key, canvas}
 let stampCache = { key: '', canvas: null };

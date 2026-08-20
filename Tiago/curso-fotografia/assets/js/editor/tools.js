@@ -7,9 +7,9 @@
    dar zoom — e saem no tamanho real na exportação.
    ============================================================ */
 
-import { state, activeLayer, beginChange, endChange, touch, emit } from './state.js?v=1';
-import * as vp from './viewport.js?v=1';
-import { docGeometry } from './render.js?v=1';
+import { state, activeLayer, beginChange, endChange, touch, emit } from './state.js?v=2';
+import * as vp from './viewport.js?v=2';
+import { docGeometry } from './render.js?v=2';
 
 const PAINT = { brush: 1, eraser: 1, dodge: 1, burn: 1 };
 let dragging = null;

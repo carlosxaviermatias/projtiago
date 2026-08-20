@@ -4,12 +4,12 @@
    tela cheia e o salvamento automático da sessão.
    ============================================================ */
 
-import { state, onChange, emit, undo, redo, pushHistory, activeLayer, ADJ_DEFAULTS, newCurve, touch } from './state.js?v=1';
-import * as vp from './viewport.js?v=1';
-import * as tools from './tools.js?v=1';
-import * as ui from './ui.js?v=1';
-import * as io from './io.js?v=1';
-import { invalidateAll } from './render.js?v=1';
+import { state, onChange, emit, undo, redo, pushHistory, activeLayer, ADJ_DEFAULTS, newCurve, touch } from './state.js?v=2';
+import * as vp from './viewport.js?v=2';
+import * as tools from './tools.js?v=2';
+import * as ui from './ui.js?v=2';
+import * as io from './io.js?v=2';
+import { invalidateAll } from './render.js?v=2';
 
 const $ = s => document.querySelector(s);
 
@@ -23,6 +23,19 @@ const app = {
   addImageLayer() { pickFiles(files => addLayers(files)); }
 };
 
+/* Devolve o controle ao navegador para ele desenhar antes de uma tarefa longa.
+   Só com requestAnimationFrame não serve: em aba de segundo plano ele NUNCA
+   dispara e a abertura do arquivo ficaria esperando para sempre. Daí a corrida
+   com um setTimeout curto. */
+function nextPaint(maxWait = 150) {
+  return new Promise(resolve => {
+    let done = false;
+    const fin = () => { if (!done) { done = true; resolve(); } };
+    requestAnimationFrame(() => requestAnimationFrame(fin));
+    setTimeout(fin, maxWait);
+  });
+}
+
 /* ---------- avisos ---------- */
 let toastTimer = 0;
 function notify(msg, ms = 4200) {
@@ -34,20 +47,30 @@ function notify(msg, ms = 4200) {
 }
 
 /* ---------- abertura de arquivos ---------- */
+const RAW_ACCEPT = '.nef,.nrw,.cr2,.cr3,.crw,.arw,.srf,.sr2,.raf,.rw2,.orf,.pef,.dng,.rwl,.srw,.3fr,.x3f,.iiq,.mrw,.kdc,.dcr';
 function pickFiles(cb, multiple) {
   const i = document.createElement('input');
   i.type = 'file';
-  i.accept = 'image/*';
+  // só "image/*" esconde os RAW no seletor de arquivos: o sistema não
+  // classifica NEF/CR2 como imagem, então listamos as extensões também
+  i.accept = 'image/*,' + RAW_ACCEPT;
   if (multiple) i.multiple = true;
   i.addEventListener('change', () => { if (i.files && i.files.length) cb([...i.files]); });
   i.click();
 }
 async function openFiles(files) {
   try {
-    await io.openFileAsDocument(files[0]);
+    if (io.looksRaw(files[0])) {
+      // procurar a prévia dentro de um RAW de 30 MB segura a página por um
+      // instante: avisa e devolve o controle ao navegador antes de começar
+      notify('Lendo o arquivo RAW… (procurando a maior prévia da câmera)', 12000);
+      await nextPaint();
+    }
+    const info = await io.openFileAsDocument(files[0]);
     afterOpen();
     if (files.length > 1) { for (const f of files.slice(1)) await io.addFileAsLayer(f); emit(); }
-  } catch (e) { notify('⚠️ ' + e.message, 6000); }
+    notify(io.openReport(info, files[0].name), info.raw ? 9000 : 3500);
+  } catch (e) { notify('⚠️ ' + e.message, 8000); }
 }
 async function addLayers(files) {
   try {
@@ -101,7 +124,7 @@ function buildExport() {
     // a revelação em tamanho real trava a página por alguns segundos numa foto
     // de 12 MP; sem devolver o controle ao navegador aqui, o próprio "Gerando…"
     // não chega a ser desenhado e parece que o botão não fez nada
-    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+    await nextPaint();
     try {
       const { blob, w, h } = await io.exportBlob({ type, quality: q, maxSide });
       const ext = type === 'image/png' ? 'png' : type === 'image/webp' ? 'webp' : 'jpg';
@@ -240,8 +263,14 @@ function boot() {
   ['dragenter', 'dragover'].forEach(ev => stage.addEventListener(ev, e => { e.preventDefault(); stage.classList.add('drop'); }));
   ['dragleave', 'drop'].forEach(ev => stage.addEventListener(ev, e => { e.preventDefault(); stage.classList.remove('drop'); }));
   stage.addEventListener('drop', e => {
-    const files = [...(e.dataTransfer.files || [])].filter(f => f.type.startsWith('image/'));
-    if (!files.length) return;
+    // arquivo RAW costuma chegar com tipo VAZIO — filtrar só por "image/"
+    // fazia o NEF arrastado sumir sem nenhuma mensagem
+    const all = [...(e.dataTransfer.files || [])];
+    const files = all.filter(f => (f.type || '').startsWith('image/') || io.looksRaw(f));
+    if (!files.length) {
+      if (all.length) notify('⚠️ “' + all[0].name + '” não é um arquivo de imagem que eu consiga abrir.', 6000);
+      return;
+    }
     state.doc ? addLayers(files) : openFiles(files);
   });
 

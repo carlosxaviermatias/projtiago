@@ -5,8 +5,8 @@
    cursor do pincel. Também converte tela ⇄ imagem.
    ============================================================ */
 
-import { state, emit } from './state.js?v=1';
-import { renderResult, docGeometry } from './render.js?v=1';
+import { state, emit } from './state.js?v=2';
+import { renderResult, docGeometry } from './render.js?v=2';
 
 let canvas = null, ctx = null, host = null;
 let dpr = 1, pending = false, interactiveUntil = 0;

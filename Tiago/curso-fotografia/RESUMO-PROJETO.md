@@ -118,9 +118,27 @@ o editor foi escrito do zero no padrão do projeto.
   escondida enquanto se arrasta um controle.
 - **A interface é sempre escura** (paleta redeclarada em `#flApp`, como no jogo): parede clara em
   volta engana o olho ao julgar brilho e cor.
-- **RAW não abre** (CR2/NEF/ARW): navegador não decodifica. A mensagem da tela inicial já avisa.
+- **RAW (NEF/CR2/ARW…) — `assets/js/editor/raw.js`.** Navegador nenhum revela o negativo digital.
+  O que existe pronto dentro do arquivo são as **prévias JPEG da câmera** — e quando o sistema
+  "abre" um NEF, costuma entregar a MENOR delas (daí o Tiago ver "baixa resolução"). O FotoLab
+  varre os bytes procurando todos os trechos `FFD8FF…FFD9`, testa os maiores e usa a **maior prévia
+  legível**, dizendo no aviso qual resolução conseguiu (e sugerindo exportar JPG/TIFF se a prévia
+  for pequena). Os dados do sensor do Nikon também começam com `FFD8` (JPEG sem perdas): esse
+  candidato falha ao carregar e é ignorado sozinho.
+  - Varredura de 4 em 4 bytes (`Uint32Array` + truque do "tem byte 0xFF nesta palavra"): NEF de
+    28 MB abre em ~0,9 s (era ~9 s byte a byte + data URL).
+  - **Nada de `readAsDataURL` para abrir**: virar base64 um arquivo de 28 MB custa segundos e o
+    dobro de memória. Usar `URL.createObjectURL`; o data URL só é gerado ao salvar o projeto.
+  - ⚠️ **RAW chega com `file.type` VAZIO**: o filtro `type.startsWith('image/')` do arrastar-e-soltar
+    engolia o NEF sem mensagem nenhuma, e `accept="image/*"` escondia os RAW no seletor. Os dois
+    passaram a considerar a EXTENSÃO.
+- **`nextPaint()` em vez de `requestAnimationFrame` puro** antes de tarefas longas (ler RAW,
+  exportar): em aba de segundo plano o rAF nunca dispara e a abertura ficaria esperando para sempre.
 
 ### Testado ao vivo (Chrome, 2026-08-19)
+RAW: NEF sintético de 28 MB com miniatura 160×120 + prévia 6000×4000 → escolheu a grande em 0,9 s;
+NEF só com prévia 320×212 → abriu e sugeriu exportar JPG; arquivo sem prévia legível → mensagem
+explicando o que fazer; NEF arrastado (tipo vazio) → abriu com o aviso.
 Abrir exemplo · ajustes (exposição/saturação medidas em pixel) · corte e nivelamento (0 pixel
 transparente sobrando) · giro 90° (dimensões trocam) · pincel, borracha e clarear (42,8 → 99 de
 brilho) · texto (59 px de altura para fonte 61) · camadas com mesclagem e opacidade · desfazer/refazer ·

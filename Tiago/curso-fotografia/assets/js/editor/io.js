@@ -8,9 +8,10 @@
    pronta, no tamanho real.
    ============================================================ */
 
-import { state, newDoc, makeLayer, clearHistory, emit } from './state.js?v=1';
-import { addImage, getImage, loadFromFile, loadFromURL, ensureDataURL, restoreImage } from './assets.js?v=1';
-import { renderResult, resultSize, invalidateAll } from './render.js?v=1';
+import { state, newDoc, makeLayer, clearHistory, emit } from './state.js?v=2';
+import { addImage, getImage, loadFromFile, loadFromURL, ensureDataURL, restoreImage } from './assets.js?v=2';
+import { isRawFile } from './raw.js?v=2';
+import { renderResult, resultSize, invalidateAll } from './render.js?v=2';
 
 export const SAMPLES = [
   { file: 'assets/img/deco/hora-dourada.jpg', name: 'Hora dourada', hint: 'Trabalhe a temperatura e a vinheta.' },
@@ -37,15 +38,17 @@ export function docFromImage(assetId, name) {
 }
 
 export async function openFileAsDocument(file) {
-  const { id } = await loadFromFile(file);
-  return docFromImage(id);
+  const r = await loadFromFile(file);
+  docFromImage(r.id);
+  return r;                       // traz `raw` para a interface explicar o caso RAW
 }
 export async function openSample(sample) {
   const { id } = await loadFromURL(sample.file, sample.name);
   return docFromImage(id);
 }
 export async function addFileAsLayer(file) {
-  const { id, img } = await loadFromFile(file);
+  const r = await loadFromFile(file);
+  const id = r.id;
   const a = getImage(id);
   // encaixa a nova imagem dentro do documento em vez de deixá-la estourando a tela
   const s = Math.min(1, state.doc.w / a.w, state.doc.h / a.h);
@@ -56,6 +59,23 @@ export async function addFileAsLayer(file) {
   state.doc.layers.push(layer);
   state.activeId = layer.id;
   return layer;
+}
+
+export function looksRaw(file) { return isRawFile(file); }
+
+/** Frase para o aluno entender o que veio do arquivo (e por que). */
+export function openReport(info, name) {
+  const a = getImage(info.id);
+  if (!info.raw) return 'Foto aberta: <b>' + a.w + ' × ' + a.h + ' px</b>.';
+  if (!info.raw.previews) {
+    return '⚠️ <b>RAW</b>: o navegador não revela o negativo digital — abriu a prévia de <b>' +
+      a.w + ' × ' + a.h + ' px</b> que veio no arquivo.';
+  }
+  const pequena = Math.max(a.w, a.h) < 1600;
+  return '<b>RAW</b> ' + (name ? '(' + name.split('.').pop().toUpperCase() + ') ' : '') +
+    '— o navegador não revela o negativo digital, então usei a <b>maior prévia embutida</b> da câmera: <b>' +
+    a.w + ' × ' + a.h + ' px</b>.' +
+    (pequena ? ' Sua câmera grava prévia pequena: para editar em alta resolução, exporte um JPG ou TIFF pelo programa da câmera.' : '');
 }
 
 /* ---------- exportar imagem ---------- */
