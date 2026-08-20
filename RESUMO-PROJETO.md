@@ -15,16 +15,18 @@ alunos estudarem em casa, mais recursos interativos e um jogo educacional.
 **Design:** tema escuro, accent âmbar `#f4b03e` (hora dourada), fontes Fraunces (títulos) + Inter.
 Variáveis e componentes em `assets/css/style.css`; comportamento em `assets/js/main.js` (IIFE).
 
-## 2. Páginas (9)
+## 2. Páginas (11)
 - `index.html` — home
 - `modulo-1-introducao.html` … `modulo-5-projeto.html` — os 5 módulos com teoria, diagramas SVG,
   imagens de mestres, vídeos e **Atividade prática** ao fim de cada um.
 - `mestres.html` — galeria de fotógrafos + obras em domínio público.
 - `glossario.html` — dicionário de termos com busca.
-- `jogo.html` — **FotoQuest**, o jogo (ver seção 4).
+- `jogo.html` — **FotoQuest**, o jogo (ver seção 4) · `jogo3d.html` — Safári 3D.
+- `editor.html` — **FotoLab**, o editor de imagens (ver seção 4b).
 
 ## 3. Recursos interativos já construídos
-- **Editor de imagem ao vivo** (Módulo 3): sliders de brilho/contraste/saturação/temperatura via CSS filters.
+- **Editor de imagem ao vivo** (Módulo 3): sliders de brilho/contraste/saturação/temperatura via CSS filters
+  (amostra; o editor completo é o **FotoLab**, em `editor.html` — ver seção 4b).
 - **Simuladores** no Módulo 1 (obturador, lentes, sensor) e **quiz** do Módulo 1.
 - **Cards de segmento clicáveis** (Módulo 4): abrem foto de exemplo no lightbox.
 - **Atividades práticas** por módulo, contextualizadas à sala real (janelas grandes + 2 softboxes).
@@ -69,6 +71,82 @@ RPG 2D educacional em **Canvas 2D vanilla + ES modules** (sem libs, sem build), 
   caractere fora da legenda, fase sem saída, missão apontando para alvo inexistente e afins — erros que
   só apareceriam jogando. (Ficava no scratchpad e se perdeu uma vez; agora mora no repositório.)
 - ⚠️ `tools/` é de desenvolvimento: manter fora do site com `--exclude 'tools'` no rsync do deploy.
+
+## 4b. FotoLab — o editor de imagens (2026-08-19)
+Editor estilo Photoshop 100% no navegador, em **Canvas 2D + ES modules** (sem libs, sem build, nada
+sai do aparelho do aluno). `editor.html` + `assets/css/editor.css` + `assets/js/editor/` (13 módulos).
+
+**Pedido do Tiago era "copiar o código do unique01082/lightdrift-libraw"** — mas aquele repositório é
+um *addon nativo de Node* (C++/LibRaw + Sharp) que decodifica RAW no SERVIDOR: não tem interface, não
+roda em navegador e exige compilação (node-gyp). Não havia nada aproveitável para um site estático;
+o editor foi escrito do zero no padrão do projeto.
+
+### O que faz
+- **Camadas** (imagem, pintura, texto), com opacidade e 15 modos de mesclagem.
+- **Ajustes por camada**: exposição, contraste, altas luzes, sombras, brancos, pretos, temperatura,
+  matiz, saturação, intensidade, textura, nitidez, desfoque, grão, vinheta, P&B com filtro colorido
+  (vermelho/laranja/amarelo/verde/azul) e viragem (sépia/frio).
+- **Curvas** (RGB + R/G/B) com spline monotônica, **histograma ao vivo** com aviso de recorte.
+- **Corte** com proporções, grade dos terços, giro de 90° e **nivelamento** (que já recorta os cantos
+  vazios sozinho, como o Lightroom).
+- **Ferramentas**: mover, cortar, pincel, borracha, **clarear e queimar** (dodge/burn do laboratório),
+  texto e navegar. Atalhos V/C/B/E/D/Q/T, ESPAÇO navega, `\` compara com o antes, Ctrl+Z/Ctrl+Shift+Z.
+- **Predefinições** (10 "filtros" que são só receitas de ajuste — o aluno abre e vê o que mudou).
+- **Exportar** JPG/PNG/WebP com qualidade e tamanho (padrão 2048 px) e **projeto .fotolab** (JSON com
+  camadas + imagens em base64 — o papel do .psd). Sessão anterior guardada em IndexedDB.
+
+### Decisões que não dá para deduzir do código
+- **Documento 100% não destrutivo**: as pinceladas são guardadas em VETOR (lista de pontos em
+  coordenadas da imagem original) e os ajustes são funções. Por isso a mesma função desenha a
+  pré-visualização pequena e a exportação em tamanho real — *o que o aluno vê é o que ele salva* —
+  e desfazer é só restaurar um instantâneo JSON.
+- **`pushHistory` NÃO dispara `emit()`.** Disparava, e o refresh reescrevia `<select>`/`<input>` com o
+  valor antigo ANTES do manipulador ler `e.target.value` — a mudança "não pegava" (aconteceu com o
+  modo de mesclagem e com o texto). Quem altera é que chama `emit()` no fim.
+- **`ctx.font` não resolve `var(--…)`**: com uma variável CSS na família, a atribuição inteira é
+  ignorada e o texto sai em 10px. Camada de texto guarda a família literal.
+- **Ferramenta corte sem recorte definido**: arrastar dentro da moldura tem de DESENHAR um recorte
+  novo; tratar como "mover" só esbarrava nos limites e parecia travado.
+- **Desempenho**: desfoque via `ctx.filter` do navegador (com teste de suporte e queda para desfoque
+  de caixa em JS) e só em imagem grande — em imagem pequena as idas e vindas de pixel custam mais.
+  Textura e nitidez saem na MESMA varredura; grão usa mosaico de ruído pronto; vinheta usa tabela por
+  distância². Exportar 12 MP: ~21 s antes, ~8 s depois — daí o padrão de exportação ser 2048 px.
+- **Área com 0 px**: se o `fit()` roda antes de a área ter tamanho, o zoom fica negativo e a foto some.
+  O `resize()` refaz o encaixe quando a área ganha tamanho (e sempre que ela muda, se ainda estava
+  encaixada — é o que faz a gaveta do celular funcionar).
+- **Celular**: os painéis viram **gaveta de baixo** (não lateral), senão a foto ficaria totalmente
+  escondida enquanto se arrasta um controle.
+- **A interface é sempre escura** (paleta redeclarada em `#flApp`, como no jogo): parede clara em
+  volta engana o olho ao julgar brilho e cor.
+- **RAW (NEF/CR2/ARW…) — `assets/js/editor/raw.js`.** Navegador nenhum revela o negativo digital.
+  O que existe pronto dentro do arquivo são as **prévias JPEG da câmera** — e quando o sistema
+  "abre" um NEF, costuma entregar a MENOR delas (daí o Tiago ver "baixa resolução"). O FotoLab
+  varre os bytes procurando todos os trechos `FFD8FF…FFD9`, testa os maiores e usa a **maior prévia
+  legível**, dizendo no aviso qual resolução conseguiu (e sugerindo exportar JPG/TIFF se a prévia
+  for pequena). Os dados do sensor do Nikon também começam com `FFD8` (JPEG sem perdas): esse
+  candidato falha ao carregar e é ignorado sozinho.
+  - Varredura de 4 em 4 bytes (`Uint32Array` + truque do "tem byte 0xFF nesta palavra"): NEF de
+    28 MB abre em ~0,9 s (era ~9 s byte a byte + data URL).
+  - **Nada de `readAsDataURL` para abrir**: virar base64 um arquivo de 28 MB custa segundos e o
+    dobro de memória. Usar `URL.createObjectURL`; o data URL só é gerado ao salvar o projeto.
+  - ⚠️ **RAW chega com `file.type` VAZIO**: o filtro `type.startsWith('image/')` do arrastar-e-soltar
+    engolia o NEF sem mensagem nenhuma, e `accept="image/*"` escondia os RAW no seletor. Os dois
+    passaram a considerar a EXTENSÃO.
+- **`nextPaint()` em vez de `requestAnimationFrame` puro** antes de tarefas longas (ler RAW,
+  exportar): em aba de segundo plano o rAF nunca dispara e a abertura ficaria esperando para sempre.
+
+### Testado ao vivo (Chrome, 2026-08-19)
+RAW: NEF sintético de 28 MB com miniatura 160×120 + prévia 6000×4000 → escolheu a grande em 0,9 s;
+NEF só com prévia 320×212 → abriu e sugeriu exportar JPG; arquivo sem prévia legível → mensagem
+explicando o que fazer; NEF arrastado (tipo vazio) → abriu com o aviso.
+Abrir exemplo · ajustes (exposição/saturação medidas em pixel) · corte e nivelamento (0 pixel
+transparente sobrando) · giro 90° (dimensões trocam) · pincel, borracha e clarear (42,8 → 99 de
+brilho) · texto (59 px de altura para fonte 61) · camadas com mesclagem e opacidade · desfazer/refazer ·
+projeto .fotolab ida e volta (135,46 → 135,50 de média) · exportação em tamanho real bate com a
+pré-visualização (135,96) · celular 375×812. Zero erros de console.
+⚠️ **Armadilha de teste** (a mesma do jogo): com a aba em segundo plano o `requestAnimationFrame`
+congela e o `innerWidth` chega a 0 — medir pixel do canvas sem tirar um screenshot antes dá valor
+velho e faz parecer que a mudança não funcionou.
 
 ## 5. Deploy (IMPORTANTE)
 - Hostinger, plano Business (mesma conta do `jonatan.tiagotavares.online` — **não afetar o Jonatan**).

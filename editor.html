@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>FotoLab · Editor de imagens — Curso Fotografia com Smartphone</title>
+<meta name="description" content="FotoLab: editor de fotos no estilo Photoshop, direto no navegador. Camadas, curvas, histograma, corte, pincel, clarear/queimar e exportação — para praticar o Módulo 3 do curso.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css?v=6">
+<link rel="stylesheet" href="assets/css/editor.css?v=2">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='21' fill='none' stroke='%23f4b03e' stroke-width='3'/%3E%3Ccircle cx='24' cy='24' r='5' fill='%23f4b03e'/%3E%3C/svg%3E">
+</head>
+<body>
+<div id="progress"></div>
+
+<header class="site-header"><div class="wrap nav">
+  <a href="index.html" class="brand" aria-label="Início"><svg class="lens" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="21" stroke="#f4b03e" stroke-width="2.5"/><circle cx="24" cy="24" r="12" stroke="#f4b03e" stroke-width="2"/><circle cx="24" cy="24" r="4" fill="#f4b03e"/><circle cx="33" cy="15" r="2" fill="#ffd17a"/></svg><span>Foto<span style="color:var(--accent)">Smart</span><small>Curso de Fotografia</small></span></a>
+  <button class="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  <ul class="nav-links"><li><a href="index.html">Início</a></li><li><a href="index.html#modulos">Módulos</a></li><li><a href="mestres.html">Mestres</a></li><li><a href="glossario.html">Glossário</a></li><li><a href="editor.html" class="active">🎛️ Editor</a></li><li><a href="jogo.html">🎮 Jogo</a></li><li><a href="jogo3d.html">🦌 Safári 3D</a></li><li><a href="modulo-1-introducao.html" class="nav-cta">Começar a estudar</a></li></ul>
+</div></header>
+
+<section class="section" style="padding-top:clamp(24px,3.5vw,40px);padding-bottom:8px">
+  <div class="wrap">
+    <div class="gq-pagehead">
+      <p class="eyebrow" style="justify-content:center">Módulo 3 · na prática</p>
+      <h1 style="font-family:var(--serif);font-size:clamp(2rem,4.5vw,3rem);margin:.1em 0 .3em">Foto<span style="color:var(--accent)">Lab</span> 🎛️</h1>
+      <p class="lead">Um editor de imagens no estilo Photoshop, dentro do navegador. <strong>Camadas</strong>,
+        <strong>curvas</strong>, <strong>histograma ao vivo</strong>, corte com grade dos terços, pincel,
+        <strong>clarear e queimar</strong> — e nada sai do seu aparelho: a foto nunca é enviada para lugar nenhum.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== O EDITOR ===================== -->
+<div class="fl-outer">
+<div class="fl-app" id="flApp">
+
+  <div class="fl-topbar">
+    <div class="fl-tb-group">
+      <button type="button" class="fl-btn primary" id="flOpen">📂 Abrir foto</button>
+      <button type="button" class="fl-btn" id="flSamples">🖼️ Exemplos</button>
+      <span class="fl-sep"></span>
+      <button type="button" class="fl-btn ghost" id="flOpenProj" title="Abrir um projeto .fotolab salvo">📁 Abrir projeto</button>
+      <button type="button" class="fl-btn ghost" id="flSaveProj" title="Salvar o projeto com as camadas (.fotolab)">💾 Salvar projeto</button>
+    </div>
+
+    <div class="fl-tb-group center">
+      <button type="button" class="fl-btn icon" id="flUndo" title="Desfazer (Ctrl+Z)">↶</button>
+      <button type="button" class="fl-btn icon" id="flRedo" title="Refazer (Ctrl+Shift+Z)">↷</button>
+      <span class="fl-sep"></span>
+      <button type="button" class="fl-btn icon" id="flZoomOut" title="Afastar (−)">−</button>
+      <button type="button" class="fl-btn zoom" id="flFit" title="Encaixar na tela (Ctrl+0)"><span id="flZoom">100%</span></button>
+      <button type="button" class="fl-btn icon" id="flZoomIn" title="Aproximar (+)">+</button>
+      <span class="fl-sep"></span>
+      <button type="button" class="fl-btn" id="flCompare" title="Segure para ver o antes (tecla \)">👁️ Antes</button>
+    </div>
+
+    <div class="fl-tb-group right">
+      <button type="button" class="fl-btn ghost" id="flReset" title="Zerar os ajustes da camada">Zerar</button>
+      <button type="button" class="fl-btn icon" id="flFull" title="Tela cheia">⛶</button>
+      <button type="button" class="fl-btn primary" id="flExportBtn">⬇️ Salvar imagem</button>
+      <button type="button" class="fl-btn icon only-mobile" id="flPanelToggle" title="Painéis">☰</button>
+    </div>
+  </div>
+
+  <div class="fl-body">
+    <nav class="fl-tools" id="flTools" aria-label="Ferramentas"></nav>
+
+    <div class="fl-stage" id="flStage">
+      <canvas id="flCanvas"></canvas>
+      <div class="fl-empty">
+        <div class="fl-empty-card">
+          <div class="fl-empty-ico">🖼️</div>
+          <h3>Abra uma foto para começar</h3>
+          <p>Arraste um arquivo aqui, escolha do seu aparelho ou use uma das fotos de exemplo do curso.</p>
+          <div class="fl-empty-btns">
+            <button type="button" class="fl-btn primary" id="flOpenBig">📂 Escolher do meu aparelho</button>
+            <button type="button" class="fl-btn" id="flSamplesBig">🖼️ Usar foto de exemplo</button>
+          </div>
+          <p class="fl-empty-note">Funciona com JPG, PNG, WebP, HEIC (se o navegador abrir) e GIF.
+            Em <b>RAW</b> (NEF, CR2, ARW…) o navegador não revela o negativo digital: o FotoLab abre a
+            <b>maior prévia JPEG que a câmera gravou dentro do arquivo</b> — e avisa o tamanho dela.
+            Se sair pequena, exporte um JPG/TIFF pelo Lightroom ou pelo programa da câmera.</p>
+        </div>
+      </div>
+      <div class="fl-resume" id="flResume">
+        <span>Achei o trabalho da sua última visita. Continuar de onde parou?</span>
+        <button type="button" class="fl-mini primary" id="flResumeYes">Continuar</button>
+        <button type="button" class="fl-mini" id="flResumeNo">Começar do zero</button>
+      </div>
+    </div>
+
+    <aside class="fl-panels" id="flPanels">
+      <div class="fl-histo">
+        <div class="fl-histo-head"><b>Histograma</b><span id="flClip"></span></div>
+        <canvas id="flHisto" width="300" height="96"></canvas>
+        <p class="fl-histo-legend">← sombras · meios-tons · altas luzes →</p>
+      </div>
+
+      <div class="fl-tabs">
+        <button type="button" class="fl-tab on" data-tab="ajustes">Ajustes</button>
+        <button type="button" class="fl-tab" data-tab="curvas">Curvas</button>
+        <button type="button" class="fl-tab" data-tab="camadas">Camadas</button>
+        <button type="button" class="fl-tab" data-tab="filtros">Filtros</button>
+      </div>
+
+      <div class="fl-panes">
+        <div class="fl-pane on" data-pane="ajustes"><div id="flAdjust"></div></div>
+
+        <div class="fl-pane" data-pane="curvas">
+          <div id="flCurves" class="fl-curve"></div>
+          <p class="fl-note">A diagonal é a foto como está. Puxando a curva para cima você clareia aquela faixa
+            de tons; para baixo, escurece. Uma leve <b>letra S</b> é a receita clássica de contraste.</p>
+        </div>
+
+        <div class="fl-pane" data-pane="camadas">
+          <div class="fl-layer-actions">
+            <button type="button" class="fl-mini" id="flLayerAdd" title="Camada vazia para pintar">＋ Camada</button>
+            <button type="button" class="fl-mini" id="flLayerImg" title="Abrir outra imagem por cima">🖼 Imagem</button>
+            <button type="button" class="fl-mini" id="flLayerText" title="Camada de texto">T Texto</button>
+            <button type="button" class="fl-mini" id="flLayerDup" title="Duplicar">⧉</button>
+            <button type="button" class="fl-mini" id="flLayerUp" title="Subir">▲</button>
+            <button type="button" class="fl-mini" id="flLayerDown" title="Descer">▼</button>
+            <button type="button" class="fl-mini danger" id="flLayerDel" title="Excluir">🗑</button>
+          </div>
+          <div class="fl-layers" id="flLayers"></div>
+          <div class="fl-layer-props">
+            <label class="fl-field"><span>Opacidade</span><input type="range" id="flOpacity" min="0" max="100" value="100"><output id="flOpacityV">100%</output></label>
+            <label class="fl-field"><span>Mesclagem</span><select id="flBlend"></select></label>
+          </div>
+          <p class="fl-note">Camada é folha de papel vegetal: o que está em cima cobre o que está embaixo.
+            A <b>mesclagem</b> decide como as duas se misturam — <i>Multiplicar</i> escurece, <i>Divisão</i> clareia.</p>
+        </div>
+
+        <div class="fl-pane" data-pane="filtros">
+          <div class="fl-presets" id="flPresets"></div>
+          <p class="fl-note">Predefinição não é mágica: é um conjunto de ajustes. Aplique uma e volte ao painel
+            <b>Ajustes</b> para ver exatamente o que ela mexeu — depois faça a sua.</p>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="fl-optionsbar" id="flOptions"></div>
+  <div class="fl-statusbar"><span id="flInfo">Nenhuma foto aberta</span><span class="fl-status-tip">Atalhos: V mover · C cortar · B pincel · E borracha · D clarear · Q queimar · T texto · ESPAÇO navegar · \ comparar</span></div>
+
+  <div class="fl-scrim" id="flScrim"></div>
+
+  <div class="fl-dialog" id="flSampleDlg">
+    <div class="fl-dialog-head"><b>Fotos de exemplo</b><button type="button" class="fl-x" data-close>✕</button></div>
+    <div class="fl-sample-grid" id="flSampleGrid"></div>
+    <p class="fl-note">São imagens do próprio site (domínio público, Creative Commons ou material do curso).
+      Ótimas para treinar sem gastar dados do celular.</p>
+  </div>
+
+  <div class="fl-dialog" id="flExport">
+    <div class="fl-dialog-head"><b>Salvar imagem</b><button type="button" class="fl-x" data-close>✕</button></div>
+    <div class="fl-export">
+      <label class="fl-field grow"><span>Nome do arquivo</span><input type="text" id="flExpName" value="foto-editada"></label>
+      <label class="fl-field"><span>Formato</span><select id="flExpType">
+        <option value="image/jpeg">JPG · foto (menor)</option>
+        <option value="image/png">PNG · sem perda, com transparência</option>
+        <option value="image/webp">WebP · moderno, leve</option>
+      </select></label>
+      <label class="fl-field" id="flExpQualityWrap"><span>Qualidade</span><input type="range" id="flExpQuality" min="40" max="100" value="92"><output id="flExpQualityV">92%</output></label>
+      <label class="fl-field"><span>Tamanho</span><select id="flExpSize">
+        <option value="2048" selected>2048 px (lado maior)</option>
+        <option value="1600">1600 px · redes sociais</option>
+        <option value="1080">1080 px · Instagram</option>
+        <option value="0">Tamanho real (mais lento)</option>
+      </select></label>
+      <button type="button" class="fl-btn primary" id="flDoExport">Salvar imagem</button>
+    </div>
+    <p class="fl-note">Em <b>tamanho real</b>, uma foto de celular (12 MP) leva alguns segundos para ser revelada —
+      é a conta de milhões de pixels acontecendo no seu aparelho. Para publicar, 2048 px já é mais do que suficiente.</p>
+    <p class="fl-note"><b>JPG</b> comprime jogando fora detalhe — ótimo para publicar, ruim para reeditar várias vezes.
+      <b>PNG</b> guarda tudo (e a transparência), mas o arquivo fica pesado. Quer continuar editando depois?
+      Use <b>💾 Projeto</b>, que preserva as camadas.</p>
+  </div>
+
+  <div class="fl-toast" id="flToast"></div>
+</div>
+</div>
+
+<!-- ===================== APRENDER ===================== -->
+<section class="section" style="padding-top:26px">
+  <div class="wrap">
+    <div class="grid grid-3">
+      <div class="card reveal"><h4 style="margin-top:0">🎚️ Comece pela luz</h4>
+        <p class="muted" style="margin:0;font-size:.92rem">Ordem que funciona: <strong>exposição → brancos e pretos →
+        contraste → altas luzes e sombras</strong>. Só depois mexa na cor. Olhe o histograma: se o gráfico
+        encosta na parede da direita, você perdeu detalhe no claro para sempre.</p></div>
+      <div class="card reveal"><h4 style="margin-top:0">🌗 Clarear e queimar</h4>
+        <p class="muted" style="margin:0;font-size:.92rem">No laboratório, o fotógrafo tapava parte do papel com a mão
+        para clarear (<em>dodge</em>) ou dava mais luz para escurecer (<em>burn</em>). Aqui é o mesmo: pincel de
+        <strong>Clarear</strong> no rosto, <strong>Queimar</strong> nos cantos, e o olhar de quem vê vai para onde você quer.</p></div>
+      <div class="card reveal"><h4 style="margin-top:0">💾 Guardar o trabalho</h4>
+        <p class="muted" style="margin:0;font-size:.92rem"><strong>Salvar imagem</strong> gera o JPG/PNG pronto.
+        <strong>Projeto</strong> guarda as camadas e os ajustes para continuar depois — é o papel do arquivo .psd do
+        Photoshop. O editor também guarda sozinho a sua última sessão neste navegador.</p></div>
+    </div>
+
+    <div class="exercise reveal" style="margin-top:26px">
+      <span class="ex-tag">Atividade prática</span>
+      <h3>Três exercícios no FotoLab</h3>
+      <ol>
+        <li><b>Revelação básica.</b> Abra a foto <i>Cidade à noite</i> nos exemplos. Sem usar filtros prontos,
+          conserte a exposição e recupere as luzes dos postes. Compare com o botão <b>👁️ Antes</b>.</li>
+        <li><b>Preto e branco de verdade.</b> Abra <i>Rua em P&amp;B</i>, ligue o P&amp;B no painel Cor e troque o
+          <b>filtro colorido</b>. Repare como o céu muda com o filtro vermelho. Feche os pretos na curva.</li>
+        <li><b>Direção do olhar.</b> Em <i>Retrato na janela</i>, use <b>Clarear</b> no rosto e <b>Queimar</b> nas bordas.
+          Sutil: força baixa e várias passadas. Exporte em 1080 px e traga para a aula.</li>
+      </ol>
+      <p class="ex-tip"><b>Dica:</b> zerou tudo sem querer? <b>Ctrl+Z</b> desfaz até 40 passos. E a tecla <b>\</b>
+        mostra o antes enquanto você segura.</p>
+    </div>
+
+    <div class="callout callout--tip reveal" style="margin-top:18px"><span class="ico">🔒</span><b class="title">Suas fotos não saem daqui</b>
+      <p style="margin:0">Todo o processamento acontece no seu próprio aparelho, dentro do navegador — nenhuma imagem
+      é enviada para servidor nenhum. Por isso o editor funciona até sem internet depois que a página carregou.</p></div>
+
+    <a href="modulo-3-edicao.html" class="callout callout--tip reveal" style="margin-top:18px;text-decoration:none;display:flex;gap:14px;align-items:flex-start">
+      <span class="ico">📚</span>
+      <span style="display:block"><b class="title">A teoria está no Módulo 3</b>
+      <span style="display:block;margin:0">Histograma, ajustes básicos, recorte e fluxo de trabalho de edição.
+      <strong>Ir para o Módulo 3 · Edição de Imagem →</strong></span></span>
+    </a>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="index.html" class="brand" style="margin-bottom:12px">
+          <svg class="lens" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="21" stroke="#f4b03e" stroke-width="2.5"/><circle cx="24" cy="24" r="12" stroke="#f4b03e" stroke-width="2"/><circle cx="24" cy="24" r="4" fill="#f4b03e"/></svg>
+          <span>Foto<span style="color:var(--accent)">Smart</span></span>
+        </a>
+        <p>Material de estudo do curso <strong>Fotografia Digital com Smartphone</strong> — 200h. Uma base teórica
+          completa para você consultar a qualquer momento.</p>
+        <div class="instructor"><div class="av">TT</div><div><b>Tiago Tavares</b><span>Instrutor do curso</span></div></div>
+      </div>
+      <div>
+        <h5>Módulos</h5>
+        <ul>
+          <li><a href="modulo-1-introducao.html">1 · Introdução à Fotografia</a></li>
+          <li><a href="modulo-2-iluminacao.html">2 · Fotografia e Iluminação</a></li>
+          <li><a href="modulo-3-edicao.html">3 · Edição de Imagem</a></li>
+          <li><a href="modulo-4-empreendedorismo.html">4 · Empreendedorismo</a></li>
+          <li><a href="modulo-5-projeto.html">5 · Projeto Fotográfico</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Explorar</h5>
+        <ul>
+          <li><a href="mestres.html">O Olhar dos Mestres</a></li>
+          <li><a href="glossario.html">Glossário de termos</a></li>
+          <li><a href="editor.html">🎛️ FotoLab, o editor</a></li>
+          <li><a href="jogo.html">🎮 FotoQuest, o jogo</a></li><li><a href="jogo3d.html">🦌 Safári Fotográfico 3D</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="year">2026</span> · Curso Fotografia Digital com Smartphone · Instrutor Tiago Tavares</span>
+      <span>FotoLab: editor educacional do curso · processamento 100% no navegador</span>
+    </div>
+  </div>
+</footer>
+
+<button id="toTop" aria-label="Voltar ao topo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M6 11l6-6 6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+<script src="assets/js/main.js?v=3"></script>
+<script type="module" src="assets/js/editor/main.js?v=2"></script>
+</body>
+</html>
