@@ -11,6 +11,13 @@
 
 > Mesma lista, em página legível: **`atualizacoes.html`** no site.
 
+### 20/08/2026 · Um arquivo RAW de verdade entre os exemplos
+- Entrou nos exemplos do FotoLab a **`DSC_0146.NEF`** (17 MB), foto original do professor feita numa
+  **Nikon D5300** — o aluno abre um RAW sem precisar ter câmera.
+- O cartão avisa o peso, e ao abrir o editor mostra o que achou lá dentro. O arquivo guarda **três**
+  prévias JPEG (640×424, 1620×1080 e **6000×4000**) além dos dados do sensor; o editor usa a maior.
+- Exercício novo na página do editor explicando o que é o RAW e por que ele pesa tanto.
+
 ### 19/08/2026 · FotoLab, o editor de imagens — **novo**
 - Editor no estilo Photoshop dentro do site (`editor.html`): **camadas**, **curvas**, **histograma ao
   vivo**, corte com grade dos terços, nivelamento, pincel, borracha, **clarear/queimar** e texto.

@@ -4,12 +4,12 @@
    tela cheia e o salvamento automático da sessão.
    ============================================================ */
 
-import { state, onChange, emit, undo, redo, pushHistory, activeLayer, ADJ_DEFAULTS, newCurve, touch } from './state.js?v=2';
-import * as vp from './viewport.js?v=2';
-import * as tools from './tools.js?v=2';
-import * as ui from './ui.js?v=2';
-import * as io from './io.js?v=2';
-import { invalidateAll } from './render.js?v=2';
+import { state, onChange, emit, undo, redo, pushHistory, activeLayer, ADJ_DEFAULTS, newCurve, touch } from './state.js?v=3';
+import * as vp from './viewport.js?v=3';
+import * as tools from './tools.js?v=3';
+import * as ui from './ui.js?v=3';
+import * as io from './io.js?v=3';
+import { invalidateAll } from './render.js?v=3';
 
 const $ = s => document.querySelector(s);
 
@@ -104,10 +104,21 @@ function buildSamples() {
     const b = document.createElement('button');
     b.type = 'button';
     b.className = 'fl-sample';
-    b.innerHTML = '<img src="' + s.file + '" alt="" loading="lazy"><b>' + s.name + '</b><span>' + s.hint + '</span>';
+    b.innerHTML = '<img src="' + (s.thumb || s.file) + '" alt="" loading="lazy">' +
+      '<b>' + s.name + (s.raw ? ' <i class="fl-badge">RAW · ' + s.peso + '</i>' : '') + '</b>' +
+      '<span>' + s.hint + '</span>';
     b.addEventListener('click', async () => {
-      try { await io.openSample(s); afterOpen(); notify('Foto de exemplo aberta: <b>' + s.name + '</b>'); }
-      catch (e) { notify('⚠️ ' + e.message); }
+      try {
+        if (s.raw) {
+          notify('Baixando o arquivo RAW (' + s.peso + ') e procurando a maior prévia da câmera…', 20000);
+          await nextPaint();
+        }
+        const info = await io.openSample(s);
+        afterOpen();
+        notify(info && info.raw ? io.openReport(info, s.file) : 'Foto de exemplo aberta: <b>' + s.name + '</b>',
+          info && info.raw ? 9000 : 3500);
+      }
+      catch (e) { notify('⚠️ ' + e.message, 6000); }
     });
     host.appendChild(b);
   });
