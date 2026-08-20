@@ -7,6 +7,60 @@
 
 ---
 
+## Últimas atualizações (o que mudou, e quando)
+
+> Mesma lista, em página legível: **`atualizacoes.html`** no site.
+
+### 19/08/2026 · FotoLab, o editor de imagens — **novo**
+- Editor no estilo Photoshop dentro do site (`editor.html`): **camadas**, **curvas**, **histograma ao
+  vivo**, corte com grade dos terços, nivelamento, pincel, borracha, **clarear/queimar** e texto.
+- 10 predefinições, exportação JPG/PNG/WebP e **projeto .fotolab**, que guarda as camadas para
+  continuar depois.
+- Abre **RAW** (NEF, CR2, ARW…) usando a maior prévia JPEG que a câmera gravou dentro do arquivo.
+- Nada é enviado para servidor nenhum: tudo acontece no aparelho do aluno.
+- Link **Editor** no menu e no rodapé de todas as páginas, e destaque no Módulo 3.
+
+### 14/08/2026 · FotoQuest com perfil por aluno
+- Tela de entrada por nome: cada aluno tem o seu progresso no mesmo aparelho.
+- Modo professor (nome `professortiago`): todas as fases abertas e moedas infinitas.
+- Correções: rolagem das folhas (loja/galeria/perfil) e jogo legível com o site no tema claro.
+
+### 13/08/2026 · FotoQuest chega a 20 fases
+- 10 fases novas: hora dourada, estúdio profissional, luz de janela, mesa do chef, arquitetura,
+  macro, esporte, edição em P&B, ensaio do cliente e exposição final.
+- **Fotômetro** no visor, **visor ótico** da reflex, **gabarito** liberado ao concluir a fase e
+  **direção de cena** (mover o assunto e as luzes muda a foto de verdade).
+
+### 03/08/2026 · Fan Ho nos Mestres
+- Seção completa do fotógrafo de Hong Kong, com galeria de obras.
+- O site passou a atender também em **fotografia.tiagotavares.com.br**.
+
+### 29 e 30/07/2026 · Safári 3D e acertos de navegação
+- Safári 3D em **3ª pessoa**: fotógrafo voxel com a câmera na mão (vira 1ª pessoa ao fotografar).
+- Os dois jogos responsivos no celular, com tela cheia horizontal.
+- Menu cabendo numa linha só e **cache do HTML corrigido** (`.htaccess`): o aluno não fica mais com
+  a versão antiga da página depois de uma publicação.
+
+### 21/07/2026 · Safári Fotográfico 3D — **novo**
+- Jogo em 3D e primeira pessoa: campina na hora dourada, exposição reagindo ao vivo na tela da
+  câmera e avaliação da foto ao final.
+
+### 9 a 12/07/2026 · FotoQuest, o jogo — **novo**
+- RPG 2D com 10 fases: ISO, abertura, velocidade e foco de verdade, nota 0–100 com feedback que
+  **diz qual módulo revisar**, missões, loja, galeria e conquistas.
+- Efeitos sonoros sintetizados e tela cheia horizontal no celular.
+
+### 11/06/2026 · Os módulos ficam interativos
+- **Editor ao vivo** no Módulo 3 (brilho, contraste, saturação e temperatura).
+- Cards de segmento clicáveis no Módulo 4, abrindo fotos de exemplo.
+- **Atividade prática** ao fim de cada módulo, pensada para a nossa sala (janelas grandes + 2 softboxes).
+- Galeria de obras em domínio público na página Mestres.
+
+### 09/06/2026 · O site entra no ar — **novo**
+- Os 5 módulos do curso, Mestres, Glossário, busca no glossário e tema claro/escuro.
+
+---
+
 ## 1. O que é
 Site estático (HTML/CSS/JS puro, **sem build**) com toda a base teórica do curso para os
 alunos estudarem em casa, mais recursos interativos e um jogo educacional.
