@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Novidades do site — Curso Fotografia com Smartphone</title>
+<meta name="description" content="Histórico das atualizações do site do curso Fotografia Digital com Smartphone: o que foi criado e melhorado, e quando.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css?v=6">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='21' fill='none' stroke='%23f4b03e' stroke-width='3'/%3E%3Ccircle cx='24' cy='24' r='5' fill='%23f4b03e'/%3E%3C/svg%3E">
+<style>
+/* linha do tempo — só nesta página */
+.tl{ position:relative; max-width:820px; margin:0 auto; padding-left:26px; }
+.tl::before{ content:""; position:absolute; left:7px; top:10px; bottom:10px; width:2px;
+  background:linear-gradient(180deg, var(--accent), var(--line) 85%); border-radius:2px; }
+.tl-item{ position:relative; margin-bottom:26px; }
+.tl-item::before{ content:""; position:absolute; left:-24px; top:9px; width:11px; height:11px;
+  border-radius:50%; background:var(--bg); border:2px solid var(--line); }
+.tl-item.novo::before{ background:var(--accent); border-color:var(--accent); box-shadow:0 0 0 4px rgba(244,176,62,.15); }
+.tl-date{ font-size:.78rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--text-mute); display:block; margin-bottom:2px; }
+.tl-item h3{ font-family:var(--serif); font-size:1.22rem; margin:0 0 .45em; color:var(--text); }
+.tl-tag{ display:inline-block; vertical-align:middle; margin-left:8px; font-family:var(--sans);
+  font-size:.66rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase;
+  color:#1a1206; background:var(--accent); border-radius:20px; padding:3px 9px; }
+.tl-item ul{ margin:0; padding-left:18px; }
+.tl-item li{ color:var(--text-soft); font-size:.95rem; margin-bottom:6px; line-height:1.6; }
+.tl-item li b{ color:var(--text); }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<header class="site-header"><div class="wrap nav">
+  <a href="index.html" class="brand" aria-label="Início"><svg class="lens" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="21" stroke="#f4b03e" stroke-width="2.5"/><circle cx="24" cy="24" r="12" stroke="#f4b03e" stroke-width="2"/><circle cx="24" cy="24" r="4" fill="#f4b03e"/><circle cx="33" cy="15" r="2" fill="#ffd17a"/></svg><span>Foto<span style="color:var(--accent)">Smart</span><small>Curso de Fotografia</small></span></a>
+  <button class="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  <ul class="nav-links"><li><a href="index.html">Início</a></li><li><a href="index.html#modulos">Módulos</a></li><li><a href="mestres.html">Mestres</a></li><li><a href="glossario.html">Glossário</a></li><li><a href="editor.html">🎛️ Editor</a></li><li><a href="jogo.html">🎮 Jogo</a></li><li><a href="jogo3d.html">🦌 Safári 3D</a></li><li><a href="modulo-1-introducao.html" class="nav-cta">Começar a estudar</a></li></ul>
+</div></header>
+
+<section class="section" style="padding-top:clamp(28px,4vw,48px)">
+  <div class="wrap">
+    <div class="gq-pagehead reveal">
+      <p class="eyebrow" style="justify-content:center">Histórico</p>
+      <h1 style="font-family:var(--serif);font-size:clamp(2rem,4.5vw,3rem);margin:.1em 0 .3em">Novidades do site</h1>
+      <p class="lead">O que foi criado e melhorado aqui, da versão mais recente para a mais antiga.
+        O site continua crescendo junto com o curso — sempre que algo novo entra no ar, aparece nesta lista.</p>
+    </div>
+
+    <div class="tl">
+
+      <div class="tl-item novo reveal">
+        <span class="tl-date">19 de agosto de 2026</span>
+        <h3>FotoLab, o editor de imagens <span class="tl-tag">novo</span></h3>
+        <ul>
+          <li>Um <b>editor no estilo Photoshop dentro do navegador</b>: camadas, curvas, histograma ao vivo,
+            corte com grade dos terços, nivelamento, pincel, borracha, <b>clarear e queimar</b> e texto.
+            <a href="editor.html">Abrir o FotoLab →</a></li>
+          <li>10 predefinições prontas, exportação em JPG, PNG ou WebP e <b>projeto .fotolab</b>, que guarda
+            as camadas para você continuar depois.</li>
+          <li>Abre arquivos <b>RAW</b> (NEF, CR2, ARW…) usando a maior prévia que a câmera gravou dentro da foto.</li>
+          <li><b>Nenhuma foto sai do seu aparelho</b> — todo o processamento acontece no seu próprio navegador.</li>
+        </ul>
+      </div>
+
+      <div class="tl-item reveal">
+        <span class="tl-date">14 de agosto de 2026</span>
+        <h3>FotoQuest com perfil por aluno</h3>
+        <ul>
+          <li>Tela de entrada por nome: cada aluno tem o <b>seu próprio progresso</b>, mesmo dividindo o computador.</li>
+          <li>Modo professor com todas as fases abertas, para demonstrar em aula.</li>
+          <li>Correções na rolagem da loja e da galeria, e o jogo continua legível com o site no tema claro.</li>
+        </ul>
+      </div>
+
+      <div class="tl-item reveal">
+        <span class="tl-date">13 de agosto de 2026</span>
+        <h3>FotoQuest chega a 20 fases</h3>
+        <ul>
+          <li>Dez fases novas: hora dourada, estúdio profissional, luz de janela, mesa do chef, arquitetura,
+            macro, esporte, preto e branco, ensaio do cliente e exposição final.</li>
+          <li><b>Fotômetro</b> no visor e <b>visor ótico</b> da reflex, conforme o equipamento que você comprou.</li>
+          <li><b>Gabarito</b> liberado ao concluir a fase (tecla G) e <b>direção de cena</b>: mover o assunto
+            e as luzes muda a foto de verdade.</li>
+        </ul>
+      </div>
+
+      <div class="tl-item reveal">
+        <span class="tl-date">3 de agosto de 2026</span>
+        <h3>Fan Ho na página dos Mestres</h3>
+        <ul>
+          <li>Seção completa do fotógrafo de Hong Kong, com galeria de obras. <a href="mestres.html">Ver Mestres →</a></li>
+          <li>O site passou a atender também no endereço <b>fotografia.tiagotavares.com.br</b>.</li>
+        </ul>
+      </div>
+
+      <div class="tl-item reveal">
+        <span class="tl-date">29 e 30 de julho de 2026</span>
+        <h3>Safári 3D em terceira pessoa e acertos de navegação</h3>
+        <ul>
+          <li>Agora você <b>vê o fotógrafo</b> explorando, com a câmera na mão — a visão vira primeira pessoa
+            na hora de fotografar.</li>
+          <li>Os dois jogos ficaram <b>responsivos no celular</b>, com tela cheia na horizontal.</li>
+          <li>Menu cabendo numa linha só e correção de cache: você não fica mais com a versão antiga
+            de uma página depois de uma atualização.</li>
+        </ul>
+      </div>
+
+      <div class="tl-item novo reveal">
+        <span class="tl-date">21 de julho de 2026</span>
+        <h3>Safári Fotográfico 3D <span class="tl-tag">novo</span></h3>
+        <ul>
+          <li>Jogo em <b>3D e primeira pessoa</b>: uma campina na hora dourada, a exposição reagindo ao vivo
+            na tela da câmera e a avaliação da foto no fim. <a href="jogo3d.html">Entrar no Safári →</a></li>
+        </ul>
+      </div>
+
+      <div class="tl-item novo reveal">
+        <span class="tl-date">9 a 12 de julho de 2026</span>
+        <h3>FotoQuest, o jogo <span class="tl-tag">novo</span></h3>
+        <ul>
+          <li>RPG 2D com 10 fases: ISO, abertura, velocidade e foco de verdade, nota de 0 a 100 e um feedback
+            que <b>diz qual módulo revisar</b>. <a href="jogo.html">Jogar →</a></li>
+          <li>Missões, loja de equipamentos, galeria das suas fotos e conquistas.</li>
+          <li>Efeitos sonoros e tela cheia horizontal no celular.</li>
+        </ul>
+      </div>
+
+      <div class="tl-item reveal">
+        <span class="tl-date">11 de junho de 2026</span>
+        <h3>Os módulos ficam interativos</h3>
+        <ul>
+          <li><b>Editor ao vivo</b> no Módulo 3: arraste brilho, contraste, saturação e temperatura e veja a
+            foto mudar. <a href="modulo-3-edicao.html">Ir ao Módulo 3 →</a></li>
+          <li>No Módulo 4, os cards de cada segmento abrem fotos de exemplo.</li>
+          <li><b>Atividade prática</b> ao fim de cada módulo, pensada para a nossa sala (janelas grandes e dois softboxes).</li>
+          <li>Galeria de obras em domínio público na página dos Mestres.</li>
+        </ul>
+      </div>
+
+      <div class="tl-item novo reveal">
+        <span class="tl-date">9 de junho de 2026</span>
+        <h3>O site entra no ar <span class="tl-tag">novo</span></h3>
+        <ul>
+          <li>Os cinco módulos do curso, a página dos Mestres, o Glossário com busca e o tema claro/escuro.</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="callout callout--tip reveal" style="max-width:820px;margin:26px auto 0"><span class="ico">💡</span><b class="title">Não está vendo a novidade?</b>
+      <p style="margin:0">Atualize a página segurando <b>Shift</b> enquanto clica em recarregar (ou puxe a
+      tela para baixo, no celular). O navegador às vezes guarda a versão antiga por alguns minutos.</p></div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="index.html" class="brand" style="margin-bottom:12px">
+          <svg class="lens" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="21" stroke="#f4b03e" stroke-width="2.5"/><circle cx="24" cy="24" r="12" stroke="#f4b03e" stroke-width="2"/><circle cx="24" cy="24" r="4" fill="#f4b03e"/></svg>
+          <span>Foto<span style="color:var(--accent)">Smart</span></span>
+        </a>
+        <p>Material de estudo do curso <strong>Fotografia Digital com Smartphone</strong> — 200h. Uma base teórica
+          completa para você consultar a qualquer momento.</p>
+        <div class="instructor"><div class="av">TT</div><div><b>Tiago Tavares</b><span>Instrutor do curso</span></div></div>
+      </div>
+      <div>
+        <h5>Módulos</h5>
+        <ul>
+          <li><a href="modulo-1-introducao.html">1 · Introdução à Fotografia</a></li>
+          <li><a href="modulo-2-iluminacao.html">2 · Fotografia e Iluminação</a></li>
+          <li><a href="modulo-3-edicao.html">3 · Edição de Imagem</a></li>
+          <li><a href="modulo-4-empreendedorismo.html">4 · Empreendedorismo</a></li>
+          <li><a href="modulo-5-projeto.html">5 · Projeto Fotográfico</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Explorar</h5>
+        <ul>
+          <li><a href="mestres.html">O Olhar dos Mestres</a></li>
+          <li><a href="glossario.html">Glossário de termos</a></li>
+          <li><a href="editor.html">🎛️ FotoLab, o editor</a></li>
+          <li><a href="jogo.html">🎮 FotoQuest, o jogo</a></li><li><a href="jogo3d.html">🦌 Safári Fotográfico 3D</a></li>
+          <li><a href="atualizacoes.html">🆕 Novidades do site</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="year">2026</span> · Curso Fotografia Digital com Smartphone · Instrutor Tiago Tavares</span>
+      <span>Histórico das atualizações do site</span>
+    </div>
+  </div>
+</footer>
+
+<button id="toTop" aria-label="Voltar ao topo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M6 11l6-6 6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+<script src="assets/js/main.js?v=3"></script>
+</body>
+</html>
