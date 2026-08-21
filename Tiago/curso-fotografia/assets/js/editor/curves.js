@@ -5,7 +5,7 @@
    dominante de cor saem todos daqui.
    ============================================================ */
 
-import { curveLUT } from './pipeline.js?v=3';
+import { curveLUT } from './pipeline.js?v=4';
 
 const CH = [['rgb', 'RGB', '#eef0f4'], ['r', 'R', '#e85048'], ['g', 'G', '#58c08b'], ['b', 'B', '#5a96e8']];
 

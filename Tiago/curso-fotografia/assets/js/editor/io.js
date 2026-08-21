@@ -8,10 +8,10 @@
    pronta, no tamanho real.
    ============================================================ */
 
-import { state, newDoc, makeLayer, clearHistory, emit } from './state.js?v=3';
-import { addImage, getImage, loadFromFile, loadFromURL, ensureDataURL, restoreImage } from './assets.js?v=3';
-import { isRawFile } from './raw.js?v=3';
-import { renderResult, resultSize, invalidateAll } from './render.js?v=3';
+import { state, newDoc, makeLayer, clearHistory, emit } from './state.js?v=4';
+import { addImage, getImage, loadFromFile, loadFromURL, ensureDataURL, restoreImage } from './assets.js?v=4';
+import { isRawFile } from './raw.js?v=4';
+import { renderResult, resultSize, invalidateAll } from './render.js?v=4';
 
 export const SAMPLES = [
   { file: 'assets/img/deco/hora-dourada.jpg', name: 'Hora dourada', hint: 'Trabalhe a temperatura e a vinheta.' },
