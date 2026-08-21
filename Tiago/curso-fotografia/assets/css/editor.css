@@ -227,6 +227,8 @@ input[type=range]::-moz-range-thumb{ width:12px; height:12px; border-radius:50%;
 .fl-layer-ico{ width:18px; text-align:center; opacity:.8; }
 .fl-layer-name{ flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .fl-layer-tag{ font-size:.66rem; background:var(--bg); border:1px solid var(--line); border-radius:20px; padding:1px 7px; color:var(--text-mute); }
+.fl-layer-tag.mask{ border-color:var(--accent-deep); color:var(--accent-2); }
+.fl-opt .fl-check{ font-size:.78rem; white-space:nowrap; }
 .fl-layer-props{ display:flex; gap:8px; margin-top:10px; padding-top:10px; border-top:1px dashed var(--line); }
 .fl-layer-props output{ font-size:.7rem; color:var(--text-mute); }
 

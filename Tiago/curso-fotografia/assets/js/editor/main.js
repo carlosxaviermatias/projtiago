@@ -169,7 +169,7 @@ function keys(e) {
   if (meta && e.key === '0') { e.preventDefault(); vp.fit(); emit(); return; }
   if (meta && e.key.toLowerCase() === 's') { e.preventDefault(); openDialog('flExport'); return; }
   if (meta) return;
-  const map = { v: 'move', c: 'crop', b: 'brush', e: 'eraser', d: 'dodge', q: 'burn', t: 'text', h: 'hand' };
+  const map = { v: 'move', c: 'crop', w: 'wand', b: 'brush', e: 'eraser', d: 'dodge', q: 'burn', t: 'text', h: 'hand' };
   const k = e.key.toLowerCase();
   if (map[k] && state.doc) { app.setTool(map[k]); return; }
   if (k === '[') { state.brush.size = Math.max(2, Math.round(state.brush.size * 0.8)); syncBrush(); return; }

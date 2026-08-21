@@ -53,6 +53,7 @@ export function makeLayer(o = {}) {
     x: 0, y: 0, scale: 1, rot: 0,   // posicionamento (type 'image' e 'text')
     color: '#f4b03e',       // fill / text
     text: { content: 'Texto', size: 64, font: 'Fraunces, Georgia, serif', weight: 700, align: 'left' },
+    mask: null,             // seleção fixada na camada: {…parâmetros da varinha…, mode:'adjust'|'clip'}
     adj: Object.assign({}, ADJ_DEFAULTS),
     curve: newCurve(),
     strokes: [],            // {mode,size,hardness,flow,color,pts:[[x,y],…]}
@@ -69,6 +70,8 @@ export const state = {
   cropDraft: null,          // {x,y,w,h} enquanto a ferramenta corte está aberta
   cropAspect: 'free',
   brush: { size: 90, hardness: 60, flow: 70, color: '#ffffff' },
+  wand: { tolerance: 18, contiguous: true, feather: 6, invert: false },
+  selection: null,          // {x,y,tolerance,contiguous,feather,invert,layerId}
   dirty: false
 };
 

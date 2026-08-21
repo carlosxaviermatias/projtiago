@@ -11,6 +11,15 @@
 
 > Mesma lista, em página legível: **`atualizacoes.html`** no site.
 
+### 21/08/2026 · Varinha mágica no FotoLab
+- Ferramenta **Varinha** (tecla W): clica numa parte da foto e o editor seleciona tudo que for
+  parecido em cor. Controles de **tolerância**, **suavizar borda**, **só a mancha do clique**
+  (contígua) e **inverter**.
+- Duas saídas, as duas do Photoshop: **"Ajustar só aqui"** (os ajustes da camada passam a valer
+  apenas dentro da seleção) e **"Nova camada"** (a parte selecionada vira uma camada por cima,
+  com ajustes próprios).
+- Exercício novo: escurecer o céu sem tocar no resto da foto.
+
 ### 20/08/2026 · Um arquivo RAW de verdade entre os exemplos
 - Entrou nos exemplos do FotoLab a **`DSC_0146.NEF`** (17 MB), foto original do professor feita numa
   **Nikon D5300** — o aluno abre um RAW sem precisar ter câmera.
@@ -148,6 +157,9 @@ o editor foi escrito do zero no padrão do projeto.
   matiz, saturação, intensidade, textura, nitidez, desfoque, grão, vinheta, P&B com filtro colorido
   (vermelho/laranja/amarelo/verde/azul) e viragem (sépia/frio).
 - **Curvas** (RGB + R/G/B) com spline monotônica, **histograma ao vivo** com aviso de recorte.
+- **Varinha mágica** (`selection.js`): seleção por semelhança de cor com tolerância, suavização,
+  contígua ou global, e inversão. Vira **máscara da camada** em dois modos — `adjust` (os ajustes
+  valem só dentro) e `clip` (a camada só existe dentro da seleção).
 - **Corte** com proporções, grade dos terços, giro de 90° e **nivelamento** (que já recorta os cantos
   vazios sozinho, como o Lightroom).
 - **Ferramentas**: mover, cortar, pincel, borracha, **clarear e queimar** (dodge/burn do laboratório),
@@ -193,8 +205,27 @@ o editor foi escrito do zero no padrão do projeto.
   - ⚠️ **RAW chega com `file.type` VAZIO**: o filtro `type.startsWith('image/')` do arrastar-e-soltar
     engolia o NEF sem mensagem nenhuma, e `accept="image/*"` escondia os RAW no seletor. Os dois
     passaram a considerar a EXTENSÃO.
+- **Varinha — as três decisões que sustentam o resto:**
+  1. A seleção é guardada como **parâmetros** (ponto clicado, tolerância, suavização, contígua,
+     invertida), nunca como um desenho pronto: sobrevive ao salvar o projeto e vale em qualquer
+     tamanho de saída, igual às pinceladas.
+  2. A máscara é calculada numa **resolução de referência** (máx. 2000 px de lado) e esticada para
+     o tamanho desenhado. Garante que pré-visualização e exportação selecionem a MESMA coisa e
+     evita um preenchimento de 24 MP a cada mexida na tolerância.
+  3. A varinha amostra o **conteúdo cru** da camada (`drawContent()`, sem ajustes). Se olhasse a
+     imagem já ajustada, mexer na exposição depois de selecionar mudaria a seleção sozinha.
+  - Desempenho: pixels de origem em cache + máscara da TELA em meia resolução (≈28 ms por quadro
+     em vez de ≈110). O que é **aplicado** na foto usa sempre a resolução cheia.
+  - `maskCanvasFor(layer, doc, selOverride, fast)`; o véu na tela escurece o que ficou de fora em
+     vez de tracejado piscante — mais legível para quem está aprendendo.
 - **`nextPaint()` em vez de `requestAnimationFrame` puro** antes de tarefas longas (ler RAW,
   exportar): em aba de segundo plano o rAF nunca dispara e a abertura ficaria esperando para sempre.
+
+### Varinha testada ao vivo (Chrome, 2026-08-21)
+Clique no céu de *Hora dourada* seleciona 32% da imagem em ~0,3 s. "Ajustar só aqui" + exposição
+−70: céu 152,5 → 62 e **chão 139,7 → 139,7 (idêntico ao byte)**. "Nova camada": a camada nova tem
+pixels em 39,8% da área e aceita ajustes próprios (temperatura −60 esfriou só o céu). Máscara
+sobrevive ao projeto .fotolab e acompanha o giro de 90°. Zero erros de console.
 
 ### Testado ao vivo (Chrome, 2026-08-19)
 RAW: NEF sintético de 28 MB com miniatura 160×120 + prévia 6000×4000 → escolheu a grande em 0,9 s;

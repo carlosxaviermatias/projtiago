@@ -7,9 +7,9 @@
    dar zoom — e saem no tamanho real na exportação.
    ============================================================ */
 
-import { state, activeLayer, beginChange, endChange, touch, emit } from './state.js?v=3';
+import { state, activeLayer, beginChange, endChange, touch, emit, pushHistory } from './state.js?v=3';
 import * as vp from './viewport.js?v=3';
-import { docGeometry } from './render.js?v=3';
+import { docGeometry, selectionOverlayCanvas } from './render.js?v=3';
 
 const PAINT = { brush: 1, eraser: 1, dodge: 1, burn: 1 };
 let dragging = null;
@@ -103,6 +103,15 @@ function down(ev) {
     touch(layer);
     dragging = { type: 'paint', stroke: s, layer };
     vp.requestRender(true);
+    return;
+  }
+  if (state.tool === 'wand') {
+    const layer = activeLayer();
+    if (!layer) { onNotify('Escolha uma camada no painel Camadas.'); return; }
+    pushHistory('Selecionar');
+    state.selection = Object.assign({}, state.wand, { x: img.x, y: img.y, layerId: layer.id });
+    emit();
+    vp.requestRender();
     return;
   }
   if (state.tool === 'move') {
@@ -241,6 +250,9 @@ function overlay(ctx, { dpr, o, zoom }) {
     });
     return;
   }
+  if (state.selection && (state.tool === 'wand' || state.tool === 'move')) {
+    drawSelection(ctx, o, zoom, dpr);
+  }
   if (cursor && PAINT[state.tool]) {
     const p = vp.outToScreen(cursor.x, cursor.y);
     const rad = state.brush.size / 2 * zoom * dpr;
@@ -270,3 +282,38 @@ export function resetCrop() {
   endChange(); emit();
 }
 export { cropRect };
+
+
+/* Mostra a seleção escurecendo o que ficou de FORA e clareando de leve o que
+   ficou dentro. A borda aparece pelo contraste entre os dois — mais legível
+   para quem está aprendendo do que o tracejado piscante do Photoshop. */
+let veil = null;
+function drawSelection(ctx, o, zoom, dpr) {
+  const layer = state.doc.layers.find(l => l.id === state.selection.layerId) || activeLayer();
+  if (!layer) return;
+  const m = selectionOverlayCanvas(layer, state.selection, Math.min(zoom, 1));
+  if (!m) return;
+  const dw = Math.round(m.width / Math.min(zoom, 1) * zoom * dpr);
+  const dh = Math.round(m.height / Math.min(zoom, 1) * zoom * dpr);
+  const dx = Math.round(o.x * dpr), dy = Math.round(o.y * dpr);
+
+  if (!veil || veil.width !== dw || veil.height !== dh) {
+    veil = document.createElement('canvas');
+    veil.width = Math.max(1, dw); veil.height = Math.max(1, dh);
+  }
+  const vg = veil.getContext('2d');
+  vg.setTransform(1, 0, 0, 1, 0, 0);
+  vg.clearRect(0, 0, dw, dh);
+  vg.fillStyle = 'rgba(8,9,14,.55)';
+  vg.fillRect(0, 0, dw, dh);
+  vg.globalCompositeOperation = 'destination-out';
+  vg.drawImage(m, 0, 0, dw, dh);
+  vg.globalCompositeOperation = 'source-over';
+  ctx.drawImage(veil, dx, dy, dw, dh);
+
+  ctx.save();
+  ctx.globalAlpha = 0.16;
+  ctx.globalCompositeOperation = 'lighter';
+  ctx.drawImage(m, dx, dy, dw, dh);
+  ctx.restore();
+}

@@ -130,6 +130,7 @@
             <label class="fl-field"><span>Opacidade</span><input type="range" id="flOpacity" min="0" max="100" value="100"><output id="flOpacityV">100%</output></label>
             <label class="fl-field"><span>Mesclagem</span><select id="flBlend"></select></label>
           </div>
+          <button type="button" class="fl-mini" id="flMaskClear" style="display:none;margin-top:8px">✨ Remover a seleção desta camada</button>
           <p class="fl-note">Camada é folha de papel vegetal: o que está em cima cobre o que está embaixo.
             A <b>mesclagem</b> decide como as duas se misturam — <i>Multiplicar</i> escurece, <i>Divisão</i> clareia.</p>
         </div>
@@ -144,7 +145,7 @@
   </div>
 
   <div class="fl-optionsbar" id="flOptions"></div>
-  <div class="fl-statusbar"><span id="flInfo">Nenhuma foto aberta</span><span class="fl-status-tip">Atalhos: V mover · C cortar · B pincel · E borracha · D clarear · Q queimar · T texto · ESPAÇO navegar · \ comparar</span></div>
+  <div class="fl-statusbar"><span id="flInfo">Nenhuma foto aberta</span><span class="fl-status-tip">Atalhos: V mover · C cortar · W varinha · B pincel · E borracha · D clarear · Q queimar · T texto · ESPAÇO navegar · \ comparar</span></div>
 
   <div class="fl-scrim" id="flScrim"></div>
 
@@ -196,6 +197,11 @@
         <p class="muted" style="margin:0;font-size:.92rem">No laboratório, o fotógrafo tapava parte do papel com a mão
         para clarear (<em>dodge</em>) ou dava mais luz para escurecer (<em>burn</em>). Aqui é o mesmo: pincel de
         <strong>Clarear</strong> no rosto, <strong>Queimar</strong> nos cantos, e o olhar de quem vê vai para onde você quer.</p></div>
+      <div class="card reveal"><h4 style="margin-top:0">✨ Varinha mágica</h4>
+        <p class="muted" style="margin:0;font-size:.92rem">Clique no céu e o editor seleciona <strong>só o céu</strong>.
+        A <strong>tolerância</strong> diz quanta diferença de cor ainda conta como "parecido". Depois é sua escolha:
+        <strong>Ajustar só aqui</strong> (os controles passam a valer dentro da seleção) ou <strong>Nova camada</strong>
+        (a parte selecionada vira uma folha por cima, com vida própria).</p></div>
       <div class="card reveal"><h4 style="margin-top:0">💾 Guardar o trabalho</h4>
         <p class="muted" style="margin:0;font-size:.92rem"><strong>Salvar imagem</strong> gera o JPG/PNG pronto.
         <strong>Projeto</strong> guarda as camadas e os ajustes para continuar depois — é o papel do arquivo .psd do
@@ -212,6 +218,10 @@
           <b>filtro colorido</b>. Repare como o céu muda com o filtro vermelho. Feche os pretos na curva.</li>
         <li><b>Direção do olhar.</b> Em <i>Retrato na janela</i>, use <b>Clarear</b> no rosto e <b>Queimar</b> nas bordas.
           Sutil: força baixa e várias passadas. Exporte em 1080 px e traga para a aula.</li>
+        <li><b>Céu dramático com a varinha.</b> Abra <i>Hora dourada</i>, pegue a <b>Varinha</b> (W) e clique no céu.
+          Ajuste a tolerância até a seleção cobrir o céu sem invadir as árvores, clique em <b>Ajustar só aqui</b> e
+          então baixe <b>Altas luzes</b> e aumente o <b>Contraste</b>: o céu ganha desenho e o resto da foto fica intacto.
+          Depois use <b>Inverter</b> para trabalhar o chão separadamente.</li>
         <li><b>O que é um RAW.</b> Abra o exemplo <i>Arquivo RAW (NEF)</i> — é uma foto original da câmera do
           professor, uma Nikon D5300, sem nunca ter virado JPG. Repare no aviso: dentro daquele arquivo de
           17 MB moram <b>três</b> imagens prontas (640×424, 1620×1080 e 6000×4000) além dos dados do sensor.
