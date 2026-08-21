@@ -20,6 +20,7 @@ const el = (tag, cls, html) => { const n = document.createElement(tag); if (cls)
 export const TOOLS = [
   { id: 'move', icon: '✥', name: 'Mover', key: 'V', hint: 'Arrasta a camada selecionada.' },
   { id: 'crop', icon: '⬚', name: 'Cortar', key: 'C', hint: 'Recorta e endireita. A grade dos terços aparece sozinha.' },
+  { id: 'wand', icon: '✨', name: 'Varinha', key: 'W', hint: 'Seleciona a parte da foto parecida com o ponto que você clicar — depois dá para ajustar só ali.' },
   { id: 'brush', icon: '🖌', name: 'Pincel', key: 'B', hint: 'Pinta na camada selecionada.' },
   { id: 'eraser', icon: '🧽', name: 'Borracha', key: 'E', hint: 'Apaga pixels da camada — bom para revelar a camada de baixo.' },
   { id: 'dodge', icon: '◐', name: 'Clarear', key: 'D', hint: 'Clareia só onde você passa (o "dodge" do laboratório).' },
@@ -237,6 +238,16 @@ function buildOptionsBar(app) {
     '<button type="button" class="fl-mini" id="flCropReset">Tudo</button>' +
     '<button type="button" class="fl-mini primary" id="flCropApply">Aplicar corte</button>' +
     '</div></div>' +
+    '<div class="fl-opt" data-for="wand">' +
+    field('Tolerância', '<input type="range" id="flWandTol" min="1" max="80" value="18"><output id="flWandTolV">18</output>') +
+    field('Suavizar', '<input type="range" id="flWandFeather" min="0" max="50" value="6"><output id="flWandFeatherV">6</output>') +
+    '<label class="fl-check"><input type="checkbox" id="flWandCont" checked> <span>Só a mancha do clique</span></label>' +
+    '<div class="fl-opt-actions">' +
+    '<button type="button" class="fl-mini" id="flWandInvert">⇄ Inverter</button>' +
+    '<button type="button" class="fl-mini" id="flWandClear">Limpar</button>' +
+    '<button type="button" class="fl-mini" id="flWandLayer">Nova camada</button>' +
+    '<button type="button" class="fl-mini primary" id="flWandApply">Ajustar só aqui</button>' +
+    '</div></div>' +
     '<div class="fl-opt" data-for="text">' +
     '<label class="fl-field grow"><span>Texto</span><input type="text" id="flTextContent" placeholder="Digite aqui"></label>' +
     field('Tamanho', '<input type="range" id="flTextSize" min="8" max="400" value="64"><output id="flTextSizeV">64</output>') +
@@ -277,6 +288,31 @@ function buildOptionsBar(app) {
   bind('flBrushFlow', 'flow', 'flBrushFlowV');
   $('#flBrushColor').addEventListener('input', e => { state.brush.color = e.target.value; });
 
+  const wandLive = (id, key, outId) => {
+    const i = $('#' + id), o = outId ? $('#' + outId) : null;
+    i.addEventListener('input', () => {
+      state.wand[key] = +i.value;
+      if (o) o.value = i.value;
+      if (state.selection) { state.selection[key] = +i.value; vp.requestRender(); }
+    });
+  };
+  wandLive('flWandTol', 'tolerance', 'flWandTolV');
+  wandLive('flWandFeather', 'feather', 'flWandFeatherV');
+  $('#flWandCont').addEventListener('change', e => {
+    state.wand.contiguous = e.target.checked;
+    if (state.selection) { state.selection.contiguous = e.target.checked; vp.requestRender(); }
+  });
+  $('#flWandInvert').addEventListener('click', () => {
+    if (!state.selection) { notify('Clique na foto para selecionar antes de inverter.'); return; }
+    state.selection.invert = !state.selection.invert;
+    state.wand.invert = state.selection.invert;
+    vp.requestRender();
+    notify(state.selection.invert ? 'Seleção invertida: agora vale o RESTO da foto.' : 'Seleção normal.', 2600);
+  });
+  $('#flWandClear').addEventListener('click', () => { state.selection = null; vp.requestRender(); emit(); });
+  $('#flWandApply').addEventListener('click', () => aplicarSelecao(app, 'adjust'));
+  $('#flWandLayer').addEventListener('click', () => aplicarSelecao(app, 'clip'));
+
   $('#flAngle').addEventListener('pointerdown', () => beginChange('Endireitar'));
   $('#flAngle').addEventListener('input', e => {
     state.doc.angle = +e.target.value;
@@ -316,6 +352,41 @@ function buildOptionsBar(app) {
   textBind('flTextColor', (l, v) => l.color = v);
   textBind('flTextFont', (l, v) => l.text.font = v);
 }
+/** Fixa a seleção na camada.
+    'adjust' → os ajustes da camada passam a valer só dentro da seleção.
+    'clip'   → a seleção vira uma camada nova por cima, com vida própria. */
+function aplicarSelecao(app, mode) {
+  const sel = state.selection;
+  if (!sel) { notify('Clique na foto com a varinha para selecionar uma parte.'); return; }
+  const origem = state.doc.layers.find(l => l.id === sel.layerId) || activeLayer();
+  if (!origem) return;
+  const params = Object.assign({}, sel, { mode });
+  delete params.layerId;
+
+  if (mode === 'adjust') {
+    pushHistory('Ajustar só na seleção');
+    origem.mask = params;
+    touch(origem);
+    notify('Pronto: os ajustes desta camada agora valem <b>só dentro da seleção</b>. Mexa em Luz ou Cor para ver.', 7000);
+  } else {
+    pushHistory('Nova camada com a seleção');
+    const nova = JSON.parse(JSON.stringify(origem));
+    nova.id = 'l' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+    nova.name = 'Seleção de ' + origem.name;
+    nova.mask = params;
+    nova.adj = Object.assign({}, ADJ_DEFAULTS);
+    nova.curve = newCurve();
+    nova.rev = 1;
+    state.doc.layers.splice(state.doc.layers.indexOf(origem) + 1, 0, nova);
+    state.activeId = nova.id;
+    notify('Criei a camada <b>' + nova.name + '</b> só com a parte selecionada. Edite ela sem tocar no resto.', 7000);
+  }
+  state.selection = null;
+  app.setTool('move');
+  vp.requestRender();
+  emit();
+}
+
 function field(label, inner) { return '<label class="fl-field"><span>' + label + '</span>' + inner + '</label>'; }
 
 function rotate(dir) {
@@ -401,7 +472,10 @@ export function refresh(app) {
         '<span class="fl-layer-ico">' + icon + '</span>' +
         '<span class="fl-layer-name" title="Duplo clique para renomear">' + escapeHTML(layer.name) + '</span>' +
         (layer.blend !== 'source-over' ? '<span class="fl-layer-tag">' + (BLEND_MODES.find(b => b[0] === layer.blend) || [, ''])[1] + '</span>' : '') +
-        (layer.opacity < 100 ? '<span class="fl-layer-tag">' + layer.opacity + '%</span>' : '');
+        (layer.opacity < 100 ? '<span class="fl-layer-tag">' + layer.opacity + '%</span>' : '') +
+        (layer.mask ? '<span class="fl-layer-tag mask" title="' +
+          (layer.mask.mode === 'clip' ? 'Camada recortada pela seleção' : 'Ajustes valem só dentro da seleção') +
+          '">✨ ' + (layer.mask.mode === 'clip' ? 'recorte' : 'seleção') + '</span>' : '');
       row.addEventListener('click', () => { state.activeId = layer.id; emit(); });
       row.querySelector('.fl-eye').addEventListener('click', ev => {
         ev.stopPropagation();
@@ -428,6 +502,9 @@ export function refresh(app) {
     }
   }
 
+  const maskBtn = $('#flMaskClear');
+  if (maskBtn) maskBtn.style.display = (l && l.mask) ? '' : 'none';
+
   // barra de estado
   const h = historyInfo();
   const u = $('#flUndo'), r = $('#flRedo');
@@ -447,6 +524,14 @@ export function refresh(app) {
 function escapeHTML(s) { return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
 
 export function bindLayerProps() {
+  $('#flMaskClear').addEventListener('click', () => {
+    const l = activeLayer();
+    if (!l || !l.mask) return;
+    pushHistory('Remover seleção da camada');
+    l.mask = null;
+    touch(l); vp.requestRender(); emit();
+    notify('Seleção removida: os ajustes voltam a valer na camada inteira.');
+  });
   $('#flOpacity').addEventListener('pointerdown', () => beginChange('Opacidade'));
   $('#flOpacity').addEventListener('input', e => {
     const l = activeLayer(); if (!l) return;

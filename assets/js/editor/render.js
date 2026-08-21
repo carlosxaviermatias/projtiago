@@ -10,6 +10,7 @@
 import { state, ADJ_DEFAULTS } from './state.js?v=3';
 import { getImage } from './assets.js?v=3';
 import { applyAdjustments, isNeutral } from './pipeline.js?v=3';
+import { buildMask, maskToCanvas, refScale } from './selection.js?v=3';
 
 const cache = new WeakMap();       // camada → {key, canvas}
 let stampCache = { key: '', canvas: null };
@@ -148,17 +149,11 @@ function dodgeMapFor(layer, w, h, scale) {
 }
 
 /* ---------- uma camada ---------- */
-function layerCanvas(layer, doc, scale, raw) {
-  const w = Math.max(1, Math.round(doc.w * scale));
-  const h = Math.max(1, Math.round(doc.h * scale));
-  const key = scale.toFixed(4) + '|' + layer.rev + '|' + (raw ? 'raw' : 'ed');
-  const hit = cache.get(layer);
-  if (hit && hit.key === key) return hit.canvas;
-
-  const c = mkCanvas(w, h);
-  const ctx = c.getContext('2d', { willReadFrequently: true });
-  ctx.imageSmoothingQuality = 'high';
-
+/* O conteúdo cru da camada (sem pinceladas, sem ajustes, sem máscara).
+   Está separado porque a varinha precisa amostrar ESTAS cores: se ela
+   olhasse a imagem já ajustada, mexer na exposição depois de selecionar
+   mudaria a seleção por baixo dos panos. */
+function drawContent(ctx, layer, w, h, scale) {
   if (layer.type === 'image') {
     const a = getImage(layer.asset);
     if (a) {
@@ -189,13 +184,51 @@ function layerCanvas(layer, doc, scale, raw) {
     lines.forEach((ln, i) => ctx.fillText(ln, 0, i * lh));
     ctx.restore();
   }
+}
+
+function layerCanvas(layer, doc, scale, raw) {
+  const w = Math.max(1, Math.round(doc.w * scale));
+  const h = Math.max(1, Math.round(doc.h * scale));
+  const key = scale.toFixed(4) + '|' + layer.rev + '|' + (raw ? 'raw' : 'ed');
+  const hit = cache.get(layer);
+  if (hit && hit.key === key) return hit.canvas;
+
+  const c = mkCanvas(w, h);
+  const ctx = c.getContext('2d', { willReadFrequently: true });
+  ctx.imageSmoothingQuality = 'high';
+  drawContent(ctx, layer, w, h, scale);
 
   if (!raw) {
     paintStrokes(ctx, layer, w, h, scale);
     const map = dodgeMapFor(layer, w, h, scale);
-    if (map || !isNeutral(layer.adj) || layer.curveActive !== undefined) {
-      const needs = map || !isNeutral(layer.adj) || hasCurve(layer.curve);
-      if (needs) {
+    const precisaAjuste = !!map || !isNeutral(layer.adj) || hasCurve(layer.curve);
+    const mask = layer.mask ? maskCanvasFor(layer, doc) : null;
+
+    if (mask && layer.mask.mode === 'clip') {
+      // camada recortada: fora da seleção não existe pixel nenhum
+      ctx.save();
+      ctx.globalCompositeOperation = 'destination-in';
+      ctx.drawImage(mask, 0, 0, w, h);
+      ctx.restore();
+    }
+
+    if (precisaAjuste) {
+      if (mask && layer.mask.mode === 'adjust') {
+        // ajusta só dentro da seleção: guarda o "antes", ajusta a cópia,
+        // recorta a cópia pela máscara e a devolve por cima do "antes"
+        const antes = mkCanvas(w, h);
+        antes.getContext('2d').drawImage(c, 0, 0);
+        const img = ctx.getImageData(0, 0, w, h);
+        applyAdjustments(img, layer.adj, layer.curve, map);
+        const depois = mkCanvas(w, h);
+        const dg = depois.getContext('2d');
+        dg.putImageData(img, 0, 0);
+        dg.globalCompositeOperation = 'destination-in';
+        dg.drawImage(mask, 0, 0, w, h);
+        ctx.clearRect(0, 0, w, h);
+        ctx.drawImage(antes, 0, 0);
+        ctx.drawImage(depois, 0, 0);
+      } else {
         const img = ctx.getImageData(0, 0, w, h);
         applyAdjustments(img, layer.adj, layer.curve, map);
         ctx.putImageData(img, 0, 0);
@@ -205,6 +238,62 @@ function layerCanvas(layer, doc, scale, raw) {
 
   cache.set(layer, { key, canvas: c });
   return c;
+}
+
+/* ---------- máscaras da varinha ---------- */
+const maskCache = new WeakMap();
+
+/** Assinatura do CONTEÚDO da camada: a máscara só precisa ser refeita quando
+    os pixels de origem mudam — não quando o aluno mexe num controle. */
+function contentSig(layer) {
+  return [layer.asset, layer.type, layer.x, layer.y, layer.scale, layer.rot, layer.color,
+  layer.strokes.length, JSON.stringify(layer.text)].join('|');
+}
+
+/* Os pixels de origem da máscara não mudam enquanto o aluno arrasta a
+   tolerância — redesenhar a foto e reler os pixels a cada quadro era o que
+   deixava o controle pesado. Guardamos a leitura e refazemos só o
+   preenchimento. */
+const basePxCache = new WeakMap();
+function basePixels(layer, doc, div) {
+  const sig = contentSig(layer) + '@' + div;
+  const hit = basePxCache.get(layer);
+  if (hit && hit.sig === sig) return hit;
+  const s = refScale(doc.w, doc.h) / div;
+  const w = Math.max(1, Math.round(doc.w * s));
+  const h = Math.max(1, Math.round(doc.h * s));
+  const base = mkCanvas(w, h);
+  const bctx = base.getContext('2d', { willReadFrequently: true });
+  bctx.imageSmoothingQuality = 'high';
+  drawContent(bctx, layer, w, h, s);
+  const entry = { sig, s, w, h, px: bctx.getImageData(0, 0, w, h).data };
+  basePxCache.set(layer, entry);
+  return entry;
+}
+
+let liveMask = { key: '', canvas: null };
+
+/**
+ * @param fast  a seleção DESENHADA NA TELA sai em metade da resolução de
+ *              referência: é só um véu escurecendo o que ficou de fora, e
+ *              assim arrastar a tolerância responde na hora (≈30 ms em vez
+ *              de ≈110 ms). Ao FIXAR a seleção na camada, vale a resolução
+ *              cheia — o que é aplicado na foto nunca é a versão rápida.
+ */
+export function maskCanvasFor(layer, doc, selOverride, fast) {
+  const sel = selOverride || layer.mask;
+  if (!sel) return null;
+  const div = fast ? 2 : 1;
+  const key = JSON.stringify(sel) + '#' + contentSig(layer) + '@' + div;
+  const hit = selOverride ? (liveMask.key === key ? liveMask : null) : maskCache.get(layer);
+  if (hit && hit.key === key) return hit.canvas;
+
+  const b = basePixels(layer, doc, div);
+  const mask = buildMask(b.px, b.w, b.h, { ...sel, x: sel.x * b.s, y: sel.y * b.s });
+  const canvas = maskToCanvas(mask, b.w, b.h);
+  if (selOverride) liveMask = { key, canvas };
+  else maskCache.set(layer, { key, canvas });
+  return canvas;
 }
 
 function hasCurve(cv) {
@@ -236,25 +325,41 @@ export function composeDoc(scale, opts = {}) {
   return out;
 }
 
-/** Resultado final: camadas compostas + giro/nivelamento + corte. */
-export function renderResult(scale, opts = {}) {
+/** Leva um canvas do espaço do DOCUMENTO para o espaço do RESULTADO
+    (aplica giro, nivelamento e corte). Usado pelo resultado final e também
+    pelo desenho da seleção na tela, que precisa acompanhar a foto girada. */
+export function transformToOut(base, scale, ignoreCrop) {
   const doc = state.doc;
-  const g = docGeometry(doc, opts.ignoreCrop);
-  const base = composeDoc(scale, opts);
-  const ow = Math.max(1, Math.round(g.crop.w * scale));
-  const oh = Math.max(1, Math.round(g.crop.h * scale));
+  const g = docGeometry(doc, ignoreCrop);
   const simple = !doc.rotStep && !doc.angle && !doc.flipH && !doc.flipV &&
     g.crop.x === 0 && g.crop.y === 0 && Math.abs(g.crop.w - doc.w) < 0.5 && Math.abs(g.crop.h - doc.h) < 0.5;
   if (simple) return base;
-
-  const out = mkCanvas(ow, oh);
+  const out = mkCanvas(g.crop.w * scale, g.crop.h * scale);
   const ctx = out.getContext('2d');
   ctx.imageSmoothingQuality = 'high';
-  const V = new DOMMatrix().scaleSelf(scale).multiplySelf(g.full).scaleSelf(1 / scale);
-  ctx.setTransform(V);
+  ctx.setTransform(new DOMMatrix().scaleSelf(scale).multiplySelf(g.full).scaleSelf(1 / scale));
   ctx.drawImage(base, 0, 0);
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   return out;
+}
+
+/** Resultado final: camadas compostas + giro/nivelamento + corte. */
+export function renderResult(scale, opts = {}) {
+  return transformToOut(composeDoc(scale, opts), scale, opts.ignoreCrop);
+}
+
+/** Máscara da seleção já no espaço do resultado, no tamanho pedido. */
+export function selectionOverlayCanvas(layer, sel, scale) {
+  const doc = state.doc;
+  const m = maskCanvasFor(layer, doc, sel, true);
+  if (!m) return null;
+  const w = Math.max(1, Math.round(doc.w * scale));
+  const h = Math.max(1, Math.round(doc.h * scale));
+  const base = mkCanvas(w, h);
+  const ctx = base.getContext('2d');
+  ctx.imageSmoothingQuality = 'high';
+  ctx.drawImage(m, 0, 0, w, h);
+  return transformToOut(base, scale, state.tool === 'crop');
 }
 
 /** Maior retângulo (mesma orientação) que cabe dentro da foto girada.
