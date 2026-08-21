@@ -5,14 +5,14 @@
    ligamos os eventos.
    ============================================================ */
 
-import { state, activeLayer, makeLayer, beginChange, endChange, pushHistory, touch, emit, historyInfo, ADJ_DEFAULTS, BLEND_MODES, newCurve } from './state.js?v=3';
-import { GROUPS, BW } from './adjustments.js?v=3';
-import { PRESETS } from './presets.js?v=3';
-import { createCurveEditor } from './curves.js?v=3';
-import { drawHistogram } from './histogram.js?v=3';
-import * as vp from './viewport.js?v=3';
-import * as tools from './tools.js?v=3';
-import { resultSize, straightenCrop } from './render.js?v=3';
+import { state, activeLayer, makeLayer, beginChange, endChange, pushHistory, touch, emit, historyInfo, ADJ_DEFAULTS, BLEND_MODES, newCurve } from './state.js?v=4';
+import { GROUPS, BW } from './adjustments.js?v=4';
+import { PRESETS } from './presets.js?v=4';
+import { createCurveEditor } from './curves.js?v=4';
+import { drawHistogram } from './histogram.js?v=4';
+import * as vp from './viewport.js?v=4';
+import * as tools from './tools.js?v=4';
+import { resultSize, straightenCrop } from './render.js?v=4';
 
 const $ = s => document.querySelector(s);
 const el = (tag, cls, html) => { const n = document.createElement(tag); if (cls) n.className = cls; if (html != null) n.innerHTML = html; return n; };

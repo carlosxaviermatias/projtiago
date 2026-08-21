@@ -4,12 +4,12 @@
    tela cheia e o salvamento automático da sessão.
    ============================================================ */
 
-import { state, onChange, emit, undo, redo, pushHistory, activeLayer, ADJ_DEFAULTS, newCurve, touch } from './state.js?v=3';
-import * as vp from './viewport.js?v=3';
-import * as tools from './tools.js?v=3';
-import * as ui from './ui.js?v=3';
-import * as io from './io.js?v=3';
-import { invalidateAll } from './render.js?v=3';
+import { state, onChange, emit, undo, redo, pushHistory, activeLayer, ADJ_DEFAULTS, newCurve, touch } from './state.js?v=4';
+import * as vp from './viewport.js?v=4';
+import * as tools from './tools.js?v=4';
+import * as ui from './ui.js?v=4';
+import * as io from './io.js?v=4';
+import { invalidateAll } from './render.js?v=4';
 
 const $ = s => document.querySelector(s);
 

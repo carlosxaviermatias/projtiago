@@ -7,10 +7,10 @@
    escala não muda o resultado: o que o aluno vê é o que ele salva.
    ============================================================ */
 
-import { state, ADJ_DEFAULTS } from './state.js?v=3';
-import { getImage } from './assets.js?v=3';
-import { applyAdjustments, isNeutral } from './pipeline.js?v=3';
-import { buildMask, maskToCanvas, refScale } from './selection.js?v=3';
+import { state, ADJ_DEFAULTS } from './state.js?v=4';
+import { getImage } from './assets.js?v=4';
+import { applyAdjustments, isNeutral } from './pipeline.js?v=4';
+import { buildMask, maskToCanvas, refScale } from './selection.js?v=4';
 
 const cache = new WeakMap();       // camada → {key, canvas}
 let stampCache = { key: '', canvas: null };
