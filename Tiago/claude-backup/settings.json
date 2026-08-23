@@ -1,4 +1,5 @@
 {
   "effortLevel": "medium",
-  "agentPushNotifEnabled": true
+  "agentPushNotifEnabled": true,
+  "inputNeededNotifEnabled": true
 }
