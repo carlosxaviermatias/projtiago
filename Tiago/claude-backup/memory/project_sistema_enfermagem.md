@@ -1,23 +1,25 @@
 ---
 name: project-sistema-enfermagem
-description: "Sistema Enfermagem — acompanhamento de puericultura na área restrita do site da Josiane, espelhando os 5 indicadores da APS"
+description: "Sistema Enfermagem — acompanhamento de puericultura na área restrita do site da Josiane, EM PRODUÇÃO com 108 pacientes reais"
 metadata: 
   node_type: memory
   type: project
   originSessionId: 0841758b-1ec9-4a80-ae5e-8d842c9ae0f2
-  modified: 2026-08-21T23:14:35.725Z
+  modified: 2026-08-23T12:30:35.918Z
 ---
 
-Sistema de acompanhamento de pacientes dentro do site da Josiane (ver [[project-site-josiane]]), em `Josiane Tavares/site-josiane/admin/pacientes.html`, rota `/admin/pacientes`. Criado em 21/08/2026.
+Sistema de acompanhamento de pacientes dentro do site da Josiane (ver [[project-site-josiane]]), em `~/Documents/github/site-josiane-push/admin/pacientes.html`. **No ar** desde 22/08/2026 em https://drajosianetavares.com.br/sistema/pacientes.
 
-**⚠️ LER `SISTEMA-ENFERMAGEM.md` na raiz do projeto antes de retomar** — é o handoff completo (motor, modelo de dados, próximos passos).
+**⚠️ LER `SISTEMA-ENFERMAGEM.md` na raiz do repo antes de retomar** — handoff completo e atualizado (23/08/2026): motor de pontuação, modelo de dados, fluxo de teste local, segurança, pendências.
 
-**O que é:** puericultura até 2 anos, como **checklist de contadores** — não guarda peso, altura nem data de consulta, porque isso já está no e-SUS. 5 critérios de 0,20 cada (tudo ou nada): visita domiciliar 30d **e** 6m · 1ª consulta ≤30d · 9 consultas até 2a · 9 dessas com peso/altura · 4 vacinas (Pneumo10V, Penta, VIP, Tríplice viral). Ela clica `−`/`+` a cada atendimento e o gráfico se move. **Dados agora são REAIS: 108 crianças da ESF Granja (Paty do Alferes/RJ)**, importadas em 21/08/2026 do CSV do e-SUS "acompanhamento de condições de saúde". `pacientes.json` foi tirado do Git (`git rm --cached` + `.gitignore` + removido do `git add` do sync) ANTES de gravar os dados reais — o histórico local só tem as fictícias e não há remoto. CPF/CNS ficaram de fora. Medições de peso/altura podem exceder consultas (medem na vacina) — a trava antiga foi removida. ⚠️ `vis6m` veio quase todo 0: o CSV só traz a data da 1ª e 2ª visita, não dá pra saber se houve visita na janela dos 6 meses — ela precisa marcar manualmente.
+**O que é:** puericultura até 2 anos, checklist de contadores (não guarda peso/altura/datas — isso é do e-SUS). **6 critérios** de 1/6 cada (mudou de 5→6 em 22-23/08: visita de 30 dias e de 6 meses viraram critérios separados, não mais "1 dos dois"). Dados são **108 crianças reais** da ESF Granja (Paty do Alferes/RJ), mantidas por **importação automática do CSV do e-SUS** direto no painel (botão "Importar CSV" — casa por nome, atualiza quem existe, cadastra quem é novo, nunca duplica) — substituiu totalmente a digitação manual.
 
-**Why:** em 21/08/2026 ele mandou o relatório oficial `relatorio_desenvolvimento_inf.pdf` e pediu para tirar a digitação de peso/altura. Eu conferi a fórmula nos 18 registros do PDF e ela fecha exatamente — 5 critérios × 0,2 = coluna *Pontuação*. **Foi uma reescrita: o motor antigo de 9 marcos com janelas em dias de vida deixou de existir.** O propósito declarado é o caso em que **falta pouco tempo** para bater a meta, daí o estado `apertado` (sobra menos de 30 dias por consulta faltante) e a fila ordenada por prazo.
+**Avisos de busca ativa do ACS (regra específica, 23/08):** cards separados pra visita de 30 dias e de 6 meses, mas só mostram quem **ainda dá tempo de agir** — quem já perdeu o prazo some da lista (a pontuação geral continua contando como não cumprido, só a lista de "correr atrás" que fica enxuta). A visita de 6 meses só entra na lista quando a criança **completa** 6 meses (calculado por calendário real via `diasAoCompletar()`, não em dias corridos fixos) e sai quando passa de 6m29d.
 
-**How to apply:** o gráfico tem 3 leituras — barras por critério, distribuição de pontuação (0,00…1,00, igual à coluna do relatório) e fila por prazo. Ao estender para gestante, criar nova lista de critérios + `avaliarX()` irmão. **Notificação hoje é só painel recalculado na abertura** — e-mail automático (node-cron + nodemailer) é fase 2 e ele sabe.
+**Segurança (auditoria 23/08, ver SEGURANCA.md):** duas falhas críticas corrigidas — `express.static` expunha `app.js`/`package.json` publicamente (agora allowlist), e login sem rate limit (agora 8 erros/15min bloqueiam). `pacientes.json` nunca vai pro Git, fica em `~/dados-protegidos/` no servidor (fora da pasta de build, que é recriada a cada deploy). CPF criptografado (AES-256-GCM). **Pendente:** definir `SESSION_SECRET` no painel do Hostinger.
 
-**⚠️ LGPD:** avisei que o desenho atual NÃO serve para paciente real — `pacientes.json` é versionado no Git e vai pro GitHub pelo sync, senha única sem usuário individual, sem log de acesso. Dado de saúde é sensível (art. 11). Se ele quiser usar de verdade: tirar do Git, Postgres/Supabase (o do CRM já serve), login por pessoa. Enquanto for demo fictícia, ok.
+**Interface (22-23/08):** gráficos em barras/rosca/pizza (SVG à mão, sem lib), todo clicável → filtra lista de crianças. Exportação em PDF (botão ⇩ em cada bloco, `window.print()`, sem lib externa). Responsivo — tabelas viram cartões no celular. Logo no topo volta pra "Onde estou"; barra de abas fica fixa ao rolar (`position:sticky`, precisa ser filho direto de `#app` — um wrapper do tamanho da própria barra quebra o sticky, já foi bug real), com botão de ocultar/mostrar.
 
-**Deploy (21/08/2026):** repo local iniciado e commitado (2 commits). Falta criar `tavaresmatias/josianetavares` **privado** no GitHub — não consegui, `gh` não está instalado nesta máquina e SSH autentica como `carlosxaviermatias`. Comandos de push prontos no handoff.
+**Why:** ela presta contas de indicadores da APS e precisa saber, antes do indicador fechar oficialmente, onde está e qual criança buscar. Foi ela quem corrigiu a regra dos 6 critérios e a de busca ativa — confiar no domínio dela sobre a regra oficial do indicador, não assumir que a primeira implementação estava certa.
+
+**How to apply:** ao propor mudança nesse sistema, sempre testar local primeiro (fluxo documentado no handoff: servidor com `DADOS_DIR` temporário + reimportar o CSV real de `~/Downloads/acompanhamento-condicao-saude_2026-08-21-20-10.csv`) antes de subir. Depois do `git push`, aguardar 1-2min de redeploy do Hostinger e confirmar com `curl` antes de dizer que terminou. **LGPD resolvida** para o desenho atual (dado fora do Git, criptografado, senha com rate limit) — mas segue sendo painel de senha única, sem log de acesso por pessoa; se crescer além dela, vale reconsiderar.

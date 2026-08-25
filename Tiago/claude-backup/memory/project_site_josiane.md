@@ -1,14 +1,14 @@
 ---
 name: project-site-josiane
-description: "Site da enfermeira Josiane Tavares (drajosianetavares.com.br) — informativo sobre saúde da mulher, com painel admin e área de afiliados"
+description: "Site da enfermeira Josiane Tavares (drajosianetavares.com.br) — EM PRODUÇÃO, informativo + painel admin + sistema de puericultura"
 metadata: 
   node_type: memory
   type: project
   originSessionId: 0841758b-1ec9-4a80-ae5e-8d842c9ae0f2
-  modified: 2026-08-21T15:33:32.820Z
+  modified: 2026-08-23T12:30:44.934Z
 ---
 
-Site em `Josiane Tavares/site-josiane/`, criado em 2026-08-21. Domínio previsto: **drajosianetavares.com.br**.
+**⚠️ Caminho do repo mudou**: agora é `~/Documents/github/site-josiane-push/` (repo GitHub `carlosxaviermatias/site-josiane`), não mais `Josiane Tavares/site-josiane/`. **No ar desde 22/08/2026** em https://drajosianetavares.com.br, deploy automático via Hostinger Web App a cada `git push`. Ver [[project-sistema-enfermagem]] para o sistema de puericultura (a parte que mais evoluiu) e `SEGURANCA.md`/`SISTEMA-ENFERMAGEM.md` no repo para o handoff técnico completo.
 
 Mesma arquitetura do site do Dr. Jonatan (ver [[project-jonatan]] e [[github-sync-setup]]): Node+Express, todo o conteúdo em `data.json`, `loader.js` monta as páginas, painel em `/admin`. Roda como `site-josiane` na porta 3002 (`.claude/launch.json`).
 

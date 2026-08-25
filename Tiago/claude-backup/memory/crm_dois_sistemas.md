@@ -7,6 +7,38 @@ metadata:
   originSessionId: 6bb0fcdd-94f6-4516-81a2-25c22bb37581
 ---
 
+## 💰 Fase G — Financeiro (2026-08-24): implementada e testada localmente, AINDA NÃO DEPLOYADA
+
+Nova aba **Financeiro** no CRM Node (`Tiago/site-tiagotavares/crm/`). Arquivos:
+`financeiro.js` (novo), rotas `/api/crm/fin/*` em `index.js`, tabelas em `db.js`
+(`crm_fin_categorias` + `crm_fin_lancamentos`), UI em `public/index.html`,
+card no Início via `painel.js`.
+
+**Decisões de modelagem que valem lembrar:**
+- UM livro-caixa só (`tipo` = receita|despesa), não duas tabelas.
+- Data tripla: `competencia` / `vencimento` / `pagamento`. `pagamento IS NULL` = em aberto.
+  É isso que separa regime de caixa (o que bateu na conta) de previsto.
+- **Repasse de parceria é automático**: receita com `parceiro` + `parceria_perc` gera
+  sozinha a despesa vinculada por `origem_id` (ON DELETE CASCADE). Com parcelas, gera
+  um repasse POR PARCELA. Repasse já pago nunca é reescrito por edição na receita.
+- Categoria com `grupo='Fixo'` alimenta o **ponto de equilíbrio** (média dos 3 meses
+  ANTERIORES — o mês corrente está incompleto e puxaria a média pra baixo).
+- Exclusão de categoria é lógica (`ativo=0`), pro histórico não perder o rótulo.
+- Despesa `reembolsavel=1` → botão "Recebi" cria a receita de reembolso e limpa a flag.
+
+**Migração**: nenhuma manual. `ensureSchema()` cria as tabelas e o seed de 28
+categorias roda na primeira chamada de `/fin/*` em produção.
+
+**Testado de ponta a ponta** com Postgres real (embedded-postgres na porta 55432 +
+SSL self-signed, porque `db.js` força `ssl:{rejectUnauthorized:false}`) e HTTP real
+contra `node app.js` na 3999: 60+ asserções, todas verdes, mais verificação visual no
+navegador (painel, lançamentos, modal, mobile). Sem erro de console.
+
+⚠️ **Para publicar**: `git push` no repo `site-tiagotavares` (Hostinger faz deploy
+automático). Ver [[feedback_deploy_commands]].
+
+---
+
 ## ✅ Deployado (2026-07-06): pré-visualização de docs, anti-duplicata, limpeza de órfão
 
 Continuação da sessão (Tiago confirmou: login com senha nova OK, descrição de docs OK).
