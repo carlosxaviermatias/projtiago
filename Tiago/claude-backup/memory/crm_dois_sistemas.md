@@ -25,6 +25,10 @@ card no Início via `painel.js`.
   ANTERIORES — o mês corrente está incompleto e puxaria a média pra baixo).
 - Exclusão de categoria é lógica (`ativo=0`), pro histórico não perder o rótulo.
 - Despesa `reembolsavel=1` → botão "Recebi" cria a receita de reembolso e limpa a flag.
+- **Comprovantes** (recibo/boleto/print do PIX) em `crm_fin_comprovantes`, arquivos em
+  `data/docs/financeiro/{lancamento_id}/`. Só PDF e imagem, 15 MB. ⚠️ Aqui o
+  `db.syncDocs` é chamado TAMBÉM na remoção — nos módulos de lead/processo não é, e por
+  isso lá o arquivo apagado volta no redeploy (pendência antiga registrada acima).
 
 **Migração**: nenhuma manual. `ensureSchema()` cria as tabelas e o seed de 28
 categorias roda na primeira chamada de `/fin/*` em produção.

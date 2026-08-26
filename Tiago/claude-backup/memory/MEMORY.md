@@ -34,6 +34,8 @@
 
 - [Clieent CRM - Formulário de Proposta](crm_clieent_proposal_form.md) — Criar nova proposta; **8+ templates** especializados (Escritura de Permuta, Alvará, Ambiental, Análise de Documentação, Averbação, Certidões, Compra/Venda); Campos: Tema, Oportunidade, Cliente, E-mail/WhatsApp, Tipo, Vencimento, Link; Valores com desconto dinâmico; **2 formatos**: Arquivo (PDF) vs Online (link); Integração WhatsApp; Workflow "Cadastrar e Prosseguir"
   
+- [Segurança do site/CRM](seguranca_site_tiagotavares.md) — ⚠️ auditoria 2026-08-24: `express.static(__dirname)` publicava os PDFs de processo dos clientes SEM LOGIN (confirmado em produção); corrigido, falta deployar · regras que não podem ser desfeitas
+
 ## Suporte
 
 - [Deploy Hostinger Node](hostinger_node_deploy.md) — Sites Node (Jonatan/Romalha) rodam como Web App conectado ao GitHub na Hostinger (deploy auto por push); NÃO SSH/PM2/Actions
