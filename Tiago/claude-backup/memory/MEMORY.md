@@ -27,6 +27,8 @@
 
 ## Referências Externas
 
+- [Lei 15.472/2026 — natureza alimentar dos honorários](reference_lei_15472_2026.md) — altera Estatuto OAB (arts. 22 §9º e 24); usar em cláusula de contratos de honorários
+
 - [Tabela OAB/RJ 2025](reference_tabela_oab_rj.md) — PDF em ~/Desktop/tabela oab rj.pdf; pisos já conferidos (demarcatória 9.20 = R$ 12.000, reivindicatória, usucapião, apelação, perícia) + regra dos 20% do valor econômico; ⚠️ ler com pypdf, não há pdftotext no Mac
 
 - [Clieent CRM - Exploração Completa](crm_clieent_full_exploration.md) — CRM para advogados (app.clieent.com); **273 clientes, 11 propostas, 92 tarefas, 59 oportunidades**; 13 seções exploradas (Banco de Clientes, Propostas, Oportunidades, Tarefas, Documentos, Relatórios, etc); design: roxo/indigo primária, verde fluorescente para números; integração com WhatsApp; chat integrado
