@@ -5,9 +5,10 @@ metadata:
   node_type: memory
   type: project
   originSessionId: 6bb0fcdd-94f6-4516-81a2-25c22bb37581
+  modified: 2026-08-26T20:38:50.613Z
 ---
 
-## 💰 Fase G — Financeiro (2026-08-24): implementada e testada localmente, AINDA NÃO DEPLOYADA
+## 💰 Fase G — Financeiro: ✅ DEPLOYADA (confirmado em 2026-08-26)
 
 Nova aba **Financeiro** no CRM Node (`Tiago/site-tiagotavares/crm/`). Arquivos:
 `financeiro.js` (novo), rotas `/api/crm/fin/*` em `index.js`, tabelas em `db.js`
@@ -38,8 +39,9 @@ SSL self-signed, porque `db.js` força `ssl:{rejectUnauthorized:false}`) e HTTP 
 contra `node app.js` na 3999: 60+ asserções, todas verdes, mais verificação visual no
 navegador (painel, lançamentos, modal, mobile). Sem erro de console.
 
-⚠️ **Para publicar**: `git push` no repo `site-tiagotavares` (Hostinger faz deploy
-automático). Ver [[feedback_deploy_commands]].
+✅ **Publicado.** Commit `547ff00` no `site-tiagotavares`, já em `origin/main` (Hostinger
+faz deploy automático). A correção de segurança do `express.static(__dirname)` também
+está no ar (ver `app.js:112`). Ver [[feedback_deploy_commands]] e [[seguranca_site_tiagotavares]].
 
 ---
 

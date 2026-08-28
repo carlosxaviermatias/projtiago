@@ -2,6 +2,7 @@
 
 ## Projetos Ativos
 
+- [Caso Caterina Arias x JMSN Informática](project_caterina_arias_jmsn.md) — computador retido p/ conserto e nunca devolvido; declaração PROCON 26/08/2026, empresa não respondeu; ação obrigação de fazer + danos
 - [Caso Carlos Castilho](project_carlos_castilho.md) — Revisional + superendividamento; aposentado INSS com consignados abusivos (cartões RMC/RCC que não amortizam, seguro embutido, desconto associativo); pasta Desktop/KAKÁ - RENATA
 - [Embargo Giseli](project_embargo_giseli.md) — Embargos de terceiro (Fiat/Palio, contrato de gaveta) + inventário em Além Paraíba/MG; **liminar indeferida 29/07; manifestação de terceira interessada protocolada no inventário em 13/08/2026**; ⚠️ contém decisões táticas a manter (o que NÃO citar/juntar)
 - [Brenno — IPTU Petrópolis](project_brenno_iptu_petropolis.md) — impugnação administrativa; imóvel em Zona Rural certificado pelo próprio Município; ⚠️ prazo vence início de set/2026 e há decisão tática de NÃO fazer aritmética da base de cálculo
@@ -17,7 +18,7 @@
 - [FotoLab (editor de imagens)](project_curso_fotografia_editor.md) — editor estilo Photoshop no site do curso; ⚠️ o repo `lightdrift-libraw` que ele mandou copiar é addon de servidor e não servia; **no ar** em fotografia.tiagotavares.com.br/editor.html
 - [FotoQuest 2D](project_curso_fotografia_jogo2d.md) — Jogo com 20 fases, fotômetro/visor como capacidade da câmera, direção de cena; armadilhas de teste e desbloqueio retroativo
 - [CRM Advogado](project_crm_advogado.md) — Funil comercial; migração Python→Node.js **COMPLETA** (roadmap A→F) no ar em tiagotavares.adv.br/crm; ⚠️ LER [[crm_dois_sistemas]] PRIMEIRO
-- [CRM - DOIS Sistemas + Migração Node](crm_dois_sistemas.md) — ⚠️ leitura pra retomar o CRM Node em produção. **✅ ROADMAP A→F COMPLETO (2026-07-04)**: Postgres/Supabase (projeto `crm-tiago`) · funil+cadastro+docs+tags · propostas+assinatura (PDF/pdfkit+e-mail/nodemailer) · painel Início/Tarefas/Anotações · Contatos · Processos+DataJud/CNJ · Google Agenda+Contatos (OAuth) · sessão persistente+senha via env. Tudo deployado e verificado em produção. Senha painel `tiago2026` **+ Fase G Financeiro (livro-caixa, repasse de parceria automático, ponto de equilíbrio) — pronta e testada em 2026-08-24, falta `git push` pra ir ao ar**
+- [CRM - DOIS Sistemas + Migração Node](crm_dois_sistemas.md) — ⚠️ leitura pra retomar o CRM Node em produção. **✅ ROADMAP A→F COMPLETO (2026-07-04)**: Postgres/Supabase (projeto `crm-tiago`) · funil+cadastro+docs+tags · propostas+assinatura (PDF/pdfkit+e-mail/nodemailer) · painel Início/Tarefas/Anotações · Contatos · Processos+DataJud/CNJ · Google Agenda+Contatos (OAuth) · sessão persistente+senha via env. Tudo deployado e verificado em produção. Senha painel `tiago2026` **+ Fase G Financeiro (livro-caixa, repasse de parceria automático, ponto de equilíbrio) — ✅ no ar (confirmado 2026-08-26)**
 
 - [OneDrive: domínio órfão no Mac](project_onedrive_dominio_orfao.md) — ⚠️ 40 pastas invisíveis no Finder (inclui `01.CLIENTES`) por File Provider órfão de instalação antiga; **8,4 GB nunca sincronizados resgatados em ~/Documents/FORA-DO-ONEDRIVE** (cópia única!); reset da Microsoft NÃO resolve (2026-07-29)
 - [tiagotavares.com.br → redirect](project_tiagotavares_combr_redirect.md) — WordPress abandonado, domínio vira alias/redirect 301 pra tiagotavares.adv.br; ⚠️ e-mail da UOL NUNCA mexer (só registros A)
@@ -42,4 +43,6 @@
 - [Comandos de Deploy](feedback_deploy_commands.md) — "deploy Jonathan" e "deploy Tiago" fazem git push
 - [Backup Painel](backup_painel.md) — Backup rotativo 20 min, máx. 10, Mac (launchd) + TrueNAS (cron)
 - [Teste de Ponta a Ponta](feedback_teste_ponta_a_ponta.md) — py_compile não basta p/ rotas com I/O (upload, sockets); exigir teste HTTP real antes de declarar "testado"
+- [OneDrive: cp não sincroniza](onedrive_cp_nao_sincroniza.md) — ⚠️ sobrescrever arquivo no OneDrive não dispara sync; `rm` + `cp` para gerar inode novo
+- [Formato de Orçamentos](feedback_orcamentos_formato.md) — 1 página no timbrado, seguindo `Orçamento - modelo.docx`; gerar editando o modelo, não do zero
 - [Endereçamento de Peças](feedback_enderecamento_pecas.md) — ⚠️ usar "DOUTO JUÍZO FEDERAL DA ..."; NUNCA "Excelentíssimo Senhor Doutor Juiz", mesmo que o arquivo-modelo traga assim
