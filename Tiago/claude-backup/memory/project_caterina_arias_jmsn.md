@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: project
   originSessionId: be74a16d-48cc-4ed7-8b54-7a4cf6c23cc2
-  modified: 2026-08-27T21:13:54.277Z
+  modified: 2026-08-28T13:43:31.456Z
 ---
 
 Cliente: Caterina Cristina Almeida Arias, CPF 044.285.885-00. Trabalha em hotel; conheceu o proprietário da JMSN Informática (Três Rios/RJ) por indicação do patrão em 2024.
@@ -34,6 +34,23 @@ A conferir antes de ajuizar: comprovação de que o pagamento saiu do cartão da
 ✅ **Qualificação completa da cliente** (confirmada pelo Tiago + RG lido em `rg.pdf` na pasta): brasileira, natural de Salvador/BA, nascida 06/04/1985, **solteira, autônoma**, RG 35.746.504-6 DETRAN/RJ, CPF 044.285.885-00, domiciliada na **Rodovia BR-040, Km 828, Hotel Fazenda, Simão Pereira/MG, CEP 36123-000** (não é Três Rios/RJ como presumido inicialmente — ela trabalha no hotel-fazenda). Contrato final: `contrato/Contrato - Caterina Arias v4.docx`.
 
 ⚠️ Domicílio em MG x foro escolhido (Três Rios/RJ, presumindo que é lá que a JMSN está sediada) — confirmar endereço/CNPJ da JMSN antes de ajuizar; art. 101, I, CDC permite domicílio do consumidor OU do réu.
+
+**28/08/2026: identificação do autor confirmada.** Cliente subiu docs de CNPJ (`dados da pessoa jurídica.pdf` + `CADASTRO NACIONAL DA PESSOA JURÍDICA.pdf`). JMSN Informática = nome fantasia de **Jair Mendes da Silva Neto**, CNPJ 33.314.271/0001-70, **empresário individual** (natureza 213-5 — responde com patrimônio pessoal), aberta em 10/04/2019, **situação cadastral INAPTA desde 23/06/2026 por omissão de declarações**. Tel (24) 99657-711, e-mail yuukijmsn@gmail.com. Endereço vem mascarado no doc da Receita (não obtido).
+
+**Pasta `Boletim de Ocorrência/` criada** com 2 PDFs montados a partir de `provas/` (que a cliente organizou em 5 subpastas numeradas — conversas Jair 2024, Jair 2026, Carlinhos/patrão, comprovantes, 13 áudios .ogg):
+- `01 - Provas Principais (PROCON, Empresa e Orçamento).pdf` — capa-resumo dos fatos + declaração PROCON + dados CNPJ + lista de peças orçadas.
+- `02 - Conversas e Comprovantes de Pagamento.pdf` — todas as conversas em ordem cronológica com legenda de data + comprovantes (2 Pix + 3 faturas + boleto).
+Áudios ficaram de fora (PDF não comporta áudio) — nota na capa remetendo a `provas/05 - Audios`, a apresentar pelo celular se o policial pedir.
+
+**28/08/2026 — VALOR REAL DOS PAGAMENTOS: R$ 8.365,30** (não R$ 7.000). Cinco operações, todas comprovadas: Pix R$ 1.510,30 (28/06/2024 15h43) · Pix R$ 215,00 (11/07/2024 17h31) · cartão final 6718 "MP*JMSNINFO" 10×R$ 134 = R$ 1.340 · cartão final 7290 "MP*JMSNINFO" 10×R$ 315 = R$ 3.150 · cartão final 5653 "JMSNINFO" 10×R$ 215 = R$ 2.150 (todas as compras de cartão em 15/07/2024). ⚠️ O Tiago inicialmente somou R$ 6.215,30 porque confundiu o parcelamento de 10×215 com o Pix de 215 — **são pagamentos distintos**. Só há a 1ª fatura de cada cartão (parcelas 01/10 e 02/10); falta comprovar o pagamento das 10 parcelas.
+
+**PROVA DECISIVA — conversa de 18/03/2026** (`provas/02 - Conversa com Jair Zap 2026/04`): após "Devolve por favor", o réu responde por escrito "Vou entregar tudo direitinho aí", "Pode ficar tranquila dona Catarina", "E vcs vão ter 12 meses de garantia", "N vou descumprir n". É **confissão da posse + reconhecimento da obrigação**, o que interrompe a prescrição (art. 202, VI, CC) e sustenta a tutela de urgência.
+
+**Réu identificado** (`dados do jair.pdf`): Jair Mendes da Silva Neto, CPF 127.493.497-45, nasc. 21/04/1987, mãe Sonia Maria Freitas da Silva, **Rua Domingos da Silva Filho nº 1 (e 21), Vila Isabel, Três Rios/RJ, CEP 25815-670** → competência de Três Rios confirmada (art. 4º, I e II, Lei 9.099/95). Tel (24) 2255-6796, 99965-7711, 99928-1153. **Emprego atual: ENGEMON IT Tecnologia e Serviços Ltda**, operador de computador, 1-2 salários mínimos. Outra empresa: CNPJ 14.484.785/0001-20 (2011) — investigar patrimônio.
+
+⚠️ **Penhora de salário foi descartada** (28/08): pesquisa confirmou que é ato de execução (não cabe na inicial); salário é impenhorável (art. 833, IV, CPC); o **Tema 1.230 do STJ está em julgamento sem tese fixada** e a proposta do relator Min. Raul Araújo protege integralmente 1-2 salários mínimos — exatamente a faixa do réu. Não reintroduzir esse pedido.
+
+**PETIÇÃO INICIAL redigida** (`peticao/Inicial - Caterina x Jair (JMSN).docx`), a partir do modelo `01.CLIENTES/DANILO - REEBOLSO TV/00 - peticao inicial.docx` (mesmo timbrado, mesmo JEC). Tese central: **contrato de depósito (arts. 627 e 629 CC) e dever autônomo de restituir** — deliberadamente NÃO ancorada em vício do produto, para fugir da decadência do art. 26 do CDC; art. 18 §1º entra só como fundamento subsidiário. Danos morais R$ 10.000; valor da causa R$ 18.365,30. Jurisprudência usada e **verificada**: Súmula 75 do TJRJ **cancelada** (Órgão Especial, proc. 0056716-18.2018.8.19.0000, dez/2018) · desvio produtivo (REsp 1.634.851 e 1.737.412, Nancy Andrighi) · REsp 2.101.225 e 1.297.690 (prazo do art. 18) · TJMG ap. 5125252-57.2016.8.13.0024 (Des. Fernando Lins, 18ª CC) · TJMS proc. 0817607-58.2015.8.12.0001 (notebook retido). ⚠️ Não inventar ementas — o modelo do Danilo tinha citações marcadas "A CONFERIR"; as daqui foram descritas em teor, sem transcrição fabricada.
 
 **Procuração ad judicia gerada** (`contrato/Procuração - Caterina Arias.docx`), a partir do modelo que o Tiago tem em `contrato/Procuração_modelo.docx` (mesmo texto do genérico em `~/Desktop/Procuração_modelo.docx`, salvo o número de CNH que não veio ao caso). Finalidade: ação de obrigação de fazer c/c danos materiais e morais contra JMSN Informática, JEC de Três Rios/RJ, cláusula ad judicia et extra padrão + cumprimento de sentença. Falta só a data de assinatura.
 
