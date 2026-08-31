@@ -23,65 +23,93 @@ O módulo de **Contas** foi criado recentemente (31/08/2026) e implementa:
 - Livro-caixa com data tripla (competência/vencimento/pagamento)
 - Suporte a cartões com vencimento próprio
 
-## Status da investigação
+## Cadeia Completa da Requisição
 
-✅ **Repositório clonado:** `carlosxaviermatias/site-tiagotavares`  
-✅ **Documentação lida:**
-- `FINANCEIRO.md` — módulo do escritório (completo, deployado)
-- `CONTAS.md` — módulo pessoal (novo, em implementação)
-- `MELHORIAS_FINANCEIRO_G.md` — tipos de parceria e custos fixos
+```
+Frontend (contas-app/public/index.html)
+    ↓
+POST /api/contas/lancamentos
+    ↓
+Router (crm/contas-router.js, linha 208)
+    ↓
+Backend função criar() (crm/contas.js, linha 666)
+    ↓
+INSERT INTO pes_lancamentos (cartao_id=...)
+```
 
-⚠️ **Achado no FINANCEIRO.md §6 (Pendente, item 1):**
-> **Vincular 42 parcelas de cartão aos 5 cartões.** Estão em aberto com `forma = 'Cartão'` mas `cartao_id = NULL`, então não entram em nenhuma fatura.
+### 1️⃣ Frontend → Backend
+- **URL:** `POST /api/contas/lancamentos`
+- **Parâmetro:** `cartao_id: origem.startsWith('k') ? origem.slice(1) : null` (linha 1200)
+- Exemplo: usuário seleciona "💳 Nubank" → `origem = "k5"` → `cartao_id = 5`
 
-## Arquivos relevantes
+### 2️⃣ Router
+- **Arquivo:** `crm/contas-router.js`, linha 208
+- **Código:** `router.post('/lancamentos', wrap(async (req, res) => erroOu(res, await contas.criar(req.body), 201)))`
+- ✅ Passa `req.body` completo (com `cartao_id`)
 
-### Backend
-- `crm/contas.js` — lógica do módulo Contas
-- `crm/contas-router.js` — rotas HTTP (`/api/contas/*`)
-- `crm/db.js` — schema (tabelas `pes_*`)
+### 3️⃣ Backend - Função criar()
+- **Arquivo:** `crm/contas.js`, linhas 666-741
+- **Linhas 676-678:** Valida se `cartao_id` é inteiro e se cartão existe
+- **Linha 726:** Insere `cartaoId` na tabela `pes_lancamentos`
+- ✅ Código correto para inserir cartão
 
-### Frontend
-- `contas-app/public/index.html` — UI do app Contas
-- `crm/web-app.js` — compartilhado (segurança, sessão, login)
-- `crm/pdf-texto.js` — leitor de PDFs
-- `crm/leitor-contas.js` — parser de fatura/boleto
+## Verificação de Integridade
 
-### Servidor
-- `contas-app/server.js` — inicializador
+| Componente | Status | Detalhe |
+|---|---|---|
+| **Frontend - carregar cartões** | ✅ | `api('GET','/api/contas/cartoes')` na linha 566 |
+| **Frontend - formulário** | ✅ | Select renderizado com opções de cartão (prefixo 'k') |
+| **Frontend - envio** | ✅ | `cartao_id` extraído corretamente na linha 1200 |
+| **Router** | ✅ | Rota POST `/lancamentos` conecta ao `contas.criar()` |
+| **Backend - criar()** | ✅ | Aceita e insere `cartao_id` |
+| **Backend - validação** | ✅ | Verifica se cartão existe antes de inserir |
+| **Schema** | ✅ | Tabela `pes_lancamentos` tem coluna `cartao_id` |
+| **Schema** | ✅ | Tabela `pes_cartoes` existe e é consultada |
 
-## Investigação realizada
+## Possíveis Causas do Bug
 
-### Backend (contas.js)
-✅ **Função `criar(body)` (linha 666):**
-- Aceita `cartao_id` corretamente (linha 676-678)
-- Valida se o cartão existe (linha 678)
-- Passa `cartao_id` para o INSERT na tabela `pes_lancamentos` (linha 726)
-- Lógica correta: com cartão, `pagamento = NULL` (linha 688)
+### Hipótese 1: Frontend não carrega cartões
+- `ST.cartoes` vazio → select sem opções
+- Usuário não consegue selecionar cartão
 
-✅ **Schema no banco:** Tabela `pes_cartoes` existe e é consultada corretamente
+**Testar:**
+```javascript
+// No console do navegador
+console.log(ST.cartoes)  // deve ter lista de cartões
+```
 
-### Frontend (contas-app/public/index.html)
-✅ **Carregamento de cartões (linha 566):**
-- API `/api/contas/cartoes` é chamada na inicialização
-- Cartões armazenados em `ST.cartoes`
+### Hipótese 2: Backend rejeita silenciosamente
+- `inteiro(body.cartao_id)` retorna `null` (ID inválido)
+- Ou cartão não existe na base (`obterCartao()` retorna `null`)
 
-✅ **Formulário de lançamento (linhas 1068-1069):**
-- Select com opções de cartão renderizado dinamicamente
-- Opções têm prefix `k` (ex: `value="k5"` para cartão ID 5)
+**Testar:**
+```bash
+curl -X POST https://contas.tiagotavares.adv.br/api/contas/lancamentos \
+  -H "Content-Type: application/json" \
+  -d '{
+    "tipo": "despesa",
+    "descricao": "Teste",
+    "valor": 100,
+    "categoria_id": 1,
+    "cartao_id": 5,
+    "vencimento": "2026-08-31"
+  }'
+```
 
-✅ **Envio de dados (linha 1200):**
-- `cartao_id: origem.startsWith('k') ? origem.slice(1) : null`
-- Lógica correta para extrair ID do cartão
+### Hipótese 3: Cartão não existe no banco
+- Nenhum cartão foi criado em `pes_cartoes`
+- IDs nos cartões criados não correspondem aos IDs que o frontend tenta usar
 
-### Router (contas-router.js)
-❓ **Não verificado ainda** - precisa confirmar se `/api/contas/lancamentos` está conectado à função `criar()`
+**Verificar:**
+```sql
+SELECT id, nome, dia_fechamento, dia_vencimento FROM pes_cartoes;
+```
 
-## Próximos passos
+## Próximos Passos Recomendados
 
-1. [ ] Verificar o arquivo `crm/contas-router.js` para confirmar rota POST
-2. [ ] Testar lançamento de cartão via API (POST com cartao_id)
-3. [ ] Verificar logs de erro em produção
-4. [ ] Confirmar se há erro silencioso no lado do servidor
-5. [ ] Implementar correção (se necessária)
-6. [ ] Validar em produção
+1. [ ] **Verificar logs** — procurar erros em `/var/log/` da Hostinger
+2. [ ] **Testar console** — verificar `ST.cartoes` no navegador
+3. [ ] **Testar API** — fazer POST com `cartao_id` explícito
+4. [ ] **Verificar BD** — contar registros em `pes_cartoes` e `pes_lancamentos`
+5. [ ] **Implementar fix** — se identificada causa, aplicar correção
+6. [ ] **Validar fix** — testar em staging antes de produção
