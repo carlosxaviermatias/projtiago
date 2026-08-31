@@ -50,11 +50,38 @@ O módulo de **Contas** foi criado recentemente (31/08/2026) e implementa:
 ### Servidor
 - `contas-app/server.js` — inicializador
 
+## Investigação realizada
+
+### Backend (contas.js)
+✅ **Função `criar(body)` (linha 666):**
+- Aceita `cartao_id` corretamente (linha 676-678)
+- Valida se o cartão existe (linha 678)
+- Passa `cartao_id` para o INSERT na tabela `pes_lancamentos` (linha 726)
+- Lógica correta: com cartão, `pagamento = NULL` (linha 688)
+
+✅ **Schema no banco:** Tabela `pes_cartoes` existe e é consultada corretamente
+
+### Frontend (contas-app/public/index.html)
+✅ **Carregamento de cartões (linha 566):**
+- API `/api/contas/cartoes` é chamada na inicialização
+- Cartões armazenados em `ST.cartoes`
+
+✅ **Formulário de lançamento (linhas 1068-1069):**
+- Select com opções de cartão renderizado dinamicamente
+- Opções têm prefix `k` (ex: `value="k5"` para cartão ID 5)
+
+✅ **Envio de dados (linha 1200):**
+- `cartao_id: origem.startsWith('k') ? origem.slice(1) : null`
+- Lógica correta para extrair ID do cartão
+
+### Router (contas-router.js)
+❓ **Não verificado ainda** - precisa confirmar se `/api/contas/lancamentos` está conectado à função `criar()`
+
 ## Próximos passos
 
-1. [ ] Verificar se `contas.js` aceita `cartao_id` na criação
-2. [ ] Confirmar se o formulário HTML envia `cartao_id` quando forma="Cartão"
-3. [ ] Verificar se há tabela de cartões em `pes_cartoes` ou `crm_fin_cartoes`
-4. [ ] Testar lançamento via UI e API
-5. [ ] Implementar correção
+1. [ ] Verificar o arquivo `crm/contas-router.js` para confirmar rota POST
+2. [ ] Testar lançamento de cartão via API (POST com cartao_id)
+3. [ ] Verificar logs de erro em produção
+4. [ ] Confirmar se há erro silencioso no lado do servidor
+5. [ ] Implementar correção (se necessária)
 6. [ ] Validar em produção
