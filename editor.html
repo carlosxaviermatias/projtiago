@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css?v=6">
-<link rel="stylesheet" href="assets/css/editor.css?v=4">
+<link rel="stylesheet" href="assets/css/editor.css?v=6">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='21' fill='none' stroke='%23f4b03e' stroke-width='3'/%3E%3Ccircle cx='24' cy='24' r='5' fill='%23f4b03e'/%3E%3C/svg%3E">
 </head>
 <body>
@@ -41,6 +41,7 @@
     <div class="fl-tb-group">
       <button type="button" class="fl-btn primary" id="flOpen">📂 Abrir foto</button>
       <button type="button" class="fl-btn" id="flSamples">🖼️ Exemplos</button>
+      <button type="button" class="fl-btn" id="flDrive" title="Fotos dos exercícios, na pasta do curso no Google Drive">☁️ Fotos da turma</button>
       <span class="fl-sep"></span>
       <button type="button" class="fl-btn ghost" id="flOpenProj" title="Abrir um projeto .fotolab salvo">📁 Abrir projeto</button>
       <button type="button" class="fl-btn ghost" id="flSaveProj" title="Salvar o projeto com as camadas (.fotolab)">💾 Salvar projeto</button>
@@ -78,6 +79,7 @@
           <div class="fl-empty-btns">
             <button type="button" class="fl-btn primary" id="flOpenBig">📂 Escolher do meu aparelho</button>
             <button type="button" class="fl-btn" id="flSamplesBig">🖼️ Usar foto de exemplo</button>
+            <button type="button" class="fl-btn" id="flDriveBig">☁️ Fotos da turma (Drive)</button>
           </div>
           <p class="fl-empty-note">Funciona com JPG, PNG, WebP, HEIC (se o navegador abrir) e GIF.
             Em <b>RAW</b> (NEF, CR2, ARW…) o navegador não revela o negativo digital: o FotoLab abre a
@@ -154,6 +156,44 @@
     <div class="fl-sample-grid" id="flSampleGrid"></div>
     <p class="fl-note">São imagens do próprio site (domínio público, Creative Commons ou material do curso).
       Ótimas para treinar sem gastar dados do celular.</p>
+  </div>
+
+  <div class="fl-dialog fl-drive-dlg" id="flDriveDlg">
+    <div class="fl-dialog-head"><b>Fotos da turma · Google Drive</b><button type="button" class="fl-x" data-close>✕</button></div>
+
+    <div class="fl-drive-lock" id="flDriveLock" hidden>
+      <p class="fl-drive-lock-msg" id="flDriveLockMsg">As fotos dos exercícios estão numa pasta da turma. Digite a senha que o instrutor passou.</p>
+      <div class="fl-drive-bar">
+        <label class="fl-field grow"><span>Senha da turma</span>
+          <input type="password" id="flDrivePwd" placeholder="senha da turma" autocomplete="off" spellcheck="false">
+        </label>
+        <button type="button" class="fl-btn primary" id="flDriveEnter">Entrar</button>
+      </div>
+    </div>
+
+    <div class="fl-drive-bar" id="flDriveUrlBar">
+      <label class="fl-field grow"><span>Link da pasta</span>
+        <input type="url" id="flDriveUrl" placeholder="https://drive.google.com/drive/folders/..." autocomplete="off" spellcheck="false">
+      </label>
+      <button type="button" class="fl-btn primary" id="flDriveGo">Abrir pasta</button>
+    </div>
+
+    <div class="fl-drive-crumbs" id="flDriveCrumbs" hidden></div>
+    <p class="fl-drive-status" id="flDriveStatus"></p>
+    <div class="fl-sample-grid fl-drive-grid" id="flDriveGrid"></div>
+
+    <p class="fl-note" id="flDriveHelpTurma" hidden>As fotos ficam numa pasta do Google Drive do curso.
+      O FotoLab só <b>lê</b> essa pasta e baixa a foto que você clicar — em resolução total, direto do
+      Google para o seu navegador. A edição acontece só no seu aparelho: nada volta para o Drive e nada é
+      enviado para este site. Para guardar o resultado, use <b>“Salvar imagem”</b>.
+      <button type="button" class="fl-linkish" id="flDriveOutra" hidden>Abrir outra pasta pelo link</button></p>
+
+    <p class="fl-note" id="flDriveHelpLink" hidden>A pasta precisa estar compartilhada como <b>“qualquer pessoa com o link”</b>
+      (no Drive: botão <b>Compartilhar</b> → Acesso geral). O FotoLab só <b>lê</b> a pasta e baixa a foto
+      que você clicar — em resolução total, direto do Google para o seu navegador. Nada volta para o Drive
+      e nada é enviado para este site: a edição continua acontecendo só no seu aparelho.
+      Para <b>salvar</b>, use “Salvar imagem” e depois envie o arquivo ao Drive por conta própria.
+      <button type="button" class="fl-linkish" id="flDriveVoltarTurma" hidden>Voltar para a pasta da turma</button></p>
   </div>
 
   <div class="fl-dialog" id="flExport">
@@ -287,6 +327,6 @@
 
 <button id="toTop" aria-label="Voltar ao topo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M6 11l6-6 6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
 <script src="assets/js/main.js?v=3"></script>
-<script type="module" src="assets/js/editor/main.js?v=4"></script>
+<script type="module" src="assets/js/editor/main.js?v=6"></script>
 </body>
 </html>

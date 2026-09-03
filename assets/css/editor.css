@@ -341,3 +341,33 @@ input[type=range]::-moz-range-thumb{ width:12px; height:12px; border-radius:50%;
   .fl-optionsbar{ overflow-x:auto; flex-wrap:nowrap; }
   .fl-opt{ flex-wrap:nowrap; width:max-content; }
 }
+
+/* ---------- Google Drive ---------- */
+/* o atributo `hidden` precisa vencer os display:flex daqui de baixo */
+.fl-drive-dlg [hidden]{ display:none !important; }
+.fl-drive-dlg{ width:min(760px, calc(100% - 28px)); }
+.fl-drive-bar{ display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap; }
+.fl-drive-bar .fl-field{ flex:1 1 320px; }
+.fl-drive-bar input{ width:100%; }
+.fl-drive-crumbs{ margin:10px 0 0; font-size:.74rem; color:var(--text-mute); }
+.fl-crumb{ background:transparent; border:0; padding:0; cursor:pointer; font:inherit;
+  color:var(--text-soft); text-decoration:underline; text-underline-offset:2px; }
+.fl-crumb:hover{ color:var(--accent); }
+.fl-crumb.on{ color:var(--text); text-decoration:none; cursor:default; }
+.fl-drive-status{ font-size:.74rem; color:var(--text-mute); line-height:1.5; margin:10px 0; }
+.fl-drive-status.warn{ color:var(--accent); }
+.fl-drive-status code{ font-size:.9em; }
+.fl-drive-grid{ max-height:46vh; overflow:auto; align-content:start; }
+.fl-drive-grid:empty{ display:none; }
+.fl-drive-folder{ padding-top:10px; }
+.fl-drive-fico{ display:block; font-size:1.6rem; padding:14px 9px 4px; }
+.fl-sample.busy{ position:relative; opacity:.75; cursor:progress; }
+.fl-sample.busy::after{
+  content:""; position:absolute; left:0; bottom:0; height:3px;
+  width:var(--fl-prog, 30%); background:var(--accent); transition:width .15s linear;
+}
+.fl-drive-lock-msg{ font-size:.8rem; color:var(--text-soft); line-height:1.5; margin:0 0 10px; }
+.fl-drive-lock-msg.warn{ color:var(--accent); }
+.fl-linkish{ background:transparent; border:0; padding:0; margin-left:6px; cursor:pointer;
+  font:inherit; color:var(--accent); text-decoration:underline; text-underline-offset:2px; }
+.fl-linkish:hover{ color:var(--text); }

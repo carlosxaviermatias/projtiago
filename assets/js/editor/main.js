@@ -9,6 +9,7 @@ import * as vp from './viewport.js?v=4';
 import * as tools from './tools.js?v=4';
 import * as ui from './ui.js?v=4';
 import * as io from './io.js?v=4';
+import * as drive from './drive.js?v=2';
 import { invalidateAll } from './render.js?v=4';
 
 const $ = s => document.querySelector(s);
@@ -124,6 +125,238 @@ function buildSamples() {
   });
 }
 
+/* ---------- Google Drive ----------
+   O aluno cola o link de uma pasta compartilhada; listamos o que há lá
+   dentro e, ao clicar, baixamos o arquivo ORIGINAL e o entregamos ao
+   mesmo caminho de abertura de sempre (por isso RAW também funciona).
+   A miniatura vem do próprio Google, então a lista é leve. */
+const DRIVE_LAST = 'fotolab.drive.pasta';
+let driveTrilha = [];              // [{id,name}] para as migalhas de pão
+
+function driveStatus(msg, cls) {
+  const el = $('#flDriveStatus');
+  el.innerHTML = msg || '';
+  el.className = 'fl-drive-status' + (cls ? ' ' + cls : '');
+}
+
+function driveCrumbs() {
+  const el = $('#flDriveCrumbs');
+  if (!driveTrilha.length) { el.hidden = true; el.innerHTML = ''; return; }
+  el.hidden = false;
+  el.innerHTML = '';
+  driveTrilha.forEach((f, i) => {
+    if (i) el.appendChild(document.createTextNode(' / '));
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'fl-crumb' + (i === driveTrilha.length - 1 ? ' on' : '');
+    b.textContent = f.name;
+    b.addEventListener('click', () => { driveTrilha = driveTrilha.slice(0, i); driveOpenFolder(f.id, f.name); });
+    el.appendChild(b);
+  });
+}
+
+async function driveOpenFolder(id, nome) {
+  const grid = $('#flDriveGrid');
+  grid.innerHTML = '';
+  driveStatus('Lendo a pasta no Google Drive…');
+  try {
+    let nomeReal = nome;
+    if (!nomeReal) { const info = await drive.folderInfo(id); nomeReal = info.name; }
+    driveTrilha.push({ id, name: nomeReal });
+    driveCrumbs();
+
+    const { folders, files, ignorados } = await drive.listFolder(id);
+    if (!folders.length && !files.length) {
+      driveStatus('Essa pasta está vazia (ou não tem nenhuma imagem).', 'warn');
+      return;
+    }
+    try { localStorage.setItem(DRIVE_LAST, $('#flDriveUrl').value.trim()); } catch (e) { /* modo privado */ }
+
+    folders.forEach(f => grid.appendChild(driveFolderCard(f)));
+    files.forEach(f => grid.appendChild(driveFileCard(f)));
+    driveStatus(files.length + (files.length === 1 ? ' foto' : ' fotos')
+      + (folders.length ? ' · ' + folders.length + (folders.length === 1 ? ' subpasta' : ' subpastas') : '')
+      + (ignorados ? ' · ' + ignorados + ' arquivo(s) que não são imagem foram ignorados' : '')
+      + ' · clique para abrir no editor.');
+  } catch (e) {
+    driveTrilha.pop();
+    driveCrumbs();
+    driveStatus('⚠️ ' + e.message, 'warn');
+  }
+}
+
+function driveFolderCard(f) {
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'fl-sample fl-drive-folder';
+  b.innerHTML = '<span class="fl-drive-fico">📁</span><b></b><span>Abrir subpasta</span>';
+  b.querySelector('b').textContent = f.name;
+  b.addEventListener('click', () => driveOpenFolder(f.id, f.name));
+  return b;
+}
+
+/* O `loading="lazy"` do navegador não serve aqui: as miniaturas vivem dentro
+   de um diálogo posicionado fora do fluxo da página, e o navegador conclui que
+   nenhuma delas está à vista — resultado, uma pasta com 45 fotos aparecia
+   inteira em branco. Observamos a rolagem da própria grade. */
+const driveLazy = new IntersectionObserver(entradas => {
+  entradas.forEach(e => {
+    if (!e.isIntersecting) return;
+    const img = e.target;
+    driveLazy.unobserve(img);
+    img.src = img.dataset.src;
+  });
+}, { root: null, rootMargin: '400px' });
+
+function driveFileCard(f) {
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'fl-sample';
+  const thumb = drive.thumbURL(f, 400);
+  const meta = f.imageMediaMetadata;
+  const dim = meta && meta.width ? meta.width + '×' + meta.height : '';
+  const peso = drive.prettySize(f.size);
+  b.innerHTML = (thumb
+      ? '<img alt="" referrerpolicy="no-referrer" data-src="' + thumb + '">'
+      : '<span class="fl-drive-fico">🖼️</span>')
+    + '<b></b><span></span>';
+  if (thumb) driveLazy.observe(b.querySelector('img'));
+  b.querySelector('b').textContent = f.name;
+  b.querySelector('span:last-child').textContent = [dim, peso].filter(Boolean).join(' · ');
+
+  b.addEventListener('click', async () => {
+    if (b.classList.contains('busy')) return;
+    b.classList.add('busy');
+    try {
+      notify('Baixando <b>' + f.name + '</b> do Google Drive…', 60000);
+      await nextPaint();
+      const file = await drive.fetchAsFile(f, p => {
+        b.style.setProperty('--fl-prog', Math.round(p * 100) + '%');
+      });
+      closeDialogs();
+      await openFiles([file]);
+    } catch (e) {
+      notify('⚠️ ' + e.message, 8000);
+    } finally {
+      b.classList.remove('busy');
+      b.style.removeProperty('--fl-prog');
+    }
+  });
+  return b;
+}
+
+function driveGo() {
+  const id = drive.parseFolderId($('#flDriveUrl').value);
+  if (!id) {
+    driveStatus('⚠️ Esse link não parece ser de uma pasta do Drive. Ele tem que ter <code>/folders/</code> no meio — abra a pasta no Drive e copie o endereço da barra do navegador.', 'warn');
+    return;
+  }
+  $('#flDriveGrid').innerHTML = '';
+  driveTrilha = [];
+  driveCrumbs();
+  driveOpenFolder(id, null);
+}
+
+/* Modo "pasta da turma": o instrutor deixa uma pasta fixa no Drive e o
+   aluno só digita a senha. A senha é uma tranca leve — mora no código de
+   um site estático —, então serve para o material não ficar à mão de
+   qualquer visitante, e não como segurança. */
+const DRIVE_LIBERADO = 'fotolab.drive.turma';
+let modoLink = false;                 // true = aluno colando o link de outra pasta
+
+function driveModo(link) {
+  modoLink = link;
+  const temTurma = !!drive.pastaTurma();
+  $('#flDriveUrlBar').hidden = temTurma && !link;
+  $('#flDriveHelpTurma').hidden = link || !temTurma;
+  $('#flDriveHelpLink').hidden = !(link || !temTurma);
+  $('#flDriveOutra').hidden = !(temTurma && drive.PERMITIR_OUTRA_PASTA);
+  $('#flDriveVoltarTurma').hidden = !(temTurma && link);
+}
+
+function driveLiberado() {
+  if (!drive.pedeSenha()) return true;
+  try { return localStorage.getItem(DRIVE_LIBERADO) === '1'; } catch (e) { return false; }
+}
+
+function driveTrancar(mostrar) {
+  $('#flDriveLock').hidden = !mostrar;
+  if (mostrar) {
+    $('#flDriveGrid').innerHTML = '';
+    driveStatus('');
+    $('#flDriveCrumbs').hidden = true;
+  }
+}
+
+function driveDestrancar() {
+  const campo = $('#flDrivePwd');
+  if (!drive.senhaConfere(campo.value)) {
+    $('#flDriveLockMsg').innerHTML = '⚠️ Senha errada. Confira com o instrutor — ela é a mesma para a turma toda.';
+    $('#flDriveLockMsg').classList.add('warn');
+    campo.select();
+    return;
+  }
+  try { localStorage.setItem(DRIVE_LIBERADO, '1'); } catch (e) { /* modo privado */ }
+  campo.value = '';
+  driveTrancar(false);
+  driveAbrirTurma();
+}
+
+function driveAbrirTurma() {
+  driveModo(false);
+  driveTrancar(false);
+  $('#flDriveGrid').innerHTML = '';
+  driveTrilha = [];
+  driveCrumbs();
+  driveOpenFolder(drive.pastaTurma(), drive.NOME_TURMA);
+}
+
+function openDrive() {
+  openDialog('flDriveDlg');
+  if (!drive.hasKey()) {
+    driveModo(!drive.pastaTurma());
+    driveTrancar(false);
+    driveStatus('⚠️ O acesso ao Google Drive ainda não foi configurado neste site (falta a chave da API). Avise o instrutor.', 'warn');
+    return;
+  }
+
+  if (drive.pastaTurma() && !modoLink) {
+    driveModo(false);
+    if (!driveLiberado()) {
+      driveTrancar(true);
+      $('#flDriveLockMsg').classList.remove('warn');
+      $('#flDriveLockMsg').innerHTML = 'As fotos dos exercícios estão numa pasta da turma. Digite a senha que o instrutor passou.';
+      setTimeout(() => $('#flDrivePwd').focus(), 60);
+      return;
+    }
+    if (!$('#flDriveGrid').children.length) driveAbrirTurma();
+    return;
+  }
+
+  driveModo(true);
+  const input = $('#flDriveUrl');
+  if (!input.value) {
+    try { input.value = localStorage.getItem(DRIVE_LAST) || ''; } catch (e) { /* modo privado */ }
+  }
+  setTimeout(() => input.focus(), 60);
+}
+
+function bindDrive() {
+  $('#flDrive').addEventListener('click', openDrive);
+  $('#flDriveBig').addEventListener('click', openDrive);
+  $('#flDriveGo').addEventListener('click', driveGo);
+  $('#flDriveUrl').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); driveGo(); } });
+  $('#flDriveEnter').addEventListener('click', driveDestrancar);
+  $('#flDrivePwd').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); driveDestrancar(); } });
+  $('#flDriveOutra').addEventListener('click', () => {
+    driveModo(true);
+    $('#flDriveGrid').innerHTML = ''; driveTrilha = []; driveCrumbs(); driveStatus('');
+    $('#flDriveUrl').focus();
+  });
+  $('#flDriveVoltarTurma').addEventListener('click', driveAbrirTurma);
+  driveModo(!drive.pastaTurma());
+}
+
 /* ---------- exportação ---------- */
 function buildExport() {
   $('#flDoExport').addEventListener('click', async () => {
@@ -213,6 +446,7 @@ function boot() {
   ui.bindLayerProps();
   buildSamples();
   buildExport();
+  bindDrive();
 
   onChange(() => { ui.refresh(app); if (state.doc) scheduleSave(); });
 
