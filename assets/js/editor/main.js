@@ -4,13 +4,13 @@
    tela cheia e o salvamento automático da sessão.
    ============================================================ */
 
-import { state, onChange, emit, undo, redo, pushHistory, activeLayer, ADJ_DEFAULTS, newCurve, touch } from './state.js?v=4';
-import * as vp from './viewport.js?v=4';
-import * as tools from './tools.js?v=4';
-import * as ui from './ui.js?v=4';
-import * as io from './io.js?v=4';
-import * as drive from './drive.js?v=2';
-import { invalidateAll } from './render.js?v=4';
+import { state, onChange, emit, undo, redo, pushHistory, activeLayer, ADJ_DEFAULTS, newCurve, touch } from './state.js?v=7';
+import * as vp from './viewport.js?v=7';
+import * as tools from './tools.js?v=7';
+import * as ui from './ui.js?v=7';
+import * as io from './io.js?v=7';
+import * as drive from './drive.js?v=7';
+import { invalidateAll } from './render.js?v=7';
 
 const $ = s => document.querySelector(s);
 
@@ -155,17 +155,25 @@ function driveCrumbs() {
   });
 }
 
+/* Dois toques seguidos no botão disparavam duas leituras ao mesmo tempo e a
+   pasta aparecia duplicada: cada uma limpava a grade antes da outra terminar.
+   Só a leitura mais recente pode escrever na tela. */
+let driveSeq = 0;
+
 async function driveOpenFolder(id, nome) {
   const grid = $('#flDriveGrid');
+  const meu = ++driveSeq;
   grid.innerHTML = '';
   driveStatus('Lendo a pasta no Google Drive…');
   try {
     let nomeReal = nome;
     if (!nomeReal) { const info = await drive.folderInfo(id); nomeReal = info.name; }
+    if (meu !== driveSeq) return;
     driveTrilha.push({ id, name: nomeReal });
     driveCrumbs();
 
     const { folders, files, ignorados } = await drive.listFolder(id);
+    if (meu !== driveSeq) return;                 // outra leitura começou depois
     if (!folders.length && !files.length) {
       driveStatus('Essa pasta está vazia (ou não tem nenhuma imagem).', 'warn');
       return;
@@ -179,6 +187,7 @@ async function driveOpenFolder(id, nome) {
       + (ignorados ? ' · ' + ignorados + ' arquivo(s) que não são imagem foram ignorados' : '')
       + ' · clique para abrir no editor.');
   } catch (e) {
+    if (meu !== driveSeq) return;
     driveTrilha.pop();
     driveCrumbs();
     driveStatus('⚠️ ' + e.message, 'warn');

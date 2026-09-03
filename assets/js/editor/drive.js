@@ -13,7 +13,7 @@
    direto para o navegador e a edição continua sendo local.
    ============================================================ */
 
-import { DRIVE_API_KEY, PASTA_TURMA, NOME_TURMA, SENHA_TURMA, PERMITIR_OUTRA_PASTA } from './drive-config.js?v=2';
+import { DRIVE_API_KEY, PASTA_TURMA, NOME_TURMA, SENHA_TURMA, PERMITIR_OUTRA_PASTA } from './drive-config.js?v=7';
 
 const API = 'https://www.googleapis.com/drive/v3';
 export const FOLDER_MIME = 'application/vnd.google-apps.folder';

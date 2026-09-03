@@ -5,7 +5,7 @@
    (JSON) no histórico e no salvamento automático.
    ============================================================ */
 
-import { isRawFile, largestPreview } from './raw.js?v=4';
+import { isRawFile, largestPreview } from './raw.js?v=7';
 
 const registry = new Map();
 let seq = 1;
@@ -63,7 +63,7 @@ export async function loadFromFile(file) {
 
   if (preview && pPx >= dPx) {
     const id = addImage(preview.img, name.replace(/\.[^.]+$/, ''), null);
-    return { id, img: preview.img, raw: { previews: preview.previews, w: preview.w, h: preview.h, browser: dPx ? { w: direct.img.naturalWidth, h: direct.img.naturalHeight } : null } };
+    return { id, img: preview.img, orient: preview.orient || 0, raw: { previews: preview.previews, w: preview.w, h: preview.h, browser: dPx ? { w: direct.img.naturalWidth, h: direct.img.naturalHeight } : null } };
   }
   if (direct) {
     const id = addImage(direct.img, name.replace(/\.[^.]+$/, ''), direct.dataURL);

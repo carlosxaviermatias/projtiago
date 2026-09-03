@@ -8,10 +8,10 @@
    pronta, no tamanho real.
    ============================================================ */
 
-import { state, newDoc, makeLayer, clearHistory, emit } from './state.js?v=4';
-import { addImage, getImage, loadFromFile, loadFromURL, ensureDataURL, restoreImage } from './assets.js?v=4';
-import { isRawFile } from './raw.js?v=4';
-import { renderResult, resultSize, invalidateAll } from './render.js?v=4';
+import { state, newDoc, makeLayer, clearHistory, emit } from './state.js?v=7';
+import { addImage, getImage, loadFromFile, loadFromURL, ensureDataURL, restoreImage } from './assets.js?v=7';
+import { isRawFile } from './raw.js?v=7';
+import { renderResult, resultSize, invalidateAll } from './render.js?v=7';
 
 export const SAMPLES = [
   { file: 'assets/img/deco/hora-dourada.jpg', name: 'Hora dourada', hint: 'Trabalhe a temperatura e a vinheta.' },
@@ -30,9 +30,24 @@ export const SAMPLES = [
   }
 ];
 
-export function docFromImage(assetId, name) {
+/* A câmera grava a foto sempre deitada e anota de que lado estava. Traduzimos
+   essa anotação para o mesmo giro/espelho que os botões ⟲ ⟳ produzem, então a
+   foto já nasce em pé e o resto do editor (corte, exportação) segue igual. */
+const POR_ORIENTACAO = {
+  2: { rotStep: 0, flipH: true },
+  3: { rotStep: 2 },
+  4: { rotStep: 2, flipH: true },
+  5: { rotStep: 1, flipH: true },
+  6: { rotStep: 1 },
+  7: { rotStep: 3, flipH: true },
+  8: { rotStep: 3 }
+};
+
+export function docFromImage(assetId, name, orient) {
   const a = getImage(assetId);
   const doc = newDoc(a.w, a.h);
+  const giro = POR_ORIENTACAO[orient];
+  if (giro) { doc.rotStep = giro.rotStep; if (giro.flipH) doc.flipH = true; }
   const layer = makeLayer({ type: 'image', name: name || a.name, asset: assetId });
   doc.layers.push(layer);
   state.doc = doc;
@@ -44,7 +59,7 @@ export function docFromImage(assetId, name) {
 
 export async function openFileAsDocument(file) {
   const r = await loadFromFile(file);
-  docFromImage(r.id);
+  docFromImage(r.id, null, r.orient);
   return r;                       // traz `raw` para a interface explicar o caso RAW
 }
 export async function openSample(sample) {
@@ -56,7 +71,7 @@ export async function openSample(sample) {
     if (!resp.ok) throw new Error('Não consegui baixar o arquivo de exemplo.');
     const blob = await resp.blob();
     const info = await loadFromFile(new File([blob], sample.file.split('/').pop(), { type: '' }));
-    docFromImage(info.id, sample.name);
+    docFromImage(info.id, sample.name, info.orient);
     return info;
   }
   const { id } = await loadFromURL(sample.file, sample.name);

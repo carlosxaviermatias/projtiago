@@ -51,6 +51,62 @@ function findJPEGs(buf) {
   return out.sort((a, b) => b.size - a.size).slice(0, 6);   // as maiores primeiro
 }
 
+/* ---------- orientação da câmera (EXIF) ----------
+   A câmera não gira os pixels: ela grava a foto sempre deitada e anota
+   num campo (tag 0x0112) como o corpo estava na hora do clique. Quem
+   exibe é que precisa girar.
+
+   Em JPEG comum o navegador já faz isso sozinho, então NÃO mexemos.
+   O problema é o RAW: a prévia que arrancamos de dentro dele muitas
+   vezes sai sem esse campo, e aí a foto em pé aparece deitada. Nesse
+   caso lemos a anotação do próprio RAW (ARW, NEF, DNG e CR2 são
+   arquivos TIFF por dentro) e giramos nós mesmos. */
+
+/** Lê a tag 0x0112 de um IFD TIFF que começa em `tiff`. 0 = não achou. */
+function orientFromTIFF(v, tiff) {
+  if (tiff + 8 > v.byteLength) return 0;
+  const marca = v.getUint16(tiff, false);
+  if (marca !== 0x4949 && marca !== 0x4D4D) return 0;      // "II" ou "MM"
+  const le = marca === 0x4949;
+  if (v.getUint16(tiff + 2, le) !== 42) return 0;
+  const ifd = tiff + v.getUint32(tiff + 4, le);
+  if (ifd + 2 > v.byteLength) return 0;
+  const n = v.getUint16(ifd, le);
+  for (let i = 0; i < n; i++) {
+    const e = ifd + 2 + i * 12;
+    if (e + 12 > v.byteLength) break;
+    if (v.getUint16(e, le) === 0x0112) {
+      const o = v.getUint16(e + 8, le);
+      return (o >= 1 && o <= 8) ? o : 0;
+    }
+  }
+  return 0;
+}
+
+/** Orientação anotada dentro de um JPEG (no bloco APP1/Exif). */
+export function jpegOrientation(bytes) {
+  const v = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  if (bytes.length < 4 || v.getUint16(0, false) !== 0xFFD8) return 0;
+  let p = 2;
+  while (p + 4 <= bytes.length) {
+    if (v.getUint16(p, false) === 0xFFE1) {                 // APP1
+      const inicio = p + 4;
+      if (v.getUint32(inicio, false) === 0x45786966) return orientFromTIFF(v, inicio + 6);  // "Exif"
+      return 0;
+    }
+    if ((bytes[p] & 0xFF) !== 0xFF) return 0;
+    if (bytes[p + 1] === 0xDA) return 0;                    // começaram os pixels
+    p += 2 + v.getUint16(p + 2, false);
+  }
+  return 0;
+}
+
+/** Orientação anotada no cabeçalho do próprio RAW (que é um TIFF). */
+export function tiffOrientation(bytes) {
+  const v = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  return orientFromTIFF(v, 0);
+}
+
 function measure(blob) {
   return new Promise(res => {
     const url = URL.createObjectURL(blob);
@@ -75,13 +131,19 @@ export async function largestPreview(file) {
 
   let best = null, ok = 0;
   for (const c of cands) {
-    const r = await measure(new Blob([buf.subarray(c.start, c.end)], { type: 'image/jpeg' }));
+    const bytes = buf.subarray(c.start, c.end);
+    const r = await measure(new Blob([bytes], { type: 'image/jpeg' }));
     if (!r) continue;
     ok++;
+    r.orient = jpegOrientation(bytes);
     if (!best || r.w * r.h > best.w * best.h) {
       if (best) URL.revokeObjectURL(best.url);
       best = r;
     } else URL.revokeObjectURL(r.url);
   }
-  return best ? { img: best.img, w: best.w, h: best.h, previews: ok } : null;
+  if (!best) return null;
+  // Se a prévia trouxe a anotação, o navegador já a obedeceu ao desenhar;
+  // só entramos em ação quando ela veio sem — usando a anotação do RAW.
+  const orient = best.orient ? 0 : tiffOrientation(buf);
+  return { img: best.img, w: best.w, h: best.h, previews: ok, orient };
 }
